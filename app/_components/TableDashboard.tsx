@@ -5,7 +5,6 @@ import { CiTrash } from "react-icons/ci";
 import DashboardTableRow from "./DashboardTableRow";
 
 
-
 const TableDashboard = () => {
   return (
     <div className="sm:px-6 w-full">

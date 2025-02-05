@@ -81,14 +81,13 @@ export const useAuthGuard = ({
           console.log("Redirecting to:", redirectIfAuthenticated);
           router.replace(redirectIfAuthenticated);
         } else if (middleware === "auth" && error) {
-          if (isHttpErrorResponse(error)) {
-            console.error("Authentication error details:", error);
-          } else {
-            console.error("Unknown error type:", error);
+         
+            console.error("Authentication failed:", error);
+            router.replace("/sign-in");
+        
           }
           
-        }
-      }, [middleware, redirectIfAuthenticated, user, error]);
+      }, [middleware, redirectIfAuthenticated, user, error, router]);
 
 
       return {user, login, mutate};

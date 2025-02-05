@@ -6,6 +6,8 @@ import Image from "next/image";
 import Logo from "@/public/logo.png"
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { MdAccountBalance } from "react-icons/md";
+import { useQuery } from "@tanstack/react-query";
+import { getAccounts } from "@/lib/data-service";
 
 
 const navLinks = [{
@@ -30,6 +32,13 @@ const navLinks = [{
 export default function Sidebar() {
 
   const [greeting, setGreeting] = useState("");
+
+  const {data: accounts, isLoading, isError} = useQuery({
+    queryKey: ["accounts"],
+    queryFn: async () => await getAccounts(),  
+  });
+
+  console.log(accounts);
 
 
   useEffect(() => {
