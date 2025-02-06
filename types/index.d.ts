@@ -21,3 +21,15 @@ declare interface CategoryModel {
   name: string,
   emoji: string
 }
+
+declare interface AccountModel {
+  name: string,
+  type: "SAVINGS" | "CASH" | "CREDIT_CARD" | "OTHER",
+  balance: string
+}
+
+declare interface CreateAccountParams {
+  name: string;
+  type: "SAVINGS" | "CASH" | "CREDIT_CARD" | "OTHER";
+  balance: number;
+}

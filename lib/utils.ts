@@ -28,4 +28,12 @@ export const authFormSchema = (type: string) =>
     name: z.string().min(1, "Category name is required"),
     emoji: z.string().min(1, "Please select an emoji"),
   });
+
+  export const accountSchema = z.object({
+    name: z.string().min(1, "Name is required"),
+    type: z.enum(["SAVINGS", "CASH", "CREDIT_CARD", "OTHER"], {
+      required_error: "Account type is required",
+    }),
+    balance: z.string(),
+  });
    

@@ -43,3 +43,17 @@ export const addCategory = async (data: CategoryModel) => {
         return [];
     }
 }
+
+export const addAccount = async (data: AccountModel) => {
+    try{
+        const token = localStorage.getItem("token");
+        const response = await httpClient.post("/api/account/add", data, { headers: {
+            Authorization: `Bearer ${token}`
+        }
+        });
+        return response.data;
+    }catch(error){
+        console.error("Error fetching accounts", error);
+        return [];
+    }
+}

@@ -8,6 +8,7 @@ import { RiLogoutBoxFill } from "react-icons/ri";
 import { MdAccountBalance } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
 import { getAccounts } from "@/lib/data-service";
+import AddAccount from "./AddAccount";
 
 
 const navLinks = [{
@@ -99,6 +100,10 @@ export default function Sidebar() {
             <MdAccountBalance size={20}/>
                <span className="ms-3">Accounts</span>
             </a>
+         </li>
+
+         <li>
+          <AddAccount/>
          </li>
          
       
