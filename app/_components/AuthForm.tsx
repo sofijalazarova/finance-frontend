@@ -17,14 +17,16 @@ import Logo from "@/public/logo.png";
 import { useRouter } from "next/navigation";
 import { useAuthGuard } from "@/lib/auth/useAuth";
 
-
 export default function AuthForm({ type }: { type: string }) {
-  const router = useRouter();
-  const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<HttpErrorResponse | undefined>(undefined);
+  const [errors, setErrors] = useState<HttpErrorResponse | undefined>(
+    undefined
+  );
 
-  const {login} = useAuthGuard({middleware: "guest", redirectIfAuthenticated: "/dashboard"});
+  const { login } = useAuthGuard({
+    middleware: "guest",
+    redirectIfAuthenticated: "/dashboard",
+  });
 
   const formSchema = authFormSchema(type);
 
@@ -43,27 +45,25 @@ export default function AuthForm({ type }: { type: string }) {
 
     try {
       if (type === "sign-up") {
-       console.log(data);
+        console.log(data);
       }
 
       if (type === "sign-in") {
-       console.log(data);
+        console.log(data);
 
         login({
           onError: (errors) => {
-            setErrors(errors)
-            if(errors){
-              console.log("Authentication failed")
+            setErrors(errors);
+            if (errors) {
+              console.log("Authentication failed");
+              setIsLoading(false);
             }
           },
-          props: data
-        })
-
-
+          props: data,
+        });
       }
     } catch (e) {
       console.log(e);
-    } finally {
       setIsLoading(false);
     }
   };

@@ -17,19 +17,81 @@ export const useAuthGuard = ({
 
   const fetchUser = async () => {
     try {
-      const token = localStorage.getItem("token");
-      if (!token) throw new Error("No token found");
+      let accessToken = localStorage.getItem("accessToken");
+      const refreshToken = localStorage.getItem("refreshToken");
+
+      if (!accessToken || !refreshToken) {
+        throw new Error("No tokens found");
+      }
+
       const response = await httpClient.get("/api/auth/me", {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${accessToken}`,
         },
       });
+
       return response.data;
-    } catch (error) {
-      console.error("Error");
+    } catch (error: any) {
+      console.error("Error fetching user:", error);
+
+      if (error.response?.status === 401) {
+        console.log("Access token expired. Trying to refresh...");
+
+        try {
+          const refreshResponse = await axios.post(
+            "http://localhost:8080/api/auth/refresh",
+            { refreshToken: localStorage.getItem("refreshToken") },
+            {
+              headers: {
+                "Content-Type": "application/json",
+              },
+              withCredentials: true,
+            }
+          );
+
+          console.log("New access token received:", refreshResponse.data);
+
+          localStorage.setItem("accessToken", refreshResponse.data.accessToken);
+          localStorage.setItem(
+            "refreshToken",
+            refreshResponse.data.refreshToken
+          );
+
+          const retryResponse = await httpClient.get("/api/auth/me", {
+            headers: {
+              Authorization: `Bearer ${refreshResponse.data.accessToken}`,
+            },
+          });
+
+          return retryResponse.data;
+        } catch (refreshError) {
+          console.error("Refresh token is invalid. Logging out...");
+          localStorage.removeItem("accessToken");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/sign-in";
+          throw refreshError;
+        }
+      }
+
       throw error;
     }
   };
+
+  // const fetchUser = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     if (!token) throw new Error("No token found");
+  //     const response = await httpClient.get("/api/auth/me", {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error");
+  //     throw error;
+  //   }
+  // };
 
   const {
     data: user,
@@ -50,8 +112,9 @@ export const useAuthGuard = ({
   }) => {
     onError(undefined);
     try {
-      const response = await axios.post<{ token: string }>(
-        "http://localhost:8080/api/auth/authenticate",
+      //const response = await axios.post<{ token: string }>(
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/login",
         {
           email: props.email,
           password: props.password,
@@ -66,8 +129,12 @@ export const useAuthGuard = ({
 
       console.log(response);
 
-      const token = response.data.token;
-      localStorage.setItem("token", token);
+      localStorage.setItem("accessToken", response.data.accessToken);
+      localStorage.setItem("refreshToken", response.data.token);
+
+      //const token = response.data.token;
+      //localStorage.setItem("token", token);
+
       console.log("Login Successful");
       mutate();
     } catch (err) {
