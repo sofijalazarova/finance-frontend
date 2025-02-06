@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { accountSchema } from "@/lib/utils";
-import { addAccount } from "@/lib/data-service";
+import { addAccount } from "@/lib/api/data-service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 

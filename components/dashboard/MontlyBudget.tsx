@@ -1,24 +1,6 @@
 import React from "react";
 
-// const MontlyBudget = () => {
-//   return (
-//     <div className="border bg-white border-vibrant-mint-green col-span-2 row-span-2 rounded-3xl flex justify-evenly ">
-//       <div className="flex flex-col font-roboto justify-evenly">
-//         <h1 className="text-xl text-dark-slate">Montly budget</h1>
-//         <h2>Jun 01 - Jun 30, 2024</h2>
-//         <p className="text-5xl font-bold font-inter">$90,190</p>
-//         <p className="text-emerald-green">
-//           <span className="font-bold">+9,5</span> compared to last month
-//         </p>
-//       </div>
-//       <div>
-//         <button className="p-2 mt-4 border font-inter bg-almost-white rounded-xl border-silver-gray text-gray-700 hover:bg-gray-100 hover:border-gray-400 active:bg-gray-200 transition-all duration-300 ease-in-out">
-//           Manage budget
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
+
 const MontlyBudget = () => {
   return (
     <div className="relative border bg-white border-vibrant-mint-green col-span-2 row-span-2 rounded-3xl flex flex-col md:flex-row justify-between items-start px-8 py-6 shadow-lg">

@@ -14,7 +14,6 @@ const CustomTableRow = ({
   note,
   amount,
   date,
-  icon,
 }: CustomTableRowProps) => {
   return (
     <tr>
@@ -34,7 +33,7 @@ const CustomTableRow = ({
       <td className="p-2 whitespace-nowrap">
         <div className="text-right font-bold text-green-500">$2,890.66</div>
       </td>
-      <td className="p-2 whitespace-nowrap">
+             <td className="p-2 whitespace-nowrap">
         <div className="text-right">24.10.2024</div>
       </td>
     </tr>

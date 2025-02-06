@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { addCategory } from "@/lib/data-service";
+import { addCategory } from "@/lib/api/data-service";
 import { categorySchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -75,7 +75,7 @@ export default function CreateCategoryForm({ onCloseModal }: CreateCategoryFormP
                         key={emoji}
                         type="button"
                         onClick={() => {
-                          setValue("emoji", emoji); // Update emoji in the form state
+                          setValue("emoji", emoji);
                         }}
                         className={`p-2 border rounded-md text-lg ${
                           field.value === emoji

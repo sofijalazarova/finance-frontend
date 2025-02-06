@@ -7,8 +7,8 @@ import Logo from "@/public/logo.png"
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { MdAccountBalance } from "react-icons/md";
 import { useQuery } from "@tanstack/react-query";
-import { getAccounts } from "@/lib/data-service";
-import AddAccount from "./AddAccount";
+import { getAccounts } from "@/lib/api/data-service";
+import AddAccount from "../../app/_components/AddAccount";
 
 
 const navLinks = [{

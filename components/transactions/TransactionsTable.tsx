@@ -1,9 +1,7 @@
 import React from "react";
-import { FaCartShopping } from "react-icons/fa6";
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,

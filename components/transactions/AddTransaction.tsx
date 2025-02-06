@@ -8,7 +8,7 @@ import { Form } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { transactionSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
-import TransactionInput from "./TransactionInput";
+import TransactionInput from "../../components/transactions/TransactionInput";
 
 export default function AddTransaction() {
   const [isLoading] = useState(false);

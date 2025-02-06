@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import Modal from "./Modal";
-import CreateCategoryForm from "./CreateCategoryForm";
+
+import Modal from "@/app/_components/Modal";
+import CreateCategoryForm from "../../components/categories/CreateCategoryForm";
 
 function AddCategory() {
     return (

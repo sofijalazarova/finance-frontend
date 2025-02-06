@@ -1,9 +1,9 @@
 "use client";
 
-import Balance from "@/app/_components/Balance";
-import MontlyBudget from "@/app/_components/MontlyBudget";
-import TableDashboard from "@/app/_components/TableDashboard";
-import TransactionsTable from "@/app/_components/TransactionsTable";
+import Balance from "@/components/dashboard/Balance";
+import MontlyBudget from "@/components/dashboard/MontlyBudget";
+import TableDashboard from "@/components/dashboard/TableDashboard";
+import TransactionsTable from "@/components/transactions/TransactionsTable";
 
 import React from "react";
 

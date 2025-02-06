@@ -1,6 +1,7 @@
 import React from "react";
 import ProgressBar from "./ProgressBar";
 
+
 interface TableRowProps {
   icon: React.ReactNode;
   category: string;

@@ -2,7 +2,7 @@
 
 import { useAuthGuard } from "@/lib/auth/useAuth";
 import Link from "next/link";
-import Loading from "./Loading";
+import Loading from "../../app/_components/Loading";
 
 const Header = () => {
 
