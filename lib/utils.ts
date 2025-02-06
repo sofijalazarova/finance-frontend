@@ -22,3 +22,10 @@ export const authFormSchema = (type: string) =>
     firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
     lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
   });
+
+
+  export const categorySchema = z.object({
+    name: z.string().min(1, "Category name is required"),
+    emoji: z.string().min(1, "Please select an emoji"),
+  });
+   

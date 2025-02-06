@@ -16,3 +16,8 @@ declare interface HttpErrorResponse {
   errors?: Map<string,string>;
   generalErrors?: string[];
 }
+
+declare interface CategoryModel {
+  name: string,
+  emoji: string
+}

@@ -3,9 +3,21 @@ import { MdLocalGasStation } from "react-icons/md";
 import { FcElectricity } from "react-icons/fc";
 import { CiTrash } from "react-icons/ci";
 import DashboardTableRow from "./DashboardTableRow";
+import { useQuery } from "@tanstack/react-query";
+import { getCategories } from "@/lib/data-service";
+import AddCategory from "@/app/_components/AddCategory";
 
 
 const TableDashboard = () => {
+
+  const {data: categories, isLoading} = useQuery({
+    queryKey: ['categories'],
+    queryFn: async () => await getCategories()
+  });
+
+  console.log(categories);
+
+
   return (
     <div className="sm:px-6 w-full">
       <div className="px-4  py-4 flex items-center justify-between">
@@ -13,9 +25,7 @@ const TableDashboard = () => {
           <p className="focus:outline-none font-roboto text-slate-gray text-base sm:text-lg md:text-lg lg:text-xl font-normal leading-normal ">
             CATEGORY
           </p>
-          <button className="py-1 px-3 text-white bg-dark-teal-green hover:bg-emerald-green rounded-xl shadow-md transition-all">
-            +
-          </button>
+          <AddCategory/>
         </div>
         <div className="flex font-roboto text-slate-gray space-x-2 mr-6">
           <p>Assigned</p>
@@ -26,63 +36,28 @@ const TableDashboard = () => {
         <div className="mt-3 overflow-x-auto overflow-y-auto font-roboto">
           <table className="w-full whitespace-nowrap">
             <tbody>
-              <tr className="focus:outline-none h-14 border bg-gray-50 border-gray-100 rounded">
-                <td>
-                  <div className="flex items-center pl-5">
-                    <p className="text-base font-medium leading-none text-gray-700 mr-2">
-                      Bills
-                    </p>
-                  </div>
-                </td>
-              </tr>
 
-              <DashboardTableRow
-                icon={<MdLocalGasStation size={25} />}
-                category="Gas/Heating"
-                assigned="50$"
-                target="100$"
-                progress={50}
-              />
-
-              <DashboardTableRow
-                icon={<FcElectricity size={25} />}
-                category="Electricity"
-                assigned="0$"
-                target="10$"
-                progress={50}
-              />
-
-              <DashboardTableRow
-                icon={<CiTrash size={25} />}
-                category="Garbage"
-                assigned="0$"
-                target="10$"
-                progress={50}
-              />
-
-              <tr className="h-3"></tr>
-              <tr className="focus:outline-none  h-14 border border-gray-100 rounded">
-                <td className="focus:text-indigo-600 ">
-                  <div className="flex items-center pl-5">
-                    <p className="text-base font-medium leading-none text-gray-700 mr-2">
-                      Needs
-                    </p>
-                  </div>
-                </td>
-              </tr>
-              <DashboardTableRow
-                icon={<MdLocalGasStation size={25} />}
-                category="Gas/Heating"
-                assigned="50$"
-                target="100$"
-                progress={50}
-              />
-             
-              
+            {categories && categories.length > 0 ? (
+                  categories.map((category: any) => (
+                    <DashboardTableRow
+                      key={category.id}
+                      icon={category.emoji}
+                      category={category.name}
+                      assigned="50$"
+                      target="100$"
+                      progress={50}
+                    />
+                  ))
+                ) : (
+                  <tr>
+                    <td className="text-center p-4">
+                      No categories available
+                    </td>
+                  </tr>
+              )}
+                  
             </tbody>
           </table>
-        
-
         </div>
       </div>
     </div>

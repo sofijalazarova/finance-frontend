@@ -15,3 +15,31 @@ export const getAccounts = async () => {
         return [];
     }
 }
+
+export const getCategories = async () => {
+    try{
+        const token = localStorage.getItem("token");
+        const response = await httpClient.get("/api/category/byUser", { headers: {
+            Authorization: `Bearer ${token}`
+        }
+        });
+        return response.data;
+    }catch(error){
+        console.error("Error fetching accounts", error);
+        return [];
+    }
+}
+
+export const addCategory = async (data: CategoryModel) => {
+    try{
+        const token = localStorage.getItem("token");
+        const response = await httpClient.post("/api/category/add", data, { headers: {
+            Authorization: `Bearer ${token}`
+        }
+        });
+        return response.data;
+    }catch(error){
+        console.error("Error fetching accounts", error);
+        return [];
+    }
+}

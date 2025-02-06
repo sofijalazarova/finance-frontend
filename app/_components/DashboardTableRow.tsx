@@ -19,8 +19,8 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
   return (
     <tr className="focus:outline-none  h-12 border border-gray-100 rounded">
       <td>
-        <div className="flex items-center pl-5">
-          {icon}
+        <div className="flex items-center pl-5 space-x-1">
+          <span>{icon}</span>
           <p className="text-base font-medium leading-none text-gray-700 mr-2">
             {category}
           </p>

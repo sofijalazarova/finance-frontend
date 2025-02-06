@@ -4,6 +4,7 @@ import { Roboto, Inter, Poppins } from "next/font/google";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
 import ReactQueryProvider from "@/utils/ReactQueryProvider";
+import { Toaster } from "react-hot-toast";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -46,6 +47,7 @@ export default function RootLayout({
       >
         <ReactQueryProvider>
           <ReactQueryDevtools/>
+          <Toaster/>
           {children}</ReactQueryProvider>
       </body>
     </html>
