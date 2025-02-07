@@ -13,19 +13,21 @@ declare interface signInProps {
 declare interface HttpErrorResponse {
   message: string;
   status: number;
-  errors?: Map<string,string>;
+  errors?: Map<string, string>;
   generalErrors?: string[];
 }
 
 declare interface CategoryModel {
-  name: string,
-  emoji: string
+  id?: number;
+  name: string;
+  emoji: string;
 }
 
 declare interface AccountModel {
-  name: string,
-  type: "SAVINGS" | "CASH" | "CREDIT_CARD" | "OTHER",
-  balance: string
+  id?: number;
+  name: string;
+  type: "SAVINGS" | "CASH" | "CREDIT_CARD" | "OTHER";
+  balance: string;
 }
 
 declare interface CreateAccountParams {

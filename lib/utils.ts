@@ -8,11 +8,11 @@ export function cn(...inputs: ClassValue[]) {
 
 export const transactionSchema = z.object({
   account: z.string(),
-  transactionName: z.string(),
+  name: z.string(),
   category: z.string(),
-  note: z.string().optional(),
-  date: z.date(),
-  amount: z.number(),
+  description: z.string().optional(),
+  amount: z.string(),
+  type: z.enum(["INCOME", "EXPENSE"]),
 });
 
 export const authFormSchema = (type: string) =>
@@ -23,17 +23,15 @@ export const authFormSchema = (type: string) =>
     lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
   });
 
+export const categorySchema = z.object({
+  name: z.string().min(1, "Category name is required"),
+  emoji: z.string().min(1, "Please select an emoji"),
+});
 
-  export const categorySchema = z.object({
-    name: z.string().min(1, "Category name is required"),
-    emoji: z.string().min(1, "Please select an emoji"),
-  });
-
-  export const accountSchema = z.object({
-    name: z.string().min(1, "Name is required"),
-    type: z.enum(["SAVINGS", "CASH", "CREDIT_CARD", "OTHER"], {
-      required_error: "Account type is required",
-    }),
-    balance: z.string(),
-  });
-   
+export const accountSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  type: z.enum(["SAVINGS", "CASH", "CREDIT_CARD", "OTHER"], {
+    required_error: "Account type is required",
+  }),
+  balance: z.string(),
+});

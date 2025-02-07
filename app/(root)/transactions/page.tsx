@@ -1,6 +1,6 @@
-import AddTransaction from "@/app/_components/AddTransaction";
 import React from "react";
 import CustomTable from "@/app/_components/CustomTable";
+import AddTransactionForm from "@/components/transactions/AddTransactionForm";
 
 const Transactions = () => {
   return (
@@ -17,7 +17,7 @@ const Transactions = () => {
           </div>
         </div>
         <div className="col-span-1 ml-4 border border-green-400 rounded-xl bg-white">
-          <AddTransaction />
+          <AddTransactionForm />
         </div>
       </div>
     </div>

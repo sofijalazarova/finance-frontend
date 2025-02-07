@@ -40,13 +40,7 @@ const TransactionInput = ({
                 className="w-full p-3 border bg-white border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                 placeholder={placeholder}
                 {...field}
-                type={
-                  name === "amount"
-                    ? "number"
-                    : name === "date"
-                    ? "date"
-                    : "text"
-                }
+                type="text"
               />
             </FormControl>
             <FormMessage />

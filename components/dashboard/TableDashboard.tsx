@@ -4,14 +4,10 @@ import { getCategories } from "@/lib/api/data-service";
 
 import DashboardTableRow from "./DashboardTableRow";
 import AddCategory from "../categories/AddCategory";
+import { useCategoriesQuery } from "@/lib/queries/useCategoriesQuery";
 
 const TableDashboard = () => {
-  const { data: categories, isLoading } = useQuery({
-    queryKey: ["categories"],
-    queryFn: async () => await getCategories(),
-  });
-
-  console.log(categories);
+  const { data: categories } = useCategoriesQuery();
 
   return (
     <div className="sm:px-6 w-full">

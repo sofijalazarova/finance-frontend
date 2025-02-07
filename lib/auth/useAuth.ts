@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import useSWR from "swr";
 import httpClient from "../api/httpClient";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import axios from "axios";
 
 interface AuthProps {
@@ -15,9 +15,9 @@ export const useAuthGuard = ({
 }: AuthProps) => {
   const router = useRouter();
 
-  const fetchUser = async () => {
+  const fetchUser = useCallback(async () => {
     try {
-      let accessToken = localStorage.getItem("accessToken");
+      const accessToken = localStorage.getItem("accessToken");
       const refreshToken = localStorage.getItem("refreshToken");
 
       if (!accessToken || !refreshToken) {
@@ -75,7 +75,7 @@ export const useAuthGuard = ({
 
       throw error;
     }
-  };
+  }, []);
 
   // const fetchUser = async () => {
   //   try {
@@ -101,6 +101,7 @@ export const useAuthGuard = ({
     revalidateOnFocus: false,
     revalidateIfStale: false,
     revalidateOnReconnect: false,
+    shouldRetryOnError: false,
   });
 
   const login = async ({
@@ -153,15 +154,41 @@ export const useAuthGuard = ({
     );
   };
 
+  const logout = async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+
+    if (!refreshToken) {
+      console.warn("No refresh token found");
+    } else {
+      await axios.post(
+        "http://localhost:8080/api/auth/logout",
+        { token: refreshToken },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      );
+      mutate();
+      window.location.pathname = "/sign-in";
+    }
+
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+    router.replace("/sign-in");
+  };
+
   useEffect(() => {
     if (middleware === "guest" && redirectIfAuthenticated && user?.id) {
       console.log("Redirecting to:", redirectIfAuthenticated);
       router.replace(redirectIfAuthenticated);
     } else if (middleware === "auth" && error) {
       console.error("Authentication failed:", error);
-      router.replace("/sign-in");
+      logout();
     }
   }, [middleware, redirectIfAuthenticated, user, error, router]);
 
-  return { user, login, mutate };
+  return { user, login, mutate, logout };
 };

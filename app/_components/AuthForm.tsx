@@ -14,7 +14,6 @@ import Link from "next/link";
 import Image from "next/image";
 import googleImage from "@/public/google.svg";
 import Logo from "@/public/logo.png";
-import { useRouter } from "next/navigation";
 import { useAuthGuard } from "@/lib/auth/useAuth";
 
 export default function AuthForm({ type }: { type: string }) {

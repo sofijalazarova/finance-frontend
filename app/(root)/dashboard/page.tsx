@@ -8,7 +8,6 @@ import TransactionsTable from "@/components/transactions/TransactionsTable";
 import React from "react";
 
 const Dashboard = () => {
- 
   return (
     <>
       <div className="max-w-9xl h-screen mx-auto flex flex-col">
