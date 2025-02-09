@@ -77,22 +77,6 @@ export const useAuthGuard = ({
     }
   }, []);
 
-  // const fetchUser = async () => {
-  //   try {
-  //     const token = localStorage.getItem("token");
-  //     if (!token) throw new Error("No token found");
-  //     const response = await httpClient.get("/api/auth/me", {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Error");
-  //     throw error;
-  //   }
-  // };
-
   const {
     data: user,
     error,
@@ -133,9 +117,6 @@ export const useAuthGuard = ({
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.token);
 
-      //const token = response.data.token;
-      //localStorage.setItem("token", token);
-
       console.log("Login Successful");
       mutate();
     } catch (err) {
@@ -145,14 +126,14 @@ export const useAuthGuard = ({
     }
   };
 
-  const isHttpErrorResponse = (error: unknown): error is HttpErrorResponse => {
-    return (
-      typeof error === "object" &&
-      error !== null &&
-      "response" in error &&
-      typeof (error as any).response === "object"
-    );
-  };
+  // const isHttpErrorResponse = (error: unknown): error is HttpErrorResponse => {
+  //   return (
+  //     typeof error === "object" &&
+  //     error !== null &&
+  //     "response" in error &&
+  //     typeof (error as any).response === "object"
+  //   );
+  // };
 
   const logout = async () => {
     const refreshToken = localStorage.getItem("refreshToken");

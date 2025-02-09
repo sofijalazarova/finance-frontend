@@ -17,7 +17,7 @@ import { Loader2 } from "lucide-react";
 import TransactionInput from "./TransactionInput";
 import { useAccountsQuery } from "@/lib/queries/useAccountsQuery";
 import { useCategoriesQuery } from "@/lib/queries/useCategoriesQuery";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addTransaction } from "@/lib/api/data-service";
 import toast from "react-hot-toast";
 
@@ -25,10 +25,13 @@ export default function AddTransactionForm() {
   const [isLoading] = useState(false);
   const formSchema = transactionSchema;
 
+  const query = useQueryClient();
+
   const { mutate } = useMutation({
     mutationFn: addTransaction,
     onSuccess: () => {
       toast.success("Transaction added successfully!");
+      query.invalidateQueries({ queryKey: ["transactions"] });
       form.reset();
     },
   });

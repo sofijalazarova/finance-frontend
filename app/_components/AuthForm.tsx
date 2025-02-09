@@ -15,12 +15,17 @@ import Image from "next/image";
 import googleImage from "@/public/google.svg";
 import Logo from "@/public/logo.png";
 import { useAuthGuard } from "@/lib/auth/useAuth";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 export default function AuthForm({ type }: { type: string }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<HttpErrorResponse | undefined>(
     undefined
   );
+
+  const router = useRouter();
 
   const { login } = useAuthGuard({
     middleware: "guest",
@@ -35,6 +40,8 @@ export default function AuthForm({ type }: { type: string }) {
     defaultValues: {
       email: "",
       password: "",
+      firstName: "",
+      lastName: "",
     },
   });
 
@@ -44,7 +51,9 @@ export default function AuthForm({ type }: { type: string }) {
 
     try {
       if (type === "sign-up") {
-        console.log(data);
+        await axios.post("http://localhost:8080/api/auth/register", data);
+        toast.success("Registration completed. Please login!");
+        router.replace("/sign-in");
       }
 
       if (type === "sign-in") {

@@ -11,11 +11,10 @@ import {
 } from "@/components/ui/table";
 import AddTransactionForm from "@/components/transactions/AddTransactionForm";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
+import TransactionTableOperations from "@/components/transactions/TransactionTableOperations";
 
 const Transactions = () => {
   const { data: transactions } = useTransactionsQuery();
-
-  console.log(transactions);
 
   return (
     <div className="max-w-9xl mx-auto h-screen flex flex-col">
@@ -24,6 +23,7 @@ const Transactions = () => {
           <div className="p-10">
             <div className="mb-3">
               <h1 className="text-xl font-inter">All transactions</h1>
+              <TransactionTableOperations />
             </div>
             <div className="overflow-y-auto font-roboto rounded-sm border border-gray-200">
               <Table>

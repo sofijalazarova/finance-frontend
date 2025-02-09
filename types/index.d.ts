@@ -32,6 +32,8 @@ declare interface TransactionModel {
   type: "EXPENSE" | "INCOME";
   amount: string;
   transactionDate?: Date;
+  account: AccountModel;
+  category: CategoryModel;
 }
 
 declare interface AccountModel {

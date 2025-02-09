@@ -7,9 +7,11 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import { format } from "date-fns";
+import { enGB } from "date-fns/locale";
 import AddTransaction from "./AddTransaction";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
+import Link from "next/link";
 
 const TransactionsTable = () => {
   const { data: transactions } = useTransactionsQuery();
@@ -22,9 +24,11 @@ const TransactionsTable = () => {
           <div>
             <AddTransaction />
           </div>
-          <button className="p-2 border font-inter bg-almost-white rounded-xl border-silver-gray text-gray-700 hover:bg-gray-100 hover:border-gray-400 active:bg-gray-200 transition-all duration-300 ease-in-out">
-            See all
-          </button>
+          <Link href="transactions">
+            <button className="p-2 border font-inter bg-almost-white rounded-xl border-silver-gray text-gray-700 hover:bg-gray-100 hover:border-gray-400 active:bg-gray-200 transition-all duration-300 ease-in-out">
+              See all
+            </button>
+          </Link>
         </div>
       </div>
       <div className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
@@ -58,7 +62,11 @@ const TransactionsTable = () => {
                         ${transaction.amount}
                       </TableCell>
                       <TableCell className="text-right">
-                        {transaction.transactionDate}
+                        {format(
+                          new Date(transaction.transactionDate),
+                          "dd MMMM yyyy, HH:mm:ss",
+                          { locale: enGB }
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
