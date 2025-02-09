@@ -17,10 +17,21 @@ import { Loader2 } from "lucide-react";
 import TransactionInput from "./TransactionInput";
 import { useAccountsQuery } from "@/lib/queries/useAccountsQuery";
 import { useCategoriesQuery } from "@/lib/queries/useCategoriesQuery";
+import { useMutation } from "@tanstack/react-query";
+import { addTransaction } from "@/lib/api/data-service";
+import toast from "react-hot-toast";
 
 export default function AddTransactionForm() {
   const [isLoading] = useState(false);
   const formSchema = transactionSchema;
+
+  const { mutate } = useMutation({
+    mutationFn: addTransaction,
+    onSuccess: () => {
+      toast.success("Transaction added successfully!");
+      form.reset();
+    },
+  });
 
   const { data: accounts } = useAccountsQuery();
   const { data: categories } = useCategoriesQuery();
@@ -28,14 +39,23 @@ export default function AddTransactionForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      account: "",
+      account_id: undefined,
       name: "",
-      category: "",
+      category_id: undefined,
       description: "",
       type: "EXPENSE",
       amount: "",
     },
   });
+
+  function onSubmit(data: z.infer<typeof formSchema>) {
+    const formData = {
+      ...data,
+      category_id: Number(data.category_id),
+      account_id: Number(data.account_id),
+    };
+    mutate(formData);
+  }
 
   return (
     <section className="p-10">
@@ -43,10 +63,10 @@ export default function AddTransactionForm() {
         <h1 className="font-inter text-lg">Add new transaction</h1>
       </header>
       <Form {...form}>
-        <form className="space-y-8">
+        <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
-            name="account"
+            name="account_id"
             render={({ field }) => (
               <div>
                 <FormLabel className="mb-2 text-md font-light text-gray-600">
@@ -58,9 +78,10 @@ export default function AddTransactionForm() {
                       {...field}
                       className="w-full p-3 border bg-white border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                     >
+                      <option value="">Select an account</option>
                       {accounts &&
                         accounts.map((account: AccountModel) => (
-                          <option key={account.id} value={account.name}>
+                          <option key={account.id} value={account.id}>
                             {account.name}
                           </option>
                         ))}
@@ -74,7 +95,7 @@ export default function AddTransactionForm() {
 
           <FormField
             control={form.control}
-            name="category"
+            name="category_id"
             render={({ field }) => (
               <div>
                 <FormLabel className="mb-2 text-md font-light text-gray-600">
@@ -86,9 +107,10 @@ export default function AddTransactionForm() {
                       {...field}
                       className="w-full p-3 border bg-white border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                     >
+                      <option value="">Select a category</option>
                       {categories &&
                         categories.map((category: CategoryModel) => (
-                          <option key={category.id} value={category.name}>
+                          <option key={category.id} value={category.id}>
                             {category.name} {category.emoji}
                           </option>
                         ))}

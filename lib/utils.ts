@@ -7,9 +7,9 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export const transactionSchema = z.object({
-  account: z.string(),
+  account_id: z.string(),
   name: z.string(),
-  category: z.string(),
+  category_id: z.string(),
   description: z.string().optional(),
   amount: z.string(),
   type: z.enum(["INCOME", "EXPENSE"]),

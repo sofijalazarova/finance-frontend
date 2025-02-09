@@ -23,6 +23,17 @@ declare interface CategoryModel {
   emoji: string;
 }
 
+declare interface TransactionModel {
+  id?: number;
+  account_id: number;
+  category_id: number;
+  name: string;
+  description?: string;
+  type: "EXPENSE" | "INCOME";
+  amount: string;
+  transactionDate?: Date;
+}
+
 declare interface AccountModel {
   id?: number;
   name: string;

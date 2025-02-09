@@ -9,8 +9,11 @@ import {
 } from "@/components/ui/table";
 
 import AddTransaction from "./AddTransaction";
+import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 
 const TransactionsTable = () => {
+  const { data: transactions } = useTransactionsQuery();
+
   return (
     <div className="flex flex-col justify-center h-full w-full">
       <div className="flex items-center justify-between mb-2 font-inter">
@@ -31,34 +34,34 @@ const TransactionsTable = () => {
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[100px]">Account</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Method</TableHead>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Description</TableHead>
+                  <TableHead>Category</TableHead>
                   <TableHead className="text-right">Amount</TableHead>
                   <TableHead className="text-right">Date</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
-                <TableRow>
-                  <TableCell className="font-medium">INV001</TableCell>
-                  <TableCell>Paid</TableCell>
-                  <TableCell>Credit Card</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
-                  <TableCell className="text-right">25.01.2025</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">INV001</TableCell>
-                  <TableCell>Paid</TableCell>
-                  <TableCell>Credit Card</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
-                  <TableCell className="text-right">27.01.2025</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell className="font-medium">INV001</TableCell>
-                  <TableCell>Paid</TableCell>
-                  <TableCell>Credit Card</TableCell>
-                  <TableCell className="text-right">$250.00</TableCell>
-                  <TableCell className="text-right">30.01.2025</TableCell>
-                </TableRow>
+                {transactions &&
+                  transactions.map((transaction: TransactionModel) => (
+                    <TableRow key={transaction.id}>
+                      <TableCell className="font-medium">
+                        {transaction.account.name}
+                      </TableCell>
+                      <TableCell>{transaction.name}</TableCell>
+                      <TableCell>{transaction.description}</TableCell>
+                      <TableCell>
+                        {transaction.category.name}
+                        {transaction.category.emoji}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        ${transaction.amount}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {transaction.transactionDate}
+                      </TableCell>
+                    </TableRow>
+                  ))}
               </TableBody>
             </Table>
           </div>

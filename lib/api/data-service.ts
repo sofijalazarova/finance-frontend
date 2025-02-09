@@ -20,6 +20,16 @@ export const getCategories = async () => {
   }
 };
 
+export const getTransactions = async () => {
+  try {
+    const response = await httpClient.get("/api/transaction");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching transactions");
+    return [];
+  }
+};
+
 export const addCategory = async (data: CategoryModel) => {
   try {
     const response = await httpClient.post("/api/category/add", data);
@@ -33,6 +43,16 @@ export const addCategory = async (data: CategoryModel) => {
 export const addAccount = async (data: AccountModel) => {
   try {
     const response = await httpClient.post("/api/account/add", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching accounts", error);
+    return [];
+  }
+};
+
+export const addTransaction = async (data: TransactionModel) => {
+  try {
+    const response = await httpClient.post("/api/transaction/add", data);
     return response.data;
   } catch (error) {
     console.error("Error fetching accounts", error);
