@@ -18,7 +18,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { updateBudget } from "@/lib/api/data-service";
 import toast from "react-hot-toast";
 
-export default function AddBudgetForm() {
+interface CreateBudgetFormProps {
+  onCloseModal?: () => void;
+}
+
+export default function AddBudgetForm({ onCloseModal }: CreateBudgetFormProps) {
   const [isLoading] = useState(false);
   const formSchema = budgetSchema;
 
@@ -41,6 +45,7 @@ export default function AddBudgetForm() {
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     mutate({ amount: Number(data.amount) });
+    onCloseModal?.();
   }
 
   return (
