@@ -23,6 +23,10 @@ declare interface CategoryModel {
   emoji: string;
 }
 
+declare interface BudgetModel {
+  amount: string;
+}
+
 declare interface TransactionModel {
   id?: number;
   account_id: number;

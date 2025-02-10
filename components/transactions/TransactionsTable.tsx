@@ -47,29 +47,36 @@ const TransactionsTable = () => {
               </TableHeader>
               <TableBody>
                 {transactions &&
-                  transactions.map((transaction: TransactionModel) => (
-                    <TableRow key={transaction.id}>
-                      <TableCell className="font-medium">
-                        {transaction.account.name}
-                      </TableCell>
-                      <TableCell>{transaction.name}</TableCell>
-                      <TableCell>{transaction.description}</TableCell>
-                      <TableCell>
-                        {transaction.category.name}
-                        {transaction.category.emoji}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        ${transaction.amount}
-                      </TableCell>
-                      <TableCell className="text-right">
-                        {format(
-                          new Date(transaction.transactionDate),
-                          "dd MMMM yyyy, HH:mm:ss",
-                          { locale: enGB }
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  [...transactions]
+                    .sort(
+                      (a, b) =>
+                        new Date(b.transactionDate).getTime() -
+                        new Date(a.transactionDate).getTime()
+                    )
+                    .slice(0, 3)
+                    .map((transaction: TransactionModel) => (
+                      <TableRow key={transaction.id}>
+                        <TableCell className="font-medium">
+                          {transaction.account.name}
+                        </TableCell>
+                        <TableCell>{transaction.name}</TableCell>
+                        <TableCell>{transaction.description}</TableCell>
+                        <TableCell>
+                          {transaction.category.name}
+                          {transaction.category.emoji}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          ${transaction.amount}
+                        </TableCell>
+                        <TableCell className="text-right">
+                          {format(
+                            new Date(transaction.transactionDate),
+                            "dd MMMM yyyy, HH:mm:ss",
+                            { locale: enGB }
+                          )}
+                        </TableCell>
+                      </TableRow>
+                    ))}
               </TableBody>
             </Table>
           </div>

@@ -59,3 +59,13 @@ export const addTransaction = async (data: TransactionModel) => {
     return [];
   }
 };
+
+export const fetchBudget = async () => {
+  const response = await httpClient.get("/api/budget/current-month-budget");
+
+  return response.data;
+};
+
+export const updateBudget = async ({ amount }: { amount: number }) => {
+  await httpClient.post("/api/budget/update", { amount });
+};

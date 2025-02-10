@@ -1,43 +1,51 @@
-"use client";
-
+import React from "react";
 import Link from "next/link";
+import Image from "next/image";
+import Logo from "@/public/logo.png";
 
 const Header = () => {
   return (
-    <header className="w-full flex items-center fixed top-0 z-20 ">
-      <div className="flex items-center  justify-between w-full px-8 pt-4  max-w-9xl mx-auto">
-        <div>
-          <p className="text-3xl font-light text-dark-slate">Good morning</p>
+    <header className="w-full flex items-center fixed top-0 z-20">
+      <div className="flex items-center justify-between w-full px-8 py-4 max-w-7xl mx-auto">
+        <div className="flex items-center">
+          <Link href="/">
+            <Image src={Logo} alt="logo" width={150} height={150} />
+          </Link>
         </div>
+
         <nav className="flex items-center space-x-6">
-          <Link
-            href="dashboard"
-            className="text-emerald-green font-bold hover:underline transition-all duration-200 ease-in-out active:text-green-900"
-          >
-            Dashboard
+          <Link href="/" className="text-green-700 font-bold hover:underline">
+            Home
           </Link>
           <Link
-            href="transactions"
-            className="text-gray-600 hover:text-green-700 hover:underline transition-all duration-200 ease-in-out active:text-green-900"
+            href="features"
+            className="text-gray-600 hover:text-green-700 hover:underline"
           >
-            Transactions
+            Features
           </Link>
           <Link
-            href="#"
-            className="text-gray-600 hover:text-green-700 hover:underline transition-all duration-200 ease-in-out"
+            href="contact"
+            className="text-gray-600 hover:text-green-700 hover:underline"
           >
-            Analytics
-          </Link>
-          <Link
-            href="#"
-            className="text-gray-600 hover:text-green-700 hover:underline transition-all duration-200 ease-in-out"
-          >
-            Savings Goals
+            Contact
           </Link>
         </nav>
+
+        <div className="flex items-center space-x-4">
+          <Link href="sign-in">
+            <button className="px-4 py-2 border border-dark-emerald-green text-dark-emerald-green rounded-xl hover:bg-bright-leaf-green   hover:text-white transition-all ease-in-out cursor-pointer">
+              Sign in
+            </button>
+          </Link>
+          <Link href="sign-up">
+            <button className="px-4 py-2 bg-dark-emerald-green text-white rounded-xl hover:bg-bright-leaf-green transition-all duration-300 ease-in-out cursor-pointer">
+              Sign up
+            </button>
+          </Link>
+        </div>
       </div>
 
-      <div className="absolute bottom-0 left-[calc(100%-1280px)] right-[193px] h-[1px] bg-green-700"></div>
+      <div className="absolute bottom-0 left-[calc(100%-1350px)] right-[350px] h-[1px] bg-green-700"></div>
     </header>
   );
 };

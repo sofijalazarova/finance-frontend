@@ -1,7 +1,6 @@
 import React from "react";
 import ProgressBar from "./ProgressBar";
 
-
 interface TableRowProps {
   icon: React.ReactNode;
   category: string;
@@ -33,13 +32,13 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
           <ProgressBar progress={progress} />
           <div className="w-1/4 px-5">
             <input
-              className="w-1/2 border border-gray-400 rounded text-center focus:outline-none focus:border-indigo-600"
+              className="w-1/2 border border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600"
               type="text"
               value={assigned}
               readOnly
             />
             <input
-              className="w-1/2 ml-2 border border-gray-400 rounded text-center focus:outline-none focus:border-indigo-600"
+              className="w-1/2 ml-2 border border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600"
               type="text"
               value={target}
               readOnly

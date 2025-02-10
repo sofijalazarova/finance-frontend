@@ -15,6 +15,10 @@ export const transactionSchema = z.object({
   type: z.enum(["INCOME", "EXPENSE"]),
 });
 
+export const budgetSchema = z.object({
+  amount: z.string(),
+});
+
 export const authFormSchema = (type: string) =>
   z.object({
     email: z.string().email(),
