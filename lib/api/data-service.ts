@@ -69,3 +69,9 @@ export const fetchBudget = async () => {
 export const updateBudget = async ({ amount }: { amount: number }) => {
   await httpClient.post("/api/budget/update", { amount });
 };
+
+export const getCategoryBudgets = async () => {
+  const response = await httpClient.get("/api/budget/all");
+  console.log(response.data);
+  return response.data;
+};

@@ -1,13 +1,37 @@
 import React from "react";
-import { useQuery } from "@tanstack/react-query";
-import { getCategories } from "@/lib/api/data-service";
-
 import DashboardTableRow from "./DashboardTableRow";
 import AddCategory from "../categories/AddCategory";
 import { useCategoriesQuery } from "@/lib/queries/useCategoriesQuery";
+import httpClient from "@/lib/api/httpClient";
+import { useQuery } from "@tanstack/react-query";
+import { getCategoryBudgets } from "@/lib/api/data-service";
 
 const TableDashboard = () => {
-  const { data: categories } = useCategoriesQuery();
+  const { data: categories, isLoading } = useCategoriesQuery();
+
+  const { data: categoryBudgets, isLoading: isBudgetsLoading } = useQuery({
+    queryKey: ["categoryBudgets"],
+    queryFn: getCategoryBudgets,
+  });
+
+  console.log(categoryBudgets);
+
+  const handleAllocate = async (categoryName: string, amount: string) => {
+    const category = categories.find((c: any) => c.name === categoryName);
+    console.log(category);
+
+    if (!category) return;
+
+    try {
+      await httpClient.post("/api/budget/allocate", {
+        budgetId: 1,
+        categoryId: category.id,
+        amount: amount,
+      });
+    } catch (error) {
+      console.error("Error allocating budget", error);
+    }
+  };
 
   return (
     <div className="sm:px-6 w-full">
@@ -27,17 +51,27 @@ const TableDashboard = () => {
         <div className="mt-3 overflow-x-auto overflow-y-auto font-roboto">
           <table className="w-full whitespace-nowrap">
             <tbody>
-              {categories && categories.length > 0 ? (
-                categories.map((category: any) => (
-                  <DashboardTableRow
-                    key={category.id}
-                    icon={category.emoji}
-                    category={category.name}
-                    assigned="50$"
-                    target="100$"
-                    progress={50}
-                  />
-                ))
+              {isLoading || isBudgetsLoading ? (
+                <li>Loading categories...</li>
+              ) : categories?.length > 0 ? (
+                categories.map((category: any) => {
+                  const assigned =
+                    categoryBudgets?.find(
+                      (budget: any) => budget.category.id === category.id
+                    )?.allocatedAmount || 0;
+
+                  return (
+                    <DashboardTableRow
+                      key={category.id}
+                      icon={category.emoji}
+                      category={category.name}
+                      target="100$"
+                      progress={50}
+                      onAllocate={handleAllocate}
+                      assigned={assigned}
+                    />
+                  );
+                })
               ) : (
                 <tr>
                   <td className="text-center p-4">No categories available</td>

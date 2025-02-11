@@ -1,5 +1,5 @@
 function TransactionTableOperations() {
-  return <div>Operations</div>;
+  return <div></div>;
 }
 
 export default TransactionTableOperations;

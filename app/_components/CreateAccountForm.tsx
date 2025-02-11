@@ -19,7 +19,6 @@ import { addAccount } from "@/lib/api/data-service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-
 interface CreateAccountFormProps {
   onCloseModal?: () => void;
 }
@@ -32,15 +31,14 @@ export default function CreateAccountForm({
 
   const queryClient = useQueryClient();
 
-  const {mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationFn: addAccount,
-    onSuccess:() => {
-        toast.success("New account successfully added");
-        queryClient.invalidateQueries({queryKey: ["accounts"]});
-    }
-  })
+    onSuccess: () => {
+      toast.success("New account successfully added");
+      queryClient.invalidateQueries({ queryKey: ["accounts"] });
+    },
+  });
 
-  
   function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data);
     mutate(data);
@@ -63,20 +61,24 @@ export default function CreateAccountForm({
       </header>
       <Form {...form}>
         <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
-          
           <FormField
             control={form.control}
             name="name"
-            render={({field}) => (
-                <div>
-                <FormLabel>Give it a name </FormLabel>
+            render={({ field }) => (
+              <div>
+                <FormLabel className="mb-2 text-md font-light text-gray-600">
+                  Give it a name{" :)"}
+                </FormLabel>
                 <FormControl>
-                    <input {...field} type="text"/>
+                  <input
+                    {...field}
+                    type="text"
+                    className="w-full p-3 border bg-white border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                  />
                 </FormControl>
-                </div>
+              </div>
             )}
           />
-          
 
           <FormField
             control={form.control}
@@ -104,19 +106,24 @@ export default function CreateAccountForm({
             )}
           />
 
-        <FormField
+          <FormField
             control={form.control}
             name="balance"
-            render={({field}) => (
-                <div>
-                <FormLabel>What is your current account balance?</FormLabel>
+            render={({ field }) => (
+              <div>
+                <FormLabel className="mb-2 text-md font-light text-gray-600">
+                  What is your current account balance?
+                </FormLabel>
                 <FormControl>
-                    <input {...field} type="text"/>
+                  <input
+                    {...field}
+                    type="text"
+                    className="w-full p-3 border bg-white border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                  />
                 </FormControl>
-                </div>
+              </div>
             )}
           />
-
 
           <div className="flex flex-row gap-3  justify-center items-center">
             <Button

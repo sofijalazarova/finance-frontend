@@ -5,7 +5,6 @@ import { HiXMark } from "react-icons/hi2";
 import { createContext } from "react";
 import { useOutsideClick } from "@/lib/hooks/useOutsideClick";
 
-
 interface WindowProps {
   children: React.ReactNode;
   name: string;
@@ -63,7 +62,7 @@ function Window({ children, name }: WindowProps) {
     <div className="fixed inset-0 flex items-center justify-center backdrop-blur-xs  bg-black bg-opacity-50 z-50">
       <div
         ref={ref}
-        className="bg-white rounded-lg shadow-lg p-8 transition-all duration-500 w-1/4"
+        className="bg-white rounded-lg shadow-lg px-6 pt-6 transition-all duration-500 w-1/4"
       >
         <div className="flex justify-end">
           <Button

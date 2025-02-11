@@ -1,21 +1,33 @@
-import React from "react";
+import React, { useState } from "react";
 import ProgressBar from "./ProgressBar";
 
 interface TableRowProps {
   icon: React.ReactNode;
   category: string;
-  assigned: string;
   target: string;
   progress: number;
+  assigned: string;
+  onAllocate: (category: string, amount: string) => void;
 }
 
 const DashboardTableRow: React.FC<TableRowProps> = ({
   icon,
   category,
-  assigned,
   target,
   progress,
+  assigned,
+  onAllocate,
 }) => {
+  const [inputValue, setInputValue] = useState(assigned);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInputValue(e.target.value);
+  };
+
+  const handleBlur = () => {
+    onAllocate(category, inputValue);
+  };
+
   return (
     <tr className="focus:outline-none  h-12 border border-gray-100 rounded">
       <td>
@@ -34,8 +46,9 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
             <input
               className="w-1/2 border border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600"
               type="text"
-              value={assigned}
-              readOnly
+              value={inputValue}
+              onChange={handleChange}
+              onBlur={handleBlur}
             />
             <input
               className="w-1/2 ml-2 border border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600"

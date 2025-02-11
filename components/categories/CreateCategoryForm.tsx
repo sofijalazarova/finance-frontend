@@ -10,28 +10,51 @@ import { z } from "zod";
 import { toast } from "react-hot-toast";
 
 const emojis = [
-  "😀", "😂", "😎", "😍", "🥳", "🎉", "🍕", "🚗", "🏡", "📚",
-  "💡", "💻", "📱", "🏖️", "🎶", "✈️", "🛒", "🍔", "🍩", "⚽",
-  "🏀", "💵", "💳", "🎁",
+  "😀",
+  "😂",
+  "😎",
+  "😍",
+  "🥳",
+  "🎉",
+  "🍕",
+  "🚗",
+  "🏡",
+  "📚",
+  "💡",
+  "💻",
+  "📱",
+  "🏖️",
+  "🎶",
+  "✈️",
+  "🛒",
+  "🍔",
+  "🍩",
+  "⚽",
+  "🏀",
+  "💵",
+  "💳",
+  "🎁",
 ];
 
 interface CreateCategoryFormProps {
   onCloseModal?: () => void;
 }
 
-export default function CreateCategoryForm({ onCloseModal }: CreateCategoryFormProps) {
+export default function CreateCategoryForm({
+  onCloseModal,
+}: CreateCategoryFormProps) {
   const formSchema = categorySchema;
 
   const queryClient = useQueryClient();
 
-  const {mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationFn: addCategory,
     onSuccess: () => {
-        toast.success("New category successfully added");
-        queryClient.invalidateQueries({queryKey: ["categories"]});
+      toast.success("New category successfully added");
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
     onError: (err) => toast.error(err.message),
-  })
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,25 +72,33 @@ export default function CreateCategoryForm({ onCloseModal }: CreateCategoryFormP
   return (
     <div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          
+        <form className="space-y-8 p-6" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             name="name"
             render={({ field }) => (
               <div className="mb-4">
-                <FormLabel>Category Name</FormLabel>
+                <FormLabel className="mb-2 text-md font-light text-gray-600">
+                  Category Name
+                </FormLabel>
                 <FormControl>
-                  <Input type="text" {...field} placeholder="Enter category name" />
+                  <Input
+                    type="text"
+                    {...field}
+                    placeholder="Enter category name"
+                    className="w-full p-3 border bg-white border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                  />
                 </FormControl>
               </div>
             )}
           />
-     
+
           <FormField
             name="emoji"
             render={({ field }) => (
               <div className="mb-4">
-                <FormLabel>Select an Emoji</FormLabel>
+                <FormLabel className="mb-2 text-md font-light text-gray-600">
+                  Select an Emoji
+                </FormLabel>
                 <FormControl>
                   <div className="grid grid-cols-6 gap-2">
                     {emojis.map((emoji) => (
@@ -88,7 +119,7 @@ export default function CreateCategoryForm({ onCloseModal }: CreateCategoryFormP
                     ))}
                   </div>
                 </FormControl>
-               
+
                 {form.formState.errors.emoji && (
                   <p className="text-red-500 text-sm mt-2">
                     {form.formState.errors.emoji.message}
@@ -97,7 +128,7 @@ export default function CreateCategoryForm({ onCloseModal }: CreateCategoryFormP
               </div>
             )}
           />
-        
+
           <div className="flex flex-row gap-3 justify-center items-center mt-4">
             <Button
               type="button"

@@ -62,7 +62,7 @@ export default function AddTransactionForm() {
 
   return (
     <section className="p-10">
-      <header className=" mb-6">
+      <header className="mb-6">
         <h1 className="font-inter text-lg">Add new transaction</h1>
       </header>
       <Form {...form}>

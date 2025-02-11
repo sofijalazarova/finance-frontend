@@ -54,7 +54,7 @@ export default function AddBudgetForm({ onCloseModal }: CreateBudgetFormProps) {
         <h1 className="font-inter text-lg">Update Budget</h1>
       </header>
       <Form {...form}>
-        <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>
+        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
             name="amount"
@@ -65,7 +65,11 @@ export default function AddBudgetForm({ onCloseModal }: CreateBudgetFormProps) {
                 </FormLabel>
                 <div>
                   <FormControl>
-                    <input {...field} type="text" />
+                    <input
+                      {...field}
+                      type="text"
+                      className="w-full p-3 border bg-white border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
+                    />
                   </FormControl>
                   <FormMessage />
                 </div>
@@ -73,7 +77,7 @@ export default function AddBudgetForm({ onCloseModal }: CreateBudgetFormProps) {
             )}
           />
 
-          <div className="flex flex-col  justify-center items-center">
+          <div className="flex flex-col justify-center items-center">
             <Button
               type="submit"
               disabled={isLoading}

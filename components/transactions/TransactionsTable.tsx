@@ -1,20 +1,19 @@
 import React from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import { format } from "date-fns";
-import { enGB } from "date-fns/locale";
 import AddTransaction from "./AddTransaction";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import Link from "next/link";
+import TransactionTable from "@/components/transactions/TransactionTable"; // ✅ Додадена нова компонента
 
 const TransactionsTable = () => {
-  const { data: transactions } = useTransactionsQuery();
+  const { data: transactions = [] } = useTransactionsQuery();
+
+  const recentTransactions = [...transactions]
+    .sort(
+      (a, b) =>
+        new Date(b.transactionDate).getTime() -
+        new Date(a.transactionDate).getTime()
+    )
+    .slice(0, 3);
 
   return (
     <div className="flex flex-col justify-center h-full w-full">
@@ -33,53 +32,7 @@ const TransactionsTable = () => {
       </div>
       <div className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
         <div className="px-3 py-2 w-full font-roboto">
-          <div className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[100px]">Account</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead className="text-right">Amount</TableHead>
-                  <TableHead className="text-right">Date</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {transactions &&
-                  [...transactions]
-                    .sort(
-                      (a, b) =>
-                        new Date(b.transactionDate).getTime() -
-                        new Date(a.transactionDate).getTime()
-                    )
-                    .slice(0, 3)
-                    .map((transaction: TransactionModel) => (
-                      <TableRow key={transaction.id}>
-                        <TableCell className="font-medium">
-                          {transaction.account.name}
-                        </TableCell>
-                        <TableCell>{transaction.name}</TableCell>
-                        <TableCell>{transaction.description}</TableCell>
-                        <TableCell>
-                          {transaction.category.name}
-                          {transaction.category.emoji}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          ${transaction.amount}
-                        </TableCell>
-                        <TableCell className="text-right">
-                          {format(
-                            new Date(transaction.transactionDate),
-                            "dd MMMM yyyy, HH:mm:ss",
-                            { locale: enGB }
-                          )}
-                        </TableCell>
-                      </TableRow>
-                    ))}
-              </TableBody>
-            </Table>
-          </div>
+          <TransactionTable transactions={recentTransactions} />
         </div>
       </div>
     </div>
