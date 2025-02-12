@@ -1,3 +1,4 @@
+import { number } from "zod";
 import httpClient from "./httpClient";
 
 export const getAccounts = async () => {
@@ -72,6 +73,27 @@ export const updateBudget = async ({ amount }: { amount: number }) => {
 
 export const getCategoryBudgets = async () => {
   const response = await httpClient.get("/api/budget/all");
-  console.log(response.data);
   return response.data;
+};
+
+interface allocateItems {
+  budgetId: number;
+  categoryId: number;
+  amount: string;
+}
+
+export const allocateToCategory = async ({
+  budgetId,
+  categoryId,
+  amount,
+}: allocateItems) => {
+  try {
+    await httpClient.post("/api/budget/allocate", {
+      budgetId,
+      categoryId,
+      amount,
+    });
+  } catch (error) {
+    console.error("Error allocating budget", error);
+  }
 };

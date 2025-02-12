@@ -32,6 +32,7 @@ export default function AddTransactionForm() {
     onSuccess: () => {
       toast.success("Transaction added successfully!");
       query.invalidateQueries({ queryKey: ["transactions"] });
+      query.invalidateQueries({ queryKey: ["accounts"] });
       form.reset();
     },
   });

@@ -2,35 +2,49 @@ import React from "react";
 import DashboardTableRow from "./DashboardTableRow";
 import AddCategory from "../categories/AddCategory";
 import { useCategoriesQuery } from "@/lib/queries/useCategoriesQuery";
-import httpClient from "@/lib/api/httpClient";
-import { useQuery } from "@tanstack/react-query";
-import { getCategoryBudgets } from "@/lib/api/data-service";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {
+  allocateToCategory,
+  fetchBudget,
+  getCategoryBudgets,
+} from "@/lib/api/data-service";
+import toast from "react-hot-toast";
 
 const TableDashboard = () => {
   const { data: categories, isLoading } = useCategoriesQuery();
+
+  const { data: budget } = useQuery({
+    queryKey: ["budget"],
+    queryFn: fetchBudget,
+  });
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: allocateToCategory,
+    onSuccess: () => {
+      toast.success("Ok");
+      queryClient.invalidateQueries({ queryKey: ["budget"] });
+    },
+  });
 
   const { data: categoryBudgets, isLoading: isBudgetsLoading } = useQuery({
     queryKey: ["categoryBudgets"],
     queryFn: getCategoryBudgets,
   });
 
-  console.log(categoryBudgets);
-
   const handleAllocate = async (categoryName: string, amount: string) => {
     const category = categories.find((c: any) => c.name === categoryName);
-    console.log(category);
 
     if (!category) return;
 
-    try {
-      await httpClient.post("/api/budget/allocate", {
-        budgetId: 1,
-        categoryId: category.id,
-        amount: amount,
-      });
-    } catch (error) {
-      console.error("Error allocating budget", error);
-    }
+    const data = {
+      budgetId: budget?.id,
+      categoryId: category.id,
+      amount: amount,
+    };
+
+    mutate(data);
   };
 
   return (
@@ -52,7 +66,9 @@ const TableDashboard = () => {
           <table className="w-full whitespace-nowrap">
             <tbody>
               {isLoading || isBudgetsLoading ? (
-                <li>Loading categories...</li>
+                <tr>
+                  <td className="text-center p-4">Loading categories...</td>
+                </tr>
               ) : categories?.length > 0 ? (
                 categories.map((category: any) => {
                   const assigned =

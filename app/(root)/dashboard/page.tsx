@@ -1,6 +1,7 @@
 "use client";
 
 import Piech from "@/app/_components/Piech";
+
 import Balance from "@/components/dashboard/Balance";
 import MontlyBudget from "@/components/dashboard/MontlyBudget";
 import TableDashboard from "@/components/dashboard/TableDashboard";
