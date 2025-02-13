@@ -51,8 +51,8 @@ const TableDashboard = () => {
     <div className="sm:px-6 w-full">
       <div className="px-4  py-4 flex items-center justify-between">
         <div className="flex items-center justify-start space-x-3">
-          <p className="focus:outline-none font-roboto text-slate-gray text-base sm:text-lg md:text-lg lg:text-xl font-normal leading-normal ">
-            CATEGORY
+          <p className="focus:outline-none font-roboto text-slate-gray text-base sm:text-lg md:text-lg lg:text-xl font-normal leading-normal">
+            CATEGORIES
           </p>
           <AddCategory />
         </div>

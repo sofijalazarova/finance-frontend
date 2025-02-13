@@ -15,7 +15,9 @@ const Transactions = () => {
         <div className="col-span-2 border border-green-400 rounded-xl bg-white">
           <div className="p-10">
             <div className="mb-3">
-              <h1 className="text-xl font-inter">All transactions</h1>
+              <h1 className="focus:outline-none font-roboto text-slate-gray text-base sm:text-lg md:text-lg lg:text-xl font-normal leading-normal">
+                All transactions
+              </h1>
               <TransactionTableOperations />
             </div>
             <div className="overflow-y-auto font-roboto rounded-sm border border-gray-200">

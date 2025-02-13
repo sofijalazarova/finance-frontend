@@ -28,7 +28,7 @@ const Hero = () => {
                 situation.
               </p>
               <hr />
-              <button className="mt-8 p-4 px-8 text-lg font-bold rounded-lg bg-bright-yellow">
+              <button className="mt-8 p-4 px-8 text-lg font-bold rounded-lg bg-bright-yellow text-gray-800 shadow-md hover:bg-yellow-500 hover:shadow-lg active:scale-95 transition-all duration-300 ease-in-out cursor-pointer">
                 GET
                 <br /> STARTED
               </button>

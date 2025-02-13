@@ -8,6 +8,7 @@ import AddAccount from "../../app/_components/AddAccount";
 import { useAuthGuard } from "@/lib/auth/useAuth";
 
 import Navbar from "./Navbar";
+import Link from "next/link";
 
 export default function Sidebar() {
   const { logout } = useAuthGuard({});
@@ -24,13 +25,13 @@ export default function Sidebar() {
           <div>
             <ul className="space-y-2 font-medium">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="accounts"
                   className="flex items-center p-2 text-white rounded-lg dark:text-white hover:text-black transition-all duration-100 hover:bg-gray-100 dark:hover:bg-gray-700 group"
                 >
                   <MdAccountBalance size={20} />
                   <span className="ms-3">Accounts</span>
-                </a>
+                </Link>
               </li>
 
               <li>

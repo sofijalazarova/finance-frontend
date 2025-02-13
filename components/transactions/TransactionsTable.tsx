@@ -18,7 +18,9 @@ const TransactionsTable = () => {
   return (
     <div className="flex flex-col justify-center h-full w-full">
       <div className="flex items-center justify-between mb-2 font-inter">
-        <h1 className="text-xl">Recent transactions</h1>
+        <h1 className="focus:outline-none font-roboto text-slate-gray text-base sm:text-lg md:text-lg lg:text-xl font-normal leading-normal">
+          Recent transactions
+        </h1>
         <div className="flex space-x-2">
           <div>
             <AddTransaction />

@@ -21,7 +21,13 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addTransaction } from "@/lib/api/data-service";
 import toast from "react-hot-toast";
 
-export default function AddTransactionForm() {
+interface CreateBudgetFormProps {
+  onCloseModal?: () => void;
+}
+
+export default function AddTransactionForm({
+  onCloseModal,
+}: CreateBudgetFormProps) {
   const [isLoading] = useState(false);
   const formSchema = transactionSchema;
 
@@ -59,12 +65,15 @@ export default function AddTransactionForm() {
       account_id: Number(data.account_id),
     };
     mutate(formData);
+    onCloseModal?.();
   }
 
   return (
     <section className="p-10">
       <header className="mb-6">
-        <h1 className="font-inter text-lg">Add new transaction</h1>
+        <h1 className="focus:outline-none font-roboto text-slate-gray text-base sm:text-lg md:text-lg lg:text-xl font-normal leading-normal">
+          Add new transaction
+        </h1>
       </header>
       <Form {...form}>
         <form className="space-y-8" onSubmit={form.handleSubmit(onSubmit)}>

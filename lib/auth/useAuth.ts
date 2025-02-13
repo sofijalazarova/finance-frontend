@@ -97,7 +97,6 @@ export const useAuthGuard = ({
   }) => {
     onError(undefined);
     try {
-      //const response = await axios.post<{ token: string }>(
       const response = await axios.post(
         "http://localhost:8080/api/auth/login",
         {
@@ -112,10 +111,8 @@ export const useAuthGuard = ({
         }
       );
 
-      console.log(response);
-
       localStorage.setItem("accessToken", response.data.accessToken);
-      localStorage.setItem("refreshToken", response.data.token);
+      localStorage.setItem("refreshToken", response.data.refreshToken);
 
       console.log("Login Successful");
       mutate();
@@ -126,15 +123,6 @@ export const useAuthGuard = ({
     }
   };
 
-  // const isHttpErrorResponse = (error: unknown): error is HttpErrorResponse => {
-  //   return (
-  //     typeof error === "object" &&
-  //     error !== null &&
-  //     "response" in error &&
-  //     typeof (error as any).response === "object"
-  //   );
-  // };
-
   const logout = async () => {
     const refreshToken = localStorage.getItem("refreshToken");
 
@@ -143,7 +131,7 @@ export const useAuthGuard = ({
     } else {
       await axios.post(
         "http://localhost:8080/api/auth/logout",
-        { token: refreshToken },
+        { refreshToken: refreshToken },
         {
           headers: {
             "Content-Type": "application/json",

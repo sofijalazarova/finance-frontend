@@ -35,13 +35,18 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
 
         <TableBody>
           {transactions.map((transaction) => (
-            <TableRow key={transaction.id}>
-              <TableCell>{transaction.account.name}</TableCell>
+            <TableRow
+              key={transaction.id}
+              className={`${
+                transaction.type === "INCOME" ? "bg-green-300" : ""
+              }`}
+            >
+              <TableCell>{transaction.account?.name}</TableCell>
               <TableCell>{transaction.name}</TableCell>
               <TableCell>{transaction.description}</TableCell>
               <TableCell>
-                {transaction.category.emoji}
-                {transaction.category.name}
+                {transaction.category?.emoji}
+                {transaction.category?.name}
               </TableCell>
               <TableCell className="text-right">
                 ${transaction.amount}

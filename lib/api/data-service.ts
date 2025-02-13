@@ -1,4 +1,3 @@
-import { number } from "zod";
 import httpClient from "./httpClient";
 
 export const getAccounts = async () => {
@@ -16,7 +15,7 @@ export const getCategories = async () => {
     const response = await httpClient.get("/api/category/byUser");
     return response.data;
   } catch (error) {
-    console.error("Error fetching accounts", error);
+    console.error("Error fetching categories", error);
     return [];
   }
 };
@@ -26,7 +25,7 @@ export const getTransactions = async () => {
     const response = await httpClient.get("/api/transaction");
     return response.data;
   } catch (error) {
-    console.error("Error fetching transactions");
+    console.error("Error fetching transactions", error);
     return [];
   }
 };
@@ -36,7 +35,7 @@ export const addCategory = async (data: CategoryModel) => {
     const response = await httpClient.post("/api/category/add", data);
     return response.data;
   } catch (error) {
-    console.error("Error fetching accounts", error);
+    console.error("Error adding category", error);
     return [];
   }
 };
@@ -46,7 +45,7 @@ export const addAccount = async (data: AccountModel) => {
     const response = await httpClient.post("/api/account/add", data);
     return response.data;
   } catch (error) {
-    console.error("Error fetching accounts", error);
+    console.error("Error adding account", error);
     return [];
   }
 };
@@ -56,24 +55,39 @@ export const addTransaction = async (data: TransactionModel) => {
     const response = await httpClient.post("/api/transaction/add", data);
     return response.data;
   } catch (error) {
-    console.error("Error fetching accounts", error);
-    return [];
+    console.error("Error adding transaction", error);
+    return null;
   }
 };
 
 export const fetchBudget = async () => {
-  const response = await httpClient.get("/api/budget/current-month-budget");
-
-  return response.data;
+  try {
+    const response = await httpClient.get("/api/budget/current-month-budget");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching budget", error);
+    return null;
+  }
 };
 
 export const updateBudget = async ({ amount }: { amount: number }) => {
-  await httpClient.post("/api/budget/update", { amount });
+  try {
+    await httpClient.post("/api/budget/update", { amount });
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating budget", error);
+    return { success: false, error };
+  }
 };
 
 export const getCategoryBudgets = async () => {
-  const response = await httpClient.get("/api/budget/all");
-  return response.data;
+  try {
+    const response = await httpClient.get("/api/budget/all");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching category budgets", error);
+    return [];
+  }
 };
 
 interface allocateItems {

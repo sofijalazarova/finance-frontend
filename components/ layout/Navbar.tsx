@@ -57,7 +57,7 @@ const Navbar = () => {
           </Link>
 
           <div className="flex items-center space-x-4">
-            <p className="lg:text-3xl font-light text-dark-slate">
+            <p className="lg:text-3xl font-light text-dark-slate pl-4">
               {greeting}, {user.firstName}
             </p>
           </div>

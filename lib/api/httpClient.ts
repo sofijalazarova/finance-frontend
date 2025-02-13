@@ -9,19 +9,6 @@ const httpClient = axios.create({
   withCredentials: true,
 });
 
-// httpClient.interceptors.request.use(
-//   (config) => {
-//     const token = localStorage.getItem("token");
-//     if (token) {
-//       config.headers.Authorization = `Bearer ${token}`;
-//     }
-//     return config;
-//   },
-//   (error) => {
-//     return Promise.reject(error);
-//   }
-// );
-
 httpClient.interceptors.request.use(
   (config) => {
     const accessToken = localStorage.getItem("accessToken");
@@ -54,12 +41,12 @@ httpClient.interceptors.response.use(
         const response = await axios.post(
           "http://localhost:8080/api/auth/refreshToken",
           {
-            token: refreshToken,
+            refreshToken: refreshToken,
           }
         );
 
         localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("refreshToken", response.data.token);
+        localStorage.setItem("refreshToken", response.data.refreshToken);
         originalRequest.headers.Authorization = `Bearer ${response.data.accessToken}`;
         return axios(originalRequest);
       } catch (refreshError) {

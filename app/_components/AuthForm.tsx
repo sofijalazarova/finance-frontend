@@ -34,7 +34,6 @@ export default function AuthForm({ type }: { type: string }) {
 
   const formSchema = authFormSchema(type);
 
-  // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,7 +44,6 @@ export default function AuthForm({ type }: { type: string }) {
     },
   });
 
-  // 2. Define a submit handler.
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setIsLoading(true);
 
@@ -91,7 +89,7 @@ export default function AuthForm({ type }: { type: string }) {
       </header>
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mt-8">
           {type === "sign-up" && (
             <>
               <div className="flex gap-4">
@@ -161,10 +159,12 @@ export default function AuthForm({ type }: { type: string }) {
             </button>
             <div className="text-center text-gray-400">
               {type === "sign-in"
-                ? "Already have an account?"
-                : "Don't have an account?"}
+                ? "Don't have an account?"
+                : "Already have an account?"}
               <Link href={type === "sign-in" ? "/sign-up" : "/sign-in"}>
-                <span className="font-bold text-gray-700"> Login here!</span>
+                <span className="font-bold text-gray-700 ml-1">
+                  {type === "sign-in" ? "Register here!" : "Login here!"}
+                </span>
               </Link>
             </div>
           </div>
