@@ -39,6 +39,7 @@ export default function AddTransactionForm({
       toast.success("Transaction added successfully!");
       query.invalidateQueries({ queryKey: ["transactions"] });
       query.invalidateQueries({ queryKey: ["accounts"] });
+      query.invalidateQueries({ queryKey: ["categoryBudgets"] });
       form.reset();
     },
   });

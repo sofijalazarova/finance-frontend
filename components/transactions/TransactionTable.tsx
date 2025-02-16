@@ -11,6 +11,7 @@ import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import Modal from "@/app/_components/Modal";
 import { Button } from "../ui/button";
+import { MdDeleteOutline } from "react-icons/md";
 import ConfirmDelete from "@/app/_components/ConfirmDelete";
 import { useDeleteTransaction } from "@/lib/queries/useDeleteTransaction";
 
@@ -69,7 +70,8 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
               <TableCell>
                 <Modal>
                   <Modal.Open opens="delete">
-                    <Button>Delete transaction</Button>
+                    {/* <Button>Delete transaction</Button> */}
+                    <MdDeleteOutline />
                   </Modal.Open>
 
                   <Modal.Window name="delete">

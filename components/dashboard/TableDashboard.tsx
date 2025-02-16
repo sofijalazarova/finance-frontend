@@ -9,9 +9,16 @@ import {
   getCategoryBudgets,
 } from "@/lib/api/data-service";
 import toast from "react-hot-toast";
+import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 
 const TableDashboard = () => {
   const { data: categories, isLoading } = useCategoriesQuery();
+  const { data: transactions } = useTransactionsQuery();
+
+  console.log(categories);
+  console.log(transactions);
+
+  const categoryTotals = transactions.reduce((acc, transaction) => {});
 
   const { data: budget } = useQuery({
     queryKey: ["budget"],
@@ -76,6 +83,17 @@ const TableDashboard = () => {
                       (budget: any) => budget.category.id === category.id
                     )?.allocatedAmount || 0;
 
+                  const totalSpent = transactions
+                    ?.filter(
+                      (transaction: any) =>
+                        transaction.category.id === category.id
+                    )
+                    .reduce(
+                      (sum: number, transaction: any) =>
+                        sum + transaction.amount,
+                      0
+                    );
+
                   return (
                     <DashboardTableRow
                       key={category.id}
@@ -85,6 +103,7 @@ const TableDashboard = () => {
                       progress={50}
                       onAllocate={handleAllocate}
                       assigned={assigned}
+                      totalSpent={totalSpent}
                     />
                   );
                 })

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
 
 interface TableRowProps {
@@ -7,6 +7,7 @@ interface TableRowProps {
   target: string;
   progress: number;
   assigned: string;
+  totalSpent: string;
   onAllocate: (category: string, amount: string) => void;
 }
 
@@ -17,8 +18,13 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
   progress,
   assigned,
   onAllocate,
+  totalSpent,
 }) => {
   const [inputValue, setInputValue] = useState(assigned);
+
+  useEffect(() => {
+    setInputValue(assigned);
+  }, [assigned]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setInputValue(e.target.value);
@@ -41,10 +47,22 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
 
       <td>
         <div className="flex flex-row items-center justify-between">
-          <ProgressBar progress={progress} />
+          <div className="flex flex-col w-full">
+            {Number(assigned) >= 0 ? (
+              <span className="font-thin">
+                Потрошивте {totalSpent}$ од {assigned}$
+              </span>
+            ) : (
+              <span className="text-red-500 font-bold">OVERSPENT!!!</span>
+            )}
+            <ProgressBar progress={progress} />
+          </div>
+
           <div className="w-1/4 px-5">
             <input
-              className="w-1/2 border border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600"
+              className={`${
+                Number(assigned) < 0 ? "bg-red-500" : ""
+              }  w-1/2 border border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600`}
               type="text"
               value={inputValue}
               onChange={handleChange}
