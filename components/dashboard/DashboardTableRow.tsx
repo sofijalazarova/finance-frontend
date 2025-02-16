@@ -5,7 +5,6 @@ interface TableRowProps {
   icon: React.ReactNode;
   category: string;
   target: string;
-  progress: number;
   assigned: string;
   totalSpent: string;
   onAllocate: (category: string, amount: string) => void;
@@ -15,7 +14,6 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
   icon,
   category,
   target,
-  progress,
   assigned,
   onAllocate,
   totalSpent,
@@ -34,6 +32,9 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
     onAllocate(category, inputValue);
   };
 
+  const progress =
+    Number(assigned) > 0 ? (Number(totalSpent) / Number(assigned)) * 100 : 0;
+
   return (
     <tr className="focus:outline-none  h-12 border border-gray-100 rounded">
       <td>
@@ -50,7 +51,7 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
           <div className="flex flex-col w-full">
             {Number(assigned) >= 0 ? (
               <span className="font-thin">
-                Потрошивте {totalSpent}$ од {assigned}$
+                You spent {totalSpent}$ out of {assigned}$
               </span>
             ) : (
               <span className="text-red-500 font-bold">OVERSPENT!!!</span>

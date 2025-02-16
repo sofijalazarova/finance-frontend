@@ -8,17 +8,12 @@ import {
   fetchBudget,
   getCategoryBudgets,
 } from "@/lib/api/data-service";
-import toast from "react-hot-toast";
+
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 
 const TableDashboard = () => {
   const { data: categories, isLoading } = useCategoriesQuery();
   const { data: transactions } = useTransactionsQuery();
-
-  console.log(categories);
-  console.log(transactions);
-
-  const categoryTotals = transactions.reduce((acc, transaction) => {});
 
   const { data: budget } = useQuery({
     queryKey: ["budget"],
@@ -30,7 +25,6 @@ const TableDashboard = () => {
   const { mutate } = useMutation({
     mutationFn: allocateToCategory,
     onSuccess: () => {
-      toast.success("Ok");
       queryClient.invalidateQueries({ queryKey: ["budget"] });
     },
   });
@@ -65,7 +59,7 @@ const TableDashboard = () => {
         </div>
         <div className="flex font-roboto text-slate-gray space-x-2 mr-6">
           <p>Assigned</p>
-          <p>Target</p>
+          <p>Available</p>
         </div>
       </div>
       <div className="bg-white py-4 md:py-3 px-3 md:px-3 xl:px-5">
@@ -100,7 +94,6 @@ const TableDashboard = () => {
                       icon={category.emoji}
                       category={category.name}
                       target="100$"
-                      progress={50}
                       onAllocate={handleAllocate}
                       assigned={assigned}
                       totalSpent={totalSpent}
