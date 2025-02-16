@@ -30,7 +30,10 @@ export const useAuthGuard = ({
         },
       });
 
-      return response.data;
+      if (response.status === 200) {
+        console.log("User is authenticated via session or jwt");
+        return response.data;
+      }
     } catch (error: any) {
       console.error("Error fetching user:", error);
 

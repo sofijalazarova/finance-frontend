@@ -145,18 +145,20 @@ export default function AuthForm({ type }: { type: string }) {
               <span className="px-4 text-center text-gray-400">or</span>
               <span className="flex-grow border-t border-gray-300"></span>
             </div>
-            <button className="w-full border border-gray-300 text-md p-3 rounded-lg my-6 ">
-              <Image
-                src={googleImage}
-                alt="img"
-                width={23}
-                height={23}
-                className="inline mr-2"
-              />
-              {type === "sign-up"
-                ? "Sign up with Google"
-                : "Sign in with Google"}
-            </button>
+            <Link href="http://localhost:8080/oauth2/authorization/google">
+              <button className="w-full border border-gray-300 text-md p-3 rounded-lg my-6 ">
+                <Image
+                  src={googleImage}
+                  alt="img"
+                  width={23}
+                  height={23}
+                  className="inline mr-2"
+                />
+                {type === "sign-up"
+                  ? "Sign up with Google"
+                  : "Sign in with Google"}
+              </button>
+            </Link>
             <div className="text-center text-gray-400">
               {type === "sign-in"
                 ? "Don't have an account?"

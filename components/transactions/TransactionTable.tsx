@@ -9,6 +9,10 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
+import Modal from "@/app/_components/Modal";
+import { Button } from "../ui/button";
+import ConfirmDelete from "@/app/_components/ConfirmDelete";
+import { useDeleteTransaction } from "@/lib/queries/useDeleteTransaction";
 
 type TransactionTableProps = {
   transactions: TransactionModel[];
@@ -17,6 +21,8 @@ type TransactionTableProps = {
 const TransactionTable: React.FC<TransactionTableProps> = ({
   transactions,
 }) => {
+  const { deleteTransaction, isDeleting } = useDeleteTransaction();
+
   return (
     <div className="overflow-x-auto">
       <Table>
@@ -59,6 +65,21 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                     locale: enGB,
                   }
                 )}
+              </TableCell>
+              <TableCell>
+                <Modal>
+                  <Modal.Open opens="delete">
+                    <Button>Delete transaction</Button>
+                  </Modal.Open>
+
+                  <Modal.Window name="delete">
+                    <ConfirmDelete
+                      resourceName="transaction"
+                      disabled={isDeleting}
+                      onConfirm={() => deleteTransaction(transaction.id!)}
+                    />
+                  </Modal.Window>
+                </Modal>
               </TableCell>
             </TableRow>
           ))}

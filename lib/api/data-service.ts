@@ -111,3 +111,12 @@ export const allocateToCategory = async ({
     console.error("Error allocating budget", error);
   }
 };
+
+export const deleteTransaction = async (id: number) => {
+  try {
+    console.log(id);
+    await httpClient.delete(`/api/transaction/delete/${id}`);
+  } catch (error) {
+    console.error("Error deleting transaction", error);
+  }
+};

@@ -40,7 +40,7 @@ const Accounts = () => {
                 </TableHeader>
 
                 <TableBody>
-                  {accounts?.map((account) => (
+                  {accounts?.map((account: AccountModel) => (
                     <TableRow key={account.id}>
                       <TableCell>{account.name}</TableCell>
                       <TableCell>${account.balance}</TableCell>
