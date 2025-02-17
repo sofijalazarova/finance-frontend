@@ -9,11 +9,8 @@ import {
   getCategoryBudgets,
 } from "@/lib/api/data-service";
 
-import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
-
 const TableDashboard = () => {
   const { data: categories, isLoading } = useCategoriesQuery();
-  const { data: transactions } = useTransactionsQuery();
 
   const { data: budget } = useQuery({
     queryKey: ["budget"],
@@ -24,8 +21,28 @@ const TableDashboard = () => {
 
   const { mutate } = useMutation({
     mutationFn: allocateToCategory,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["budget"] });
+    onMutate: async (newData) => {
+      await queryClient.cancelQueries({ queryKey: ["categoryBudgets"] });
+
+      const previousData = queryClient.getQueryData(["categoryBudgets"]);
+
+      queryClient.setQueryData(["categoryBudgets"], (old: any) => {
+        return old.map((budget: any) =>
+          budget.category.id === newData.categoryId
+            ? { ...budget, allocatedAmount: newData.amount }
+            : budget
+        );
+      });
+
+      return { previousData };
+    },
+    onError: (err, newData, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(["categoryBudgets"], context.previousData);
+      }
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["categoryBudgets"] });
     },
   });
 
@@ -63,7 +80,7 @@ const TableDashboard = () => {
         </div>
       </div>
       <div className="bg-white py-4 md:py-3 px-3 md:px-3 xl:px-5">
-        <div className="mt-3 overflow-x-auto overflow-y-auto font-roboto">
+        <div className="mt-3 overflow-auto max-h-[400px] font-roboto">
           <table className="w-full whitespace-nowrap">
             <tbody>
               {isLoading || isBudgetsLoading ? (
@@ -77,25 +94,24 @@ const TableDashboard = () => {
                       (budget: any) => budget.category.id === category.id
                     )?.allocatedAmount || 0;
 
-                  const totalSpent = transactions
-                    ?.filter(
-                      (transaction: any) =>
-                        transaction.category.id === category.id
-                    )
-                    .reduce(
-                      (sum: number, transaction: any) =>
-                        sum + transaction.amount,
-                      0
-                    );
+                  const totalSpent =
+                    categoryBudgets?.find(
+                      (budget: any) => budget.category.id === category.id
+                    )?.totalSpent || 0;
+
+                  const available =
+                    categoryBudgets?.find(
+                      (budget: any) => budget.category.id === category.id
+                    )?.availableAmount || 0;
 
                   return (
                     <DashboardTableRow
                       key={category.id}
                       icon={category.emoji}
                       category={category.name}
-                      target="100$"
                       onAllocate={handleAllocate}
                       assigned={assigned}
+                      available={available}
                       totalSpent={totalSpent}
                     />
                   );

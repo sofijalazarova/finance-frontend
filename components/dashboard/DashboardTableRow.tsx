@@ -4,7 +4,7 @@ import ProgressBar from "./ProgressBar";
 interface TableRowProps {
   icon: React.ReactNode;
   category: string;
-  target: string;
+  available: string;
   assigned: string;
   totalSpent: string;
   onAllocate: (category: string, amount: string) => void;
@@ -13,7 +13,7 @@ interface TableRowProps {
 const DashboardTableRow: React.FC<TableRowProps> = ({
   icon,
   category,
-  target,
+  available,
   assigned,
   onAllocate,
   totalSpent,
@@ -49,14 +49,19 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
       <td>
         <div className="flex flex-row items-center justify-between">
           <div className="flex flex-col w-full">
-            {Number(assigned) >= 0 ? (
-              <span className="font-thin">
-                You spent {totalSpent}$ out of {assigned}$
-              </span>
+            {Number(totalSpent) > Number(assigned) ? (
+              <>
+                <span className="text-red-500 font-bold">OVERSPENT!!!</span>
+                <ProgressBar progress={100} isOverspent={true} />
+              </>
             ) : (
-              <span className="text-red-500 font-bold">OVERSPENT!!!</span>
+              <>
+                <span className="font-thin text-gray-700">
+                  You spent {totalSpent}$ out of {assigned}$
+                </span>
+                <ProgressBar progress={progress} isOverspent={false} />
+              </>
             )}
-            <ProgressBar progress={progress} />
           </div>
 
           <div className="w-1/4 px-5">
@@ -70,9 +75,9 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
               onBlur={handleBlur}
             />
             <input
-              className="w-1/2 ml-2 border border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600"
+              className="w-1/2 ml-2 border bg-green-400 border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600"
               type="text"
-              value={target}
+              value={available}
               readOnly
             />
           </div>

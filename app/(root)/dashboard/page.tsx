@@ -1,7 +1,6 @@
 "use client";
 
-import Piech from "@/app/_components/Piech";
-
+import CategorySpendingBarChart from "@/app/_components/CategorySpendingBarChart";
 import Balance from "@/components/dashboard/Balance";
 import MontlyBudget from "@/components/dashboard/MontlyBudget";
 import TableDashboard from "@/components/dashboard/TableDashboard";
@@ -19,7 +18,7 @@ const Dashboard = () => {
             <TableDashboard />
           </div>
           <MontlyBudget />
-          <Piech />
+          <CategorySpendingBarChart />
           <div className="border p-2 md:px-10 bg-white border-vibrant-mint-green row-span-2  col-span-5 rounded-3xl flex justify-center">
             <TransactionsTable />
           </div>

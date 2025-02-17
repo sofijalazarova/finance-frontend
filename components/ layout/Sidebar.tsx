@@ -39,7 +39,7 @@ export default function Sidebar() {
               </li>
             </ul>
           </div>
-          <div className="">
+          <div className="text-right">
             <button onClick={logout}>
               <RiLogoutBoxFill size={40} className="text-white" />
             </button>

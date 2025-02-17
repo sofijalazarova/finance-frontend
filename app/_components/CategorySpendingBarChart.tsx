@@ -18,7 +18,7 @@ const COLORS = [
   "#FF6384",
 ];
 
-export default function Piech() {
+export default function CategorySpendingBarChart() {
   const { data: transactions } = useTransactionsQuery();
 
   if (!transactions) {
@@ -61,7 +61,7 @@ export default function Piech() {
               ))}
             </Pie>
             <Tooltip />
-            <Legend /> {/* Легенда за категории */}
+            <Legend />
           </PieChart>
         </ResponsiveContainer>
       </div>
