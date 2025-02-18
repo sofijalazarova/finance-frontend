@@ -10,10 +10,12 @@ import {
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 import Modal from "@/app/_components/Modal";
-import { Button } from "../ui/button";
 import { MdDeleteOutline } from "react-icons/md";
 import ConfirmDelete from "@/app/_components/ConfirmDelete";
 import { useDeleteTransaction } from "@/lib/queries/useDeleteTransaction";
+import FilterTransactions from "@/app/_components/FilterTransactions";
+import SortTransactions from "@/app/_components/SortTransactions";
+import { useSearchParams } from "next/navigation";
 
 type TransactionTableProps = {
   transactions: TransactionModel[];
@@ -24,8 +26,31 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
 }) => {
   const { deleteTransaction, isDeleting } = useDeleteTransaction();
 
+  const searchParams = useSearchParams();
+  const categoryParams = searchParams.get("category");
+  const sortParams = searchParams.get("sort");
+
+  const newData = categoryParams
+    ? transactions.filter((i) => i.category?.name === categoryParams)
+    : transactions;
+
+  const sortedTransactions = [...newData].sort((a, b) => {
+    const dateA = a.transactionDate ? new Date(a.transactionDate).getTime() : 0;
+    const dateB = b.transactionDate ? new Date(b.transactionDate).getTime() : 0;
+
+    if (sortParams === "oldest") {
+      return dateA - dateB;
+    } else if (sortParams === "newest") {
+      return dateB - dateA;
+    } else if (sortParams === "lowestAmount") {
+      return Number(a.amount) - Number(b.amount);
+    } else if (sortParams === "highestAmount") {
+      return Number(b.amount) - Number(a.amount);
+    }
+  });
+
   return (
-    <div className="overflow-x-auto">
+    <div className="overflow-x-auto max-h-[400px]">
       <Table>
         <TableHeader>
           <TableRow>
@@ -41,7 +66,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
         </TableHeader>
 
         <TableBody>
-          {transactions.map((transaction) => (
+          {sortedTransactions.map((transaction) => (
             <TableRow
               key={transaction.id}
               className={`${
@@ -70,7 +95,6 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
               <TableCell>
                 <Modal>
                   <Modal.Open opens="delete">
-                    {/* <Button>Delete transaction</Button> */}
                     <MdDeleteOutline />
                   </Modal.Open>
 
