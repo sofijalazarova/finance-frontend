@@ -24,8 +24,10 @@ const FilterTransactions: FC = () => {
   const handleEvent = (value: string) => {
     if (paramSort) {
       router.push(`/transactions/?category=${value}&sort=${paramSort}`);
-    } else {
+    } else if (!paramSort && value !== "all") {
       router.push(`/transactions/?category=${value}`);
+    } else {
+      router.push(`/transactions`);
     }
   };
 
@@ -36,6 +38,7 @@ const FilterTransactions: FC = () => {
           <SelectValue placeholder="Filter by category" />
         </SelectTrigger>
         <SelectContent>
+          <SelectItem value="all">All</SelectItem>
           {categories.map((category: CategoryModel) => (
             <SelectItem key={category.id} value={category.name}>
               {category.name}

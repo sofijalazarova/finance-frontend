@@ -18,13 +18,17 @@ const SpendingTrendChart = () => {
     return <Loading />;
   }
 
-  console.log(transactions);
-
-  const dailySpending = transactions.reduce((acc, transaction) => {
-    const date = format(new Date(transaction.transactionDate), "yyyy-MM-dd");
-    acc[date] = (acc[date] || 0) + transaction.amount;
-    return acc;
-  }, {});
+  const dailySpending = transactions.reduce(
+    (acc, transaction: TransactionModel) => {
+      const date = format(
+        new Date(transaction.transactionDate ?? new Date()),
+        "yyyy-MM-dd"
+      );
+      acc[date] = (acc[date] || 0) + transaction.amount;
+      return acc;
+    },
+    {}
+  );
 
   const data = Object.entries(dailySpending).map(([date, total]) => ({
     date,

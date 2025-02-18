@@ -8,8 +8,8 @@ const BudgetDonutChart = () => {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-2">Budget Overview</h2>
-      <p className="text-gray-600 mb-4">
+      <h2 className="text-xl text-center font-bold mb-2">Budget Overview</h2>
+      <p className="text-gray-600 mb-4 text-center">
         How much of your budget is remaining?
       </p>
       <ResponsiveContainer width="100%" height={300}>

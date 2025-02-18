@@ -33,6 +33,10 @@ const SortTransactions: FC = () => {
           <SelectItem value="oldest">Oldest</SelectItem>
           <SelectItem value="lowestAmount">Lowest Amount</SelectItem>
           <SelectItem value="highestAmount">Highest Amount</SelectItem>
+          <SelectItem value="incomeFirst">Income First</SelectItem>
+          <SelectItem value="expenseFirst">Expense First</SelectItem>
+          <SelectItem value="nameAsc">Name (A-Z)</SelectItem>
+          <SelectItem value="nameDecs">Name (Z-A)</SelectItem>
         </SelectContent>
       </Select>
     </div>

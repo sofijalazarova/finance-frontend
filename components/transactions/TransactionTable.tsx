@@ -13,8 +13,6 @@ import Modal from "@/app/_components/Modal";
 import { MdDeleteOutline } from "react-icons/md";
 import ConfirmDelete from "@/app/_components/ConfirmDelete";
 import { useDeleteTransaction } from "@/lib/queries/useDeleteTransaction";
-import FilterTransactions from "@/app/_components/FilterTransactions";
-import SortTransactions from "@/app/_components/SortTransactions";
 import { useSearchParams } from "next/navigation";
 
 type TransactionTableProps = {
@@ -34,20 +32,35 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
     ? transactions.filter((i) => i.category?.name === categoryParams)
     : transactions;
 
-  const sortedTransactions = [...newData].sort((a, b) => {
-    const dateA = a.transactionDate ? new Date(a.transactionDate).getTime() : 0;
-    const dateB = b.transactionDate ? new Date(b.transactionDate).getTime() : 0;
+  const sortFunctions: Record<
+    string,
+    (a: TransactionModel, b: TransactionModel) => number
+  > = {
+    oldest: (a, b) =>
+      (a.transactionDate ? new Date(a.transactionDate).getTime() : 0) -
+      (b.transactionDate ? new Date(b.transactionDate).getTime() : 0),
 
-    if (sortParams === "oldest") {
-      return dateA - dateB;
-    } else if (sortParams === "newest") {
-      return dateB - dateA;
-    } else if (sortParams === "lowestAmount") {
-      return Number(a.amount) - Number(b.amount);
-    } else if (sortParams === "highestAmount") {
-      return Number(b.amount) - Number(a.amount);
-    }
-  });
+    newest: (a, b) =>
+      (b.transactionDate ? new Date(b.transactionDate).getTime() : 0) -
+      (a.transactionDate ? new Date(a.transactionDate).getTime() : 0),
+
+    lowestAmount: (a, b) => Number(a.amount) - Number(b.amount),
+    highestAmount: (a, b) => Number(b.amount) - Number(a.amount),
+
+    incomeFirst: (a, b) =>
+      a.type === "INCOME" && b.type === "EXPENSE" ? -1 : 1,
+    expenseFirst: (a, b) =>
+      a.type === "EXPENSE" && b.type === "INCOME" ? -1 : 1,
+
+    nameAsc: (a, b) => a.name.localeCompare(b.name),
+    nameDesc: (a, b) => b.name.localeCompare(a.name),
+
+    default: () => 0,
+  };
+
+  const sortedTransactions = [...newData].sort(
+    sortFunctions[sortParams ?? "default"] || (() => 0)
+  );
 
   return (
     <div className="overflow-x-auto max-h-[400px]">
@@ -85,7 +98,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
               </TableCell>
               <TableCell className="text-right">
                 {format(
-                  new Date(transaction.transactionDate),
+                  new Date(transaction.transactionDate ?? new Date()),
                   "dd MMMM yyyy, HH:mm:ss",
                   {
                     locale: enGB,

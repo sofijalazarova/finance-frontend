@@ -40,7 +40,7 @@ export default function CategorySpendingBarChart() {
   return (
     <div className="border bg-white border-vibrant-mint-green rounded-3xl row-span-3 col-span-2 flex justify-center">
       <div className="flex flex-col items-center p-4">
-        <h2 className="text-2xl font-semibold font-roboto text-dark-slate mb-2">
+        <h2 className="text-xl font-semibold font-roboto text-dark-slate mb-2">
           Expenses by Category
         </h2>
 
