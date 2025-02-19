@@ -1,76 +1,14 @@
-// "use client";
-
-// import { useSavingsQuery } from "@/lib/queries/useSavingsQuery";
-// import React from "react";
-// import { useDrag, useDrop, DndProvider } from "react-dnd";
-// import { HTML5Backend } from "react-dnd-html5-backend";
-
-// const Money = ({ amount }) => {
-//   const [{ isDragging }, drag] = useDrag(() => ({
-//     type: "MONEY",
-//     item: { amount },
-//     collect: (monitor) => ({
-//       isDragging: !!monitor.isDragging(),
-//     }),
-//   }));
-
-//   return (
-//     <div
-//       ref={drag}
-//       className="p-2 bg-yellow-400 text-black rounded cursor-pointer"
-//     >
-//       ${amount}
-//     </div>
-//   );
-// };
-
-// const Savings = () => {
-//   const { data: savings } = useSavingsQuery();
-
-//   console.log(savings);
-
-//   const [{ isOver }, drop] = useDrop(() => ({
-//     accept: "MONEY",
-//     drop: (item) => onDrop(goal.id, item.amount),
-//     collect: (monitor) => ({
-//       isOver: !!monitor.isOver(),
-//     }),
-//   }));
-
-//   return (
-//     <>
-//       <div className="max-w-9xl h-screen mx-auto flex flex-col">
-//         <div className="grid grid-cols-7 grid-rows-6 h-full gap-4 mt-20 mb-10">
-//           <div className="col-span-7 row-span-6 border rounded-lg border-bright-leaf-green">
-//             <div
-//               ref={drop}
-//               className={`p-6 border rounded-lg ${
-//                 isOver ? "bg-green-200" : "bg-white"
-//               }`}
-//             >
-//               <h3>{goal.name}</h3>
-//               <p>
-//                 ${goal.savedAmount} / ${goal.targetAmount}
-//               </p>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// };
-
-// export default Savings;
-
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { useDrag, useDrop, DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { useSavingsQuery } from "@/lib/queries/useSavingsQuery";
 import { updateSavingGoal } from "@/lib/api/data-service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { CheckCircle, DollarSign } from "lucide-react";
+import { motion } from "framer-motion";
+import Confetti from "react-confetti";
 
 interface SavingGoalType {
   id: number;
@@ -99,11 +37,12 @@ const Money: React.FC<MoneyProps> = ({ amount }) => {
   return (
     <div
       ref={ref}
-      className={`p-2 bg-yellow-400 text-black rounded cursor-pointer ${
-        isDragging ? "opacity-50" : "opacity-100"
+      className={`relative flex items-center gap-2 p-3 rounded-lg border-2 border-green-600 bg-green-300 text-black shadow-lg cursor-pointer select-none transition-transform transform ${
+        isDragging ? "opacity-50 scale-105" : "opacity-100"
       }`}
     >
-      ${amount}
+      <DollarSign className="w-5 h-5 text-yellow-800" />
+      <span className="font-bold text-lg tracking-wide">${amount}</span>
     </div>
   );
 };
@@ -113,76 +52,18 @@ interface SavingGoalProps {
   onDrop: (goalId: number, amount: number) => void;
 }
 
-// const SavingGoal: React.FC<SavingGoalProps> = ({ goal, onDrop }) => {
-//   const ref = useRef<HTMLDivElement>(null);
-
-//   const [{ isOver }, drop] = useDrop(() => ({
-//     accept: "MONEY",
-//     drop: (item: { amount: number }) => onDrop(goal.id, item.amount),
-//     collect: (monitor) => ({
-//       isOver: !!monitor.isOver(),
-//     }),
-//   }));
-
-//   drop(ref);
-
-//   return (
-//     <div
-//       ref={ref}
-//       className={`p-6 border rounded-lg w-1/2${
-//         isOver ? "bg-green-200" : "bg-white"
-//       }`}
-//     >
-//       <h3 className="font-bold">{goal.name}</h3>
-//       <p>
-//         ${goal.savedAmount} / ${goal.targetAmount}
-//       </p>
-//     </div>
-//   );
-// };
-
-// const SavingGoal: React.FC<SavingGoalProps> = ({ goal, onDrop }) => {
-//   const ref = useRef<HTMLDivElement>(null);
-
-//   const [{ isOver }, drop] = useDrop(() => ({
-//     accept: "MONEY",
-//     drop: (item: { amount: number }) => onDrop(goal.id, item.amount),
-//     collect: (monitor) => ({
-//       isOver: !!monitor.isOver(),
-//     }),
-//   }));
-
-//   drop(ref);
-
-//   const progress = (goal.savedAmount / goal.targetAmount) * 100;
-
-//   return (
-//     <div
-//       ref={ref}
-//       className={`p-6 border rounded-xl shadow-md transition-all duration-200 ${
-//         isOver ? "bg-green-100 scale-105" : "bg-white"
-//       }`}
-//     >
-//       <h3 className="font-bold text-lg text-gray-800 mb-2">{goal.name}</h3>
-//       <div className="relative w-full bg-gray-200 rounded-full h-3 mb-2">
-//         <div
-//           className="bg-green-500 h-3 rounded-full transition-all"
-//           style={{ width: `${progress}%` }}
-//         ></div>
-//       </div>
-//       <p className="text-gray-700 text-sm font-medium">
-//         ${goal.savedAmount} / ${goal.targetAmount}
-//       </p>
-//     </div>
-//   );
-// };
-
 const SavingGoal: React.FC<SavingGoalProps> = ({ goal, onDrop }) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
+  const isGoalCompleted = goal.savedAmount >= goal.targetAmount;
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "MONEY",
-    drop: (item: { amount: number }) => onDrop(goal.id, item.amount),
+    drop: (item: { amount: number }) => {
+      setIsAnimating(true);
+      onDrop(goal.id, item.amount);
+      setTimeout(() => setIsAnimating(false), 400);
+    },
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
@@ -193,23 +74,51 @@ const SavingGoal: React.FC<SavingGoalProps> = ({ goal, onDrop }) => {
   const progress = (goal.savedAmount / goal.targetAmount) * 100;
 
   return (
-    <div
+    <motion.div
       ref={ref}
-      className={`w-64 p-6 m-6 border rounded-xl shadow-md transition-all duration-200 ${
-        isOver ? "bg-green-100 scale-105" : "bg-white"
-      }`}
+      className={`relative w-72 p-6 my-8 border rounded-xl shadow-lg transition-all duration-200 
+      ${isOver ? "bg-green-100 scale-105 shadow-xl" : "bg-white"}
+      ${isGoalCompleted ? "bg-yellow-200 border-yellow-500" : ""}`}
+      animate={isAnimating ? { scale: [1, 1.1, 1] } : {}}
+      transition={{ duration: 0.4, ease: "easeInOut" }}
     >
-      <h3 className="font-bold text-lg text-gray-800 mb-2">{goal.name}</h3>
-      <div className="relative w-full bg-gray-200 rounded-full h-3 mb-2">
+      {isGoalCompleted && (
+        <Confetti
+          width={300}
+          height={200}
+          numberOfPieces={100}
+          recycle={false}
+        />
+      )}
+
+      <div className="flex items-center gap-3 mb-3">
+        <h3 className="font-bold text-xl text-gray-800">{goal.name}</h3>
+      </div>
+
+      <div className="relative w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
         <div
-          className="bg-green-500 h-3 rounded-full transition-all"
+          className="bg-gradient-to-r from-green-400 to-green-600 h-4 rounded-full transition-all"
           style={{ width: `${progress}%` }}
         ></div>
+        <span className="absolute right-2 top-0 text-xs font-bold text-emerald-green">
+          {Math.round(progress)}%
+        </span>
       </div>
-      <p className="text-gray-700 text-sm font-medium">
-        ${goal.savedAmount} / ${goal.targetAmount}
+
+      <p className="text-gray-700 text-sm font-medium text-center">
+        <span className="font-bold text-lg text-green-700">
+          ${goal.savedAmount}
+        </span>{" "}
+        / ${goal.targetAmount}
       </p>
-    </div>
+
+      {isGoalCompleted && (
+        <div className="mt-3 flex items-center justify-center text-lg font-bold text-yellow-700">
+          <CheckCircle className="w-6 h-6 mr-2 text-green-600 animate-bounce" />
+          Goal Achieved!
+        </div>
+      )}
+    </motion.div>
   );
 };
 
@@ -222,13 +131,11 @@ const Savings: React.FC = () => {
     mutationFn: ({ goalId, amount }: { goalId: number; amount: number }) =>
       updateSavingGoal(goalId, amount),
     onSuccess: () => {
-      toast.success("Ok");
       queryClient.invalidateQueries({ queryKey: ["savings"] });
     },
   });
 
   const handleDrop = (goalId: number, amount: number) => {
-    console.log(`Added $${amount} to goal ID ${goalId}`);
     mutate({ goalId, amount });
   };
 
@@ -236,11 +143,13 @@ const Savings: React.FC = () => {
     <DndProvider backend={HTML5Backend}>
       <div className="max-w-9xl h-screen mx-auto flex flex-col">
         <div className="grid grid-cols-7 grid-rows-6 h-full gap-4 mt-20 mb-10">
-          <div className="col-span-7 row-span-6 border rounded-lg border-bright-leaf-green">
-            <h2 className="text-2xl font-bold">Savings Goals</h2>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition">
-              + Add Goal
-            </button>
+          <div className="col-span-7 row-span-6 border rounded-lg border-bright-leaf-green p-10 font-roboto">
+            <div className="flex items-center space-x-4">
+              <h2 className="text-2xl font-bold">Savings Goals</h2>
+              <button className="px-4 py-2  bg-dark-teal-green text-white rounded-lg hover:bg-green-600 transition duration-300">
+                + Add Goal
+              </button>
+            </div>
 
             {savings?.map((goal: SavingGoalType) => (
               <SavingGoal key={goal.id} goal={goal} onDrop={handleDrop} />
@@ -250,6 +159,7 @@ const Savings: React.FC = () => {
               <Money amount={5} />
               <Money amount={10} />
               <Money amount={20} />
+              <Money amount={50} />
             </div>
           </div>
         </div>

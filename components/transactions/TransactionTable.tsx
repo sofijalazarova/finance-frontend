@@ -69,7 +69,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
           <TableRow>
             <TableHead className="w-[150px]">Account</TableHead>
             <TableHead className="min-w-[100px]">Name</TableHead>
-            <TableHead className="min-w-[150px]">Description</TableHead>
+            {/* <TableHead className="min-w-[150px]">Description</TableHead> */}
             <TableHead className="w-[180px]">Category</TableHead>
             <TableHead className="w-[120px] text-right">Amount</TableHead>
             <TableHead className="w-[250px] text-right whitespace-nowrap">
@@ -88,13 +88,20 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
             >
               <TableCell>{transaction.account?.name}</TableCell>
               <TableCell>{transaction.name}</TableCell>
-              <TableCell>{transaction.description}</TableCell>
+              {/* <TableCell>{transaction.description}</TableCell> */}
               <TableCell>
                 {transaction.category?.emoji}
                 {transaction.category?.name}
               </TableCell>
-              <TableCell className="text-right">
-                ${transaction.amount}
+              <TableCell
+                className={`text-right font-bold ${
+                  transaction.type === "EXPENSE"
+                    ? "text-red-500"
+                    : "text-green-500"
+                }`}
+              >
+                {transaction.type === "EXPENSE" ? "- " : "+ "}$
+                {transaction.amount}
               </TableCell>
               <TableCell className="text-right">
                 {format(
