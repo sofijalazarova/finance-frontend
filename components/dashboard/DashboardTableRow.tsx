@@ -4,7 +4,7 @@ import ProgressBar from "./ProgressBar";
 interface TableRowProps {
   icon: React.ReactNode;
   category: string;
-  available: string;
+  available: number;
   assigned: string;
   totalSpent: string;
   onAllocate: (category: string, amount: string) => void;

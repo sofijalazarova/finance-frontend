@@ -114,9 +114,27 @@ export const allocateToCategory = async ({
 
 export const deleteTransaction = async (id: number) => {
   try {
-    console.log(id);
     await httpClient.delete(`/api/transaction/delete/${id}`);
   } catch (error) {
     console.error("Error deleting transaction", error);
+  }
+};
+
+export const getSavingGoals = async () => {
+  try {
+    const response = await httpClient.get("api/savings");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching saving goals");
+  }
+};
+
+export const updateSavingGoal = async (id: number, amount: number) => {
+  try {
+    await httpClient.put(`/api/savings/${id}/save`, null, {
+      params: { amount }, // ⬅️ Ова правилно го праќа како query param
+    });
+  } catch (error) {
+    console.error("Error updating saving", error);
   }
 };

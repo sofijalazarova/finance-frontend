@@ -26,9 +26,19 @@ const MontlyBudget = () => {
         <h2 className="text-sm text-gray-500">
           {startDate} - {endDate}
         </h2>
-        <p className="text-5xl font-bold font-inter text-green-900">
+        <p
+          className={`text-5xl font-bold font-inter ${
+            budget?.totalBudget < 0 ? "text-red-600" : "text-green-900"
+          }`}
+        >
           ${budget?.totalBudget.toFixed(2)}
         </p>
+
+        {budget?.totalBudget < 0 && (
+          <p className="text-red-600 font-bold text-sm">
+            Warning: Your budget is negative!
+          </p>
+        )}
         <p className="text-emerald-green text-sm">
           <span className="font-bold">+9,5%</span> compared to last month
         </p>

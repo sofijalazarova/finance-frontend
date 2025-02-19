@@ -29,7 +29,10 @@ const TableDashboard = () => {
       queryClient.setQueryData(["categoryBudgets"], (old: any) => {
         return old.map((budget: any) =>
           budget.category.id === newData.categoryId
-            ? { ...budget, allocatedAmount: newData.amount }
+            ? {
+                ...budget,
+                allocatedAmount: newData.amount,
+              }
             : budget
         );
       });
@@ -99,10 +102,12 @@ const TableDashboard = () => {
                       (budget: any) => budget.category.id === category.id
                     )?.totalSpent || 0;
 
-                  const available =
-                    categoryBudgets?.find(
-                      (budget: any) => budget.category.id === category.id
-                    )?.availableAmount || 0;
+                  // const available =
+                  //   categoryBudgets?.find(
+                  //     (budget: any) => budget.category.id === category.id
+                  //   )?.availableAmount || 0;
+
+                  const available = Number(assigned) - Number(totalSpent);
 
                   return (
                     <DashboardTableRow
