@@ -13,7 +13,7 @@ const Header = () => {
           </Link>
         </div>
 
-        <nav className="flex items-center space-x-6">
+        <nav className="flex items-center space-x-20 font-medium text-lg">
           <Link href="/" className="text-green-700 font-bold hover:underline">
             Home
           </Link>

@@ -18,6 +18,10 @@ const COLORS = [
   "#FF6384",
 ];
 
+const getRandomColor = () => {
+  return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
+};
+
 export default function CategorySpendingBarChart() {
   const { data: transactions } = useTransactionsQuery();
 
@@ -34,7 +38,7 @@ export default function CategorySpendingBarChart() {
   const chartData = Object.keys(categoryTotals).map((category, index) => ({
     name: category,
     value: categoryTotals[category],
-    color: COLORS[index % COLORS.length],
+    color: getRandomColor(),
   }));
 
   return (

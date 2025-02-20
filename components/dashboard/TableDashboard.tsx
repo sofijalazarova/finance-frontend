@@ -102,11 +102,6 @@ const TableDashboard = () => {
                       (budget: any) => budget.category.id === category.id
                     )?.totalSpent || 0;
 
-                  // const available =
-                  //   categoryBudgets?.find(
-                  //     (budget: any) => budget.category.id === category.id
-                  //   )?.availableAmount || 0;
-
                   const available = Number(assigned) - Number(totalSpent);
 
                   return (

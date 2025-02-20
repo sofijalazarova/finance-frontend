@@ -10,8 +10,8 @@ export default function Home() {
       <div className="relative z-0">
         <Header />
         <Hero />
-        <Highlights />
-        <GetStarted />
+        {/* <Highlights />
+        <GetStarted /> */}
       </div>
     </>
   );

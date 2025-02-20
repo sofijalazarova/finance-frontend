@@ -9,9 +9,12 @@ import { useAuthGuard } from "@/lib/auth/useAuth";
 
 import Navbar from "./Navbar";
 import Link from "next/link";
+import { useAccountsQuery } from "@/lib/queries/useAccountsQuery";
 
 export default function Sidebar() {
   const { logout } = useAuthGuard({});
+
+  const { data: accounts } = useAccountsQuery();
 
   return (
     <>
@@ -32,6 +35,21 @@ export default function Sidebar() {
                   <MdAccountBalance size={20} />
                   <span className="ms-3">Accounts</span>
                 </Link>
+              </li>
+
+              <li>
+                {accounts &&
+                  accounts.map((account: AccountModel) => {
+                    return (
+                      <div
+                        key={account.id}
+                        className="flex justify-between items-center text-white hover:bg-dark-slate p-4 transition duration-150 rounded-lg"
+                      >
+                        <p>{account.name}</p>
+                        <p>${account.balance}</p>
+                      </div>
+                    );
+                  })}
               </li>
 
               <li>

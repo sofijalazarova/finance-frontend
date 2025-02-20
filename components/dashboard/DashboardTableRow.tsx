@@ -51,12 +51,14 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
           <div className="flex flex-col w-full">
             {Number(totalSpent) > Number(assigned) ? (
               <>
-                <span className="text-red-500 font-bold">OVERSPENT!!!</span>
+                <span className="text-red-500 text-right font-bold">
+                  OVERSPENT!!!
+                </span>
                 <ProgressBar progress={100} isOverspent={true} />
               </>
             ) : (
               <>
-                <span className="font-thin text-gray-700">
+                <span className="font-thin text-sm text-center  text-gray-600">
                   You spent {totalSpent}$ out of {assigned}$
                 </span>
                 <ProgressBar progress={progress} isOverspent={false} />

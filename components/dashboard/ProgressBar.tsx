@@ -1,19 +1,21 @@
 import React from "react";
 
-interface ProgressBarProps {
-  progress: number;
-  isOverspent: boolean;
-}
-
-const ProgressBar: React.FC<ProgressBarProps> = ({ progress, isOverspent }) => (
-  <div className="w-full bg-gray-200 rounded-full h-2.5">
-    <div
-      className={`h-2.5 rounded-full ${
-        isOverspent ? "bg-red-500" : "bg-green-500"
-      }`}
-      style={{ width: `${progress}%` }}
-    ></div>
-  </div>
-);
+const ProgressBar: React.FC<{ progress: number; isOverspent: boolean }> = ({
+  progress,
+  isOverspent,
+}) => {
+  return (
+    <div className="w-full bg-gray-200 rounded-full h-4">
+      <div
+        className={`h-4 rounded-full transition-all duration-300 bg-gradient-to-r ${
+          isOverspent
+            ? "bg-red-500"
+            : "bg-gradient-to-r from-teal-400 to-amber-400"
+        }`}
+        style={{ width: `${progress}%` }}
+      ></div>
+    </div>
+  );
+};
 
 export default ProgressBar;
