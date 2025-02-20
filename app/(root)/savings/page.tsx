@@ -9,6 +9,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CheckCircle, DollarSign } from "lucide-react";
 import { motion } from "framer-motion";
 import Confetti from "react-confetti";
+import AddSaving from "@/app/_components/AddSaving";
+import Modal from "@/app/_components/Modal";
+import { MdDeleteOutline } from "react-icons/md";
+import ConfirmDelete from "@/app/_components/ConfirmDelete";
+import { useDeleteSaving } from "@/lib/queries/useDeleteSaving";
 
 interface SavingGoalType {
   id: number;
@@ -57,6 +62,8 @@ const SavingGoal: React.FC<SavingGoalProps> = ({ goal, onDrop }) => {
   const [isAnimating, setIsAnimating] = useState(false);
   const isGoalCompleted = goal.savedAmount >= goal.targetAmount;
 
+  const { isDeleting, deleteSaving } = useDeleteSaving();
+
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "MONEY",
     drop: (item: { amount: number }) => {
@@ -76,7 +83,7 @@ const SavingGoal: React.FC<SavingGoalProps> = ({ goal, onDrop }) => {
   return (
     <motion.div
       ref={ref}
-      className={`relative w-72 p-6 my-8 border rounded-xl shadow-lg transition-all duration-200 
+      className={`relative w-72 p-6 my-6 border rounded-xl shadow-lg transition-all duration-200 
       ${isOver ? "bg-green-100 scale-105 shadow-xl" : "bg-white"}
       ${isGoalCompleted ? "bg-yellow-200 border-yellow-500" : ""}`}
       animate={isAnimating ? { scale: [1, 1.1, 1] } : {}}
@@ -91,8 +98,21 @@ const SavingGoal: React.FC<SavingGoalProps> = ({ goal, onDrop }) => {
         />
       )}
 
-      <div className="flex items-center gap-3 mb-3">
+      <div className="flex items-center justify-between gap-3 mb-3">
         <h3 className="font-bold text-xl text-gray-800">{goal.name}</h3>
+        <Modal>
+          <Modal.Open opens="delete">
+            <MdDeleteOutline />
+          </Modal.Open>
+
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="saving goal"
+              disabled={isDeleting}
+              onConfirm={() => deleteSaving(goal.id!)}
+            />
+          </Modal.Window>
+        </Modal>
       </div>
 
       <div className="relative w-full bg-gray-200 rounded-full h-4 mb-2 overflow-hidden">
@@ -146,14 +166,14 @@ const Savings: React.FC = () => {
           <div className="col-span-7 row-span-6 border rounded-lg border-bright-leaf-green p-10 font-roboto">
             <div className="flex items-center space-x-4">
               <h2 className="text-2xl font-bold">Savings Goals</h2>
-              <button className="px-4 py-2  bg-dark-teal-green text-white rounded-lg hover:bg-green-600 transition duration-300">
-                + Add Goal
-              </button>
-            </div>
 
-            {savings?.map((goal: SavingGoalType) => (
-              <SavingGoal key={goal.id} goal={goal} onDrop={handleDrop} />
-            ))}
+              <AddSaving />
+            </div>
+            <div className="flex flex-wrap  gap-6">
+              {savings?.map((goal: SavingGoalType) => (
+                <SavingGoal key={goal.id} goal={goal} onDrop={handleDrop} />
+              ))}
+            </div>
 
             <div className="flex space-x-4 p-4">
               <Money amount={5} />

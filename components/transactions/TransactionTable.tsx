@@ -112,10 +112,10 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
                   }
                 )}
               </TableCell>
-              <TableCell>
+              <TableCell className="flex justify-end">
                 <Modal>
                   <Modal.Open opens="delete">
-                    <MdDeleteOutline />
+                    <MdDeleteOutline className="cursor-pointer text-gray-600 hover:text-red-500 transition-colors" />
                   </Modal.Open>
 
                   <Modal.Window name="delete">

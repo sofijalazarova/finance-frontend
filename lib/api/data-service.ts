@@ -120,6 +120,14 @@ export const deleteTransaction = async (id: number) => {
   }
 };
 
+export const deleteSaving = async (id: number) => {
+  try {
+    await httpClient.delete(`/api/savings/delete/${id}`);
+  } catch (error) {
+    console.error("Error deleting saving goal", error);
+  }
+};
+
 export const getSavingGoals = async () => {
   try {
     const response = await httpClient.get("api/savings");
@@ -132,9 +140,17 @@ export const getSavingGoals = async () => {
 export const updateSavingGoal = async (id: number, amount: number) => {
   try {
     await httpClient.put(`/api/savings/${id}/save`, null, {
-      params: { amount }, // ⬅️ Ова правилно го праќа како query param
+      params: { amount },
     });
   } catch (error) {
     console.error("Error updating saving", error);
+  }
+};
+
+export const addSavingGoal = async (data: CreateSavingModel) => {
+  try {
+    await httpClient.post("/api/savings", data);
+  } catch (error) {
+    console.error("Error adding new saving goal", error);
   }
 };

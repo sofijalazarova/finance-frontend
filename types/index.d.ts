@@ -52,3 +52,10 @@ declare interface CreateAccountParams {
   type: "SAVINGS" | "CASH" | "CREDIT_CARD" | "OTHER";
   balance: number;
 }
+
+declare interface CreateSavingModel {
+  name: string;
+  targetAmount: string;
+  savedAmount: string;
+  targetDate: string;
+}

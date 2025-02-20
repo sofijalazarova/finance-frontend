@@ -1,6 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { z } from "zod";
+import { number, z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -38,4 +38,11 @@ export const accountSchema = z.object({
     required_error: "Account type is required",
   }),
   balance: z.string(),
+});
+
+export const savingSchema = z.object({
+  name: z.string().min(1, "Name is required"),
+  targetAmount: z.string(),
+  savedAmount: z.string(),
+  targetDate: z.date(),
 });
