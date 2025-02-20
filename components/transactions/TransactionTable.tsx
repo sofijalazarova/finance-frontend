@@ -3,6 +3,7 @@ import {
   Table,
   TableBody,
   TableCell,
+  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -14,10 +15,13 @@ import { MdDeleteOutline } from "react-icons/md";
 import ConfirmDelete from "@/app/_components/ConfirmDelete";
 import { useDeleteTransaction } from "@/lib/queries/useDeleteTransaction";
 import { useSearchParams } from "next/navigation";
+import Pagination from "@/app/_components/Pagination";
 
 type TransactionTableProps = {
   transactions: TransactionModel[];
 };
+
+const PAGE_SIZE = 10;
 
 const TransactionTable: React.FC<TransactionTableProps> = ({
   transactions,
@@ -27,6 +31,8 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
   const searchParams = useSearchParams();
   const categoryParams = searchParams.get("category");
   const sortParams = searchParams.get("sort");
+
+  const currentPage = Number(searchParams.get("page")) || 1;
 
   const newData = categoryParams
     ? transactions.filter((i) => i.category?.name === categoryParams)
@@ -62,8 +68,18 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
     sortFunctions[sortParams ?? "default"] || (() => 0)
   );
 
+  // 📌 ОВА Е КЛУЧНО: Добиј трансакции само за тековната страница
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const paginatedTransactions = sortedTransactions.slice(
+    startIndex,
+    startIndex + PAGE_SIZE
+  );
+
+  const totalCount = newData.length;
+
   return (
-    <div className="overflow-x-auto max-h-[500px]">
+    // <div className="overflow-x-auto max-h-[500px]">
+    <div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -79,7 +95,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
         </TableHeader>
 
         <TableBody>
-          {sortedTransactions.map((transaction) => (
+          {paginatedTransactions.map((transaction) => (
             <TableRow
               key={transaction.id}
               className={`${
@@ -130,6 +146,13 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
             </TableRow>
           ))}
         </TableBody>
+        <TableFooter className="w-full">
+          <tr>
+            <td colSpan={6} className="w-full">
+              <Pagination count={totalCount} />
+            </td>
+          </tr>
+        </TableFooter>
       </Table>
     </div>
   );
