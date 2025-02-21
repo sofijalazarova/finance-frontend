@@ -6,7 +6,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { authFormSchema } from "@/lib/utils";
-import React from "react";
+import React, { useId } from "react";
 import { Control, FieldPath } from "react-hook-form";
 import { z } from "zod";
 
@@ -25,6 +25,8 @@ const CustomInput = ({
   label,
   placeholder,
 }: CustomInputProps) => {
+  const uniqueId = useId();
+
   return (
     <FormField
       control={control}
@@ -37,6 +39,7 @@ const CustomInput = ({
           <div>
             <FormControl>
               <Input
+                id={uniqueId}
                 className="w-full p-3 border bg-white border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                 placeholder={placeholder}
                 {...field}

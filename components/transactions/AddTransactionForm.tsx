@@ -20,6 +20,7 @@ import { useCategoriesQuery } from "@/lib/queries/useCategoriesQuery";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addTransaction } from "@/lib/api/data-service";
 import toast from "react-hot-toast";
+import { useCategoryBudgetsQuery } from "@/lib/queries/useCategoryBudgetsQuery";
 
 interface CreateBudgetFormProps {
   onCloseModal?: () => void;
@@ -40,12 +41,15 @@ export default function AddTransactionForm({
       query.invalidateQueries({ queryKey: ["transactions"] });
       query.invalidateQueries({ queryKey: ["accounts"] });
       query.invalidateQueries({ queryKey: ["categoryBudgets"] });
+
       form.reset();
     },
   });
 
   const { data: accounts } = useAccountsQuery();
   const { data: categories } = useCategoriesQuery();
+
+  const { data: categoryBudgets } = useCategoryBudgetsQuery();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -60,6 +64,7 @@ export default function AddTransactionForm({
   });
 
   function onSubmit(data: z.infer<typeof formSchema>) {
+    query.invalidateQueries({ queryKey: ["categoryBudgets"] });
     const formData = {
       ...data,
       category_id: Number(data.category_id),
@@ -123,11 +128,20 @@ export default function AddTransactionForm({
                     >
                       <option value="">Select a category</option>
                       {categories &&
-                        categories.map((category: CategoryModel) => (
-                          <option key={category.id} value={category.id}>
-                            {category.name} {category.emoji}
-                          </option>
-                        ))}
+                        categories.map((category: CategoryModel) => {
+                          const available =
+                            categoryBudgets?.find(
+                              (budget: any) =>
+                                budget.category.id === category.id
+                            )?.availableAmount || 0;
+
+                          return (
+                            <option key={category.id} value={category.id}>
+                              {category.name} {category.emoji}
+                              &nbsp; ${available}
+                            </option>
+                          );
+                        })}
                     </select>
                   </FormControl>
                   <FormMessage />

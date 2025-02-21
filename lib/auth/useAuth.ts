@@ -31,7 +31,6 @@ export const useAuthGuard = ({
       });
 
       if (response.status === 200) {
-        console.log("User is authenticated via session or jwt");
         return response.data;
       }
     } catch (error: any) {

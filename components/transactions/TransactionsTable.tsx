@@ -32,11 +32,16 @@ const TransactionsTable = () => {
           </Link>
         </div>
       </div>
-      <div className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
-        <div className="px-3 py-2 w-full font-roboto">
-          <TransactionTable transactions={recentTransactions} />
+
+      {transactions.length > 0 ? (
+        <div className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
+          <div className="px-3 py-2 w-full font-roboto">
+            <TransactionTable transactions={recentTransactions} />
+          </div>
         </div>
-      </div>
+      ) : (
+        <div>No transactions added yet!</div>
+      )}
     </div>
   );
 };

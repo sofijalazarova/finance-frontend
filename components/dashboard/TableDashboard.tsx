@@ -46,6 +46,7 @@ const TableDashboard = () => {
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["categoryBudgets"] });
+      queryClient.invalidateQueries({ queryKey: ["budget"] });
     },
   });
 

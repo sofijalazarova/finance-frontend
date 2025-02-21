@@ -68,7 +68,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
     sortFunctions[sortParams ?? "default"] || (() => 0)
   );
 
-  // 📌 ОВА Е КЛУЧНО: Добиј трансакции само за тековната страница
+ 
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const paginatedTransactions = sortedTransactions.slice(
     startIndex,

@@ -54,14 +54,34 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
                 <span className="text-red-500 text-right font-bold">
                   OVERSPENT!!!
                 </span>
-                <ProgressBar progress={100} isOverspent={true} />
+                <ProgressBar
+                  progress={100}
+                  isOverspent={true}
+                  fullySpend={false}
+                />
+              </>
+            ) : Number(totalSpent) === Number(assigned) &&
+              Number(totalSpent) > 0 ? (
+              <>
+                <span className="font-thin text-sm text-center  text-gray-600">
+                  Fully spend
+                </span>
+                <ProgressBar
+                  progress={progress}
+                  isOverspent={false}
+                  fullySpend={true}
+                />
               </>
             ) : (
               <>
                 <span className="font-thin text-sm text-center  text-gray-600">
                   You spent {totalSpent}$ out of {assigned}$
                 </span>
-                <ProgressBar progress={progress} isOverspent={false} />
+                <ProgressBar
+                  progress={progress}
+                  isOverspent={false}
+                  fullySpend={false}
+                />
               </>
             )}
           </div>
