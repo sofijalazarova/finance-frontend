@@ -25,6 +25,8 @@ export default function AuthForm({ type }: { type: string }) {
     undefined
   );
 
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
   const router = useRouter();
 
   const { login } = useAuthGuard({
@@ -60,9 +62,10 @@ export default function AuthForm({ type }: { type: string }) {
         login({
           onError: (errors) => {
             setErrors(errors);
+
             if (errors) {
-              console.log("Authentication failed");
               setIsLoading(false);
+              setErrorMessage(errors.message || "Invalid email or password.");
             }
           },
           props: data,
@@ -122,6 +125,11 @@ export default function AuthForm({ type }: { type: string }) {
             label="Password"
             placeholder="Enter your password"
           />
+
+          {errorMessage && (
+            <p className="text-red-500 text-sm ">{errorMessage}</p>
+          )}
+
           <div className="flex flex-col gap-4">
             <Button
               type="submit"

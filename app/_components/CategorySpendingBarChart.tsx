@@ -29,11 +29,19 @@ export default function CategorySpendingBarChart() {
     return <Loading />;
   }
 
-  const categoryTotals = transactions.reduce((acc, transaction) => {
-    const category = transaction.category.name;
-    acc[category] = (acc[category] || 0) + transaction.amount;
-    return acc;
-  }, {});
+  // const categoryTotals = transactions.reduce((acc, transaction) => {
+  //   const category = transaction.category?.name;
+  //   acc[category] = (acc[category] || 0) + transaction.amount;
+  //   return acc;
+  // }, {});
+
+  const categoryTotals = transactions
+    .filter((transaction) => transaction.type === "EXPENSE") // Филтрирај само expenses
+    .reduce((acc, transaction) => {
+      const category = transaction.category?.name || "Uncategorized";
+      acc[category] = (acc[category] || 0) + transaction.amount;
+      return acc;
+    }, {});
 
   const chartData = Object.keys(categoryTotals).map((category, index) => ({
     name: category,

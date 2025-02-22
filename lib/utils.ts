@@ -9,7 +9,7 @@ export function cn(...inputs: ClassValue[]) {
 export const transactionSchema = z.object({
   account_id: z.string(),
   name: z.string(),
-  category_id: z.string(),
+  category_id: z.string().optional(),
   description: z.string().optional(),
   amount: z.string(),
   type: z.enum(["INCOME", "EXPENSE"]),
@@ -21,8 +21,10 @@ export const budgetSchema = z.object({
 
 export const authFormSchema = (type: string) =>
   z.object({
-    email: z.string().email(),
-    password: z.string().min(8),
+    email: z.string().email("Please enter a valid email."),
+    password: z
+      .string()
+      .min(8, "Password must contain at least 8 character(s)"),
     firstName: type === "sign-in" ? z.string().optional() : z.string().min(3),
     lastName: type === "sign-in" ? z.string().optional() : z.string().min(3),
   });

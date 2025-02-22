@@ -116,11 +116,15 @@ export const useAuthGuard = ({
       localStorage.setItem("accessToken", response.data.accessToken);
       localStorage.setItem("refreshToken", response.data.refreshToken);
 
-      console.log("Login Successful");
       mutate();
     } catch (err) {
       const errors = err.response?.data as HttpErrorResponse;
       console.log("Login Error:", errors);
+
+      if (errors?.status === 401) {
+        errors.message = "Invalid email or password.";
+      }
+
       onError(errors);
     }
   };

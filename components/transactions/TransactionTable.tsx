@@ -68,7 +68,6 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
     sortFunctions[sortParams ?? "default"] || (() => 0)
   );
 
- 
   const startIndex = (currentPage - 1) * PAGE_SIZE;
   const paginatedTransactions = sortedTransactions.slice(
     startIndex,
@@ -99,7 +98,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
             <TableRow
               key={transaction.id}
               className={`${
-                transaction.type === "INCOME" ? "bg-green-300" : ""
+                transaction.type === "INCOME" ? "bg-pale-mint" : ""
               }`}
             >
               <TableCell>{transaction.account?.name}</TableCell>
