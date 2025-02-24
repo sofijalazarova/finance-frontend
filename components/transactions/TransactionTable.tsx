@@ -78,6 +78,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
 
   return (
     // <div className="overflow-x-auto max-h-[500px]">
+
     <div>
       <Table>
         <TableHeader>

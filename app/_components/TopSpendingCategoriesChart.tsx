@@ -17,7 +17,11 @@ const TopSpendingCategoriesChart = () => {
     return <Loading />;
   }
 
-  const categoryTotals = transactions.reduce((acc, transaction) => {
+  const expenseTransactions = transactions.filter(
+    (transaction) => transaction.type === "EXPENSE"
+  );
+
+  const categoryTotals = expenseTransactions.reduce((acc, transaction) => {
     const category = transaction.category?.name;
     acc[category] = (acc[category] || 0) + transaction.amount;
     return acc;
@@ -33,12 +37,13 @@ const TopSpendingCategoriesChart = () => {
       <h2 className="text-xl font-bold mb-2">Top Spending Categories</h2>
       <p className="text-gray-600 mb-4">See where you spend the most.</p>
       <ResponsiveContainer width="100%" height={300}>
-        <BarChart layout="vertical" data={data}>
-          <XAxis type="number" />
-          <YAxis dataKey="category" type="category" />
+        <BarChart data={data}>
+          <XAxis dataKey="category" />
+
+          <YAxis type="number" />
           <Tooltip />
           <Legend />
-          <Bar dataKey="total" fill="#FF8042" />
+          <Bar dataKey="total" fill="#FF8042" barSize={40} />
         </BarChart>
       </ResponsiveContainer>
     </div>

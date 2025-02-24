@@ -30,11 +30,6 @@ export const useAuthGuard = ({
         }
       }
 
-      // if (!refreshToken) {
-      //   console.error("No refresh token found");
-      //   return;
-      // }
-
       const response = await httpClient.get("/api/auth/me", {
         headers: {
           Authorization: `Bearer ${accessToken}`,
@@ -87,7 +82,7 @@ export const useAuthGuard = ({
     revalidateOnFocus: true,
     revalidateIfStale: true,
     revalidateOnReconnect: true,
-    shouldRetryOnError: false,
+    shouldRetryOnError: true,
   });
 
   const login = async ({

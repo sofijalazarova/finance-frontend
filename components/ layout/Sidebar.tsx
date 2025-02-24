@@ -43,7 +43,7 @@ export default function Sidebar() {
                     return (
                       <div
                         key={account.id}
-                        className="flex justify-between items-center text-white hover:bg-dark-slate p-4 transition duration-150 rounded-lg"
+                        className="flex justify-between items-center text-white hover:bg-emerald-700 p-4 transition duration-150 rounded-lg"
                       >
                         <p>{account.name}</p>
                         <p>${account.balance}</p>

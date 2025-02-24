@@ -17,7 +17,7 @@ const Analytics = () => {
           <div className="border p-2 bg-white border-vibrant-mint-green col-span-3 row-span-3 rounded-3xl flex justify-center">
             <SpendingTrendChart />
           </div>
-          <div className=" border bg-white border-vibrant-mint-green col-span-2 row-span-3 rounded-3xl flex flex-col md:flex-row  items-center px-8 justify-center  shadow-lg">
+          <div className="border bg-white border-vibrant-mint-green col-span-2 row-span-3 rounded-3xl flex flex-col md:flex-row  items-center  justify-center  ">
             <TopSpendingCategoriesChart />
           </div>
           <div className="border p-2 md:px-10 bg-white border-vibrant-mint-green row-span-3  col-span-5 rounded-3xl flex justify-center items-center">
