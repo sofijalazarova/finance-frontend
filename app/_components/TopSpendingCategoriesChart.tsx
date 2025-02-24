@@ -18,7 +18,7 @@ const TopSpendingCategoriesChart = () => {
   }
 
   const categoryTotals = transactions.reduce((acc, transaction) => {
-    const category = transaction.category.name;
+    const category = transaction.category?.name;
     acc[category] = (acc[category] || 0) + transaction.amount;
     return acc;
   }, {});

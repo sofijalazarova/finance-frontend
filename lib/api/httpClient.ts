@@ -33,15 +33,13 @@ httpClient.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem("refreshToken");
         if (!refreshToken) {
-          console.error("No refresh token found, redirecting to login...");
-          window.location.href = "/sign-in";
-          return Promise.reject(error);
+          throw new Error("Нема освежен токен");
         }
 
         const response = await axios.post(
-          "http://localhost:8080/api/auth/refreshToken",
+          "http://localhost:8080/api/auth/refresh",
           {
-            refreshToken: refreshToken,
+            refreshToken,
           }
         );
 

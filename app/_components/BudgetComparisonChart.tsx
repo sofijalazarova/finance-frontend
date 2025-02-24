@@ -26,7 +26,7 @@ const BudgetComparisonChart = () => {
 
   const data = categoryBudgets.map((budget) => {
     const totalSpent = transactions
-      .filter((t) => t.category.id === budget.category.id)
+      .filter((t) => t.category?.id === budget.category.id)
       .reduce((sum, t) => sum + t.amount, 0);
 
     return {

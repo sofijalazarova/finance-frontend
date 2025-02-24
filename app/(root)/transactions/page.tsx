@@ -6,9 +6,17 @@ import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import TransactionTable from "@/components/transactions/TransactionTable";
 import FilterTransactions from "@/app/_components/FilterTransactions";
 import SortTransactions from "@/app/_components/SortTransactions";
+import { useAuthGuard } from "@/lib/auth/useAuth";
+import Loading from "@/app/_components/Loading";
 
 const Transactions = () => {
   const { data: transactions = [] } = useTransactionsQuery();
+
+  const { user } = useAuthGuard({ middleware: "auth" });
+
+  if (!user) {
+    return <Loading />;
+  }
 
   return (
     <div className="max-w-9xl mx-auto h-screen flex flex-col">

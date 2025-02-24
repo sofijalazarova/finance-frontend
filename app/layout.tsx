@@ -1,18 +1,9 @@
 import "@/app/_styles/globals.css";
 
 import { Roboto, Inter, Poppins } from "next/font/google";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {ReactQueryDevtools} from "@tanstack/react-query-devtools";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import ReactQueryProvider from "@/utils/ReactQueryProvider";
 import { Toaster } from "react-hot-toast";
-
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 0
-    }
-  }
-});
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -40,17 +31,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    
     <html lang="en">
       <body
         className={`${inter.variable} ${poppins.variable} ${roboto.variable} bg-ice-white`}
       >
         <ReactQueryProvider>
-          <ReactQueryDevtools/>
-          <Toaster/>
-          {children}</ReactQueryProvider>
+          <ReactQueryDevtools />
+          <Toaster />
+          {children}
+        </ReactQueryProvider>
       </body>
     </html>
-    
   );
 }

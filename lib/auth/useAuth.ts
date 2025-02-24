@@ -20,9 +20,20 @@ export const useAuthGuard = ({
       const accessToken = localStorage.getItem("accessToken");
       const refreshToken = localStorage.getItem("refreshToken");
 
-      if (!accessToken || !refreshToken) {
-        throw new Error("No tokens found");
+      if (!accessToken) {
+        console.log("No access token found. User is not logged in.");
+
+        if (!refreshToken) {
+          console.error("No refresh token found");
+          router.replace("/sign-in");
+          return;
+        }
       }
+
+      // if (!refreshToken) {
+      //   console.error("No refresh token found");
+      //   return;
+      // }
 
       const response = await httpClient.get("/api/auth/me", {
         headers: {
@@ -35,58 +46,47 @@ export const useAuthGuard = ({
       }
     } catch (error: any) {
       console.error("Error fetching user:", error);
+      console.log("Access token expired. Trying to refresh...");
 
-      if (error.response?.status === 401) {
-        console.log("Access token expired. Trying to refresh...");
+      try {
+        const refreshResponse = await axios.post(
+          "http://localhost:8080/api/auth/refresh",
+          { refreshToken: localStorage.getItem("refreshToken") },
+          { withCredentials: true }
+        );
 
-        try {
-          const refreshResponse = await axios.post(
-            "http://localhost:8080/api/auth/refresh",
-            { refreshToken: localStorage.getItem("refreshToken") },
-            {
-              headers: {
-                "Content-Type": "application/json",
-              },
-              withCredentials: true,
-            }
-          );
+        console.log("New access token received:", refreshResponse.data);
 
-          console.log("New access token received:", refreshResponse.data);
+        localStorage.setItem("accessToken", refreshResponse.data.accessToken);
+        localStorage.setItem("refreshToken", refreshResponse.data.refreshToken);
 
-          localStorage.setItem("accessToken", refreshResponse.data.accessToken);
-          localStorage.setItem(
-            "refreshToken",
-            refreshResponse.data.refreshToken
-          );
+        mutate();
 
-          const retryResponse = await httpClient.get("/api/auth/me", {
-            headers: {
-              Authorization: `Bearer ${refreshResponse.data.accessToken}`,
-            },
-          });
+        const retryResponse = await httpClient.get("/api/auth/me", {
+          headers: {
+            Authorization: `Bearer ${refreshResponse.data.accessToken}`,
+          },
+        });
 
-          return retryResponse.data;
-        } catch (refreshError) {
-          console.error("Refresh token is invalid. Logging out...");
-          localStorage.removeItem("accessToken");
-          localStorage.removeItem("refreshToken");
-          window.location.href = "/sign-in";
-          throw refreshError;
-        }
+        return retryResponse.data;
+      } catch (refreshError) {
+        console.error("Refresh token is invalid. Logging out...");
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        router.replace("/sign-in");
+        return null;
       }
-
-      throw error;
     }
-  }, []);
+  }, [router]);
 
   const {
     data: user,
     error,
     mutate,
   } = useSWR("/api/auth/me", fetchUser, {
-    revalidateOnFocus: false,
-    revalidateIfStale: false,
-    revalidateOnReconnect: false,
+    revalidateOnFocus: true,
+    revalidateIfStale: true,
+    revalidateOnReconnect: true,
     shouldRetryOnError: false,
   });
 
@@ -130,40 +130,41 @@ export const useAuthGuard = ({
   };
 
   const logout = async () => {
-    const refreshToken = localStorage.getItem("refreshToken");
-
-    if (!refreshToken) {
-      console.warn("No refresh token found");
-    } else {
+    try {
       await axios.post(
         "http://localhost:8080/api/auth/logout",
-        { refreshToken: refreshToken },
+        {},
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
           withCredentials: true,
         }
       );
-      mutate();
-      window.location.pathname = "/sign-in";
+    } catch (error) {
+      console.error("Logout failed:", error);
     }
 
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-
+    mutate();
     router.replace("/sign-in");
   };
 
   useEffect(() => {
-    if (middleware === "guest" && redirectIfAuthenticated && user?.id) {
-      console.log("Redirecting to:", redirectIfAuthenticated);
-      router.replace(redirectIfAuthenticated);
-    } else if (middleware === "auth" && error) {
-      console.error("Authentication failed:", error);
+    const interval = setInterval(() => {
+      mutate();
+    }, 60000);
+
+    return () => clearInterval(interval);
+  }, [mutate]);
+
+  useEffect(() => {
+    if (middleware === "guest" && redirectIfAuthenticated && user) {
+      router.push(redirectIfAuthenticated);
+    }
+
+    if (middleware === "auth" && error) {
       logout();
     }
-  }, [middleware, redirectIfAuthenticated, user, error, router]);
+  }, [user, error]);
 
   return { user, login, mutate, logout };
 };

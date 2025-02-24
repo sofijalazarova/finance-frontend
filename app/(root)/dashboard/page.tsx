@@ -5,10 +5,16 @@ import Balance from "@/components/dashboard/Balance";
 import MontlyBudget from "@/components/dashboard/MontlyBudget";
 import TableDashboard from "@/components/dashboard/TableDashboard";
 import TransactionsTable from "@/components/transactions/TransactionsTable";
+import { useAuthGuard } from "@/lib/auth/useAuth";
 
 import React from "react";
 
 const Dashboard = () => {
+  const { user } = useAuthGuard({ middleware: "auth" });
+
+  if (!user) {
+  }
+
   return (
     <>
       <div className="max-w-9xl h-screen mx-auto flex flex-col">
