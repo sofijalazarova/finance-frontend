@@ -10,6 +10,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import AddSaving from "@/app/_components/AddSaving";
 import SavingGoal from "@/components/savings/SavingGoal";
 import Money from "@/components/savings/Money";
+import SavingsChart from "@/app/_components/SavingGoalChart";
 
 export interface SavingGoalType {
   id: number;
@@ -56,6 +57,9 @@ const Savings: React.FC = () => {
               <Money amount={10} />
               <Money amount={20} />
               <Money amount={50} />
+            </div>
+            <div className="mt-10">
+              <SavingsChart />
             </div>
           </div>
         </div>

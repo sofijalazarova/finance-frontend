@@ -77,15 +77,13 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
   const totalCount = newData.length;
 
   return (
-    // <div className="overflow-x-auto max-h-[500px]">
-
     <div>
       <Table>
         <TableHeader>
           <TableRow>
             <TableHead className="w-[150px]">Account</TableHead>
             <TableHead className="min-w-[100px]">Name</TableHead>
-            {/* <TableHead className="min-w-[150px]">Description</TableHead> */}
+
             <TableHead className="w-[180px]">Category</TableHead>
             <TableHead className="w-[120px] text-right">Amount</TableHead>
             <TableHead className="w-[250px] text-right whitespace-nowrap">
@@ -104,7 +102,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({
             >
               <TableCell>{transaction.account?.name}</TableCell>
               <TableCell>{transaction.name}</TableCell>
-              {/* <TableCell>{transaction.description}</TableCell> */}
+
               <TableCell>
                 {transaction.category?.emoji}
                 {transaction.category?.name}

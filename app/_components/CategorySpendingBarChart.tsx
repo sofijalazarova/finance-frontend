@@ -9,31 +9,16 @@ import {
 } from "recharts";
 import Loading from "./Loading";
 
-const COLORS = [
-  "#0088FE",
-  "#00C49F",
-  "#FFBB28",
-  "#FF8042",
-  "#A28DFF",
-  "#FF6384",
-];
-
 const getRandomColor = () => {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
 };
 
 export default function CategorySpendingBarChart() {
-  const { data: transactions } = useTransactionsQuery();
+  const { data: transactions, isLoading } = useTransactionsQuery();
 
   if (!transactions) {
     return <Loading />;
   }
-
-  // const categoryTotals = transactions.reduce((acc, transaction) => {
-  //   const category = transaction.category?.name;
-  //   acc[category] = (acc[category] || 0) + transaction.amount;
-  //   return acc;
-  // }, {});
 
   const categoryTotals = transactions
     .filter((transaction) => transaction.type === "EXPENSE") // Филтрирај само expenses
@@ -56,26 +41,28 @@ export default function CategorySpendingBarChart() {
           Expenses by Category
         </h2>
 
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={chartData}
-              dataKey="value"
-              nameKey="name"
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              fill="#8884d8"
-              label
-            >
-              {chartData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip />
-            <Legend />
-          </PieChart>
-        </ResponsiveContainer>
+        {!isLoading && (
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={chartData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                fill="#8884d8"
+                label
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        )}
       </div>
     </div>
   );

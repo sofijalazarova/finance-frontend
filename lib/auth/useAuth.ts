@@ -55,8 +55,6 @@ export const useAuthGuard = ({
         localStorage.setItem("accessToken", refreshResponse.data.accessToken);
         localStorage.setItem("refreshToken", refreshResponse.data.refreshToken);
 
-        mutate();
-
         const retryResponse = await httpClient.get("/api/auth/me", {
           headers: {
             Authorization: `Bearer ${refreshResponse.data.accessToken}`,
@@ -124,7 +122,7 @@ export const useAuthGuard = ({
     }
   };
 
-  const logout = async () => {
+  const logout = useCallback(async () => {
     try {
       await axios.post(
         "http://localhost:8080/api/auth/logout",
@@ -141,7 +139,7 @@ export const useAuthGuard = ({
     localStorage.removeItem("refreshToken");
     mutate();
     router.replace("/sign-in");
-  };
+  }, [mutate, router]);
 
   useEffect(() => {
     const interval = setInterval(() => {

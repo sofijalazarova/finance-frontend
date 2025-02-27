@@ -1,11 +1,52 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/public/logo.png";
 
+import { Link as ScrollLink } from "react-scroll";
+
+const navLinks = [
+  {
+    id: "hero",
+    title: "Home",
+  },
+  {
+    id: "features",
+    title: "Features",
+  },
+  {
+    id: "contact",
+    title: "Contact",
+  },
+];
+
 const Header = () => {
+  const [active, setActive] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      if (scrollTop > 100) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <header className="w-full flex items-center fixed top-0 z-20">
+    <header
+      className={`w-full flex items-center fixed top-0 z-20 ${
+        scrolled ? "bg-white" : "bg-transparent"
+      }`}
+    >
       <div className="flex items-center justify-between w-full px-8 py-4 max-w-7xl mx-auto">
         <div className="flex items-center">
           <Link href="/">
@@ -14,21 +55,20 @@ const Header = () => {
         </div>
 
         <nav className="flex items-center space-x-20 font-medium text-lg">
-          <Link href="/" className="text-green-700 font-bold hover:underline">
-            Home
-          </Link>
-          <Link
-            href="features"
-            className="text-gray-600 hover:text-green-700 hover:underline"
-          >
-            Features
-          </Link>
-          <Link
-            href="contact"
-            className="text-gray-600 hover:text-green-700 hover:underline"
-          >
-            Contact
-          </Link>
+          {navLinks.map((nav) => (
+            <ScrollLink
+              key={nav.id}
+              to={nav.id} // Scroll до секцијата со истиот ID
+              smooth={true}
+              duration={500}
+              className={`${
+                active === nav.title ? "text-black" : "text-green-700"
+              } hover:text-black text-[18px] font-medium cursor-pointer`}
+              onClick={() => setActive(nav.title)}
+            >
+              {nav.title}
+            </ScrollLink>
+          ))}
         </nav>
 
         <div className="flex items-center space-x-4">
