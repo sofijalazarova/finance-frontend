@@ -1,5 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import loginImage from "@/public/login.png";
+import { useAuthGuard } from "@/lib/auth/useAuth";
 
 export default function RootLayout({
   children,

@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import Modal from "./Modal";
+import Modal from "../../components/ui/Modal";
 import CreateAccountForm from "./CreateAccountForm";
 
 function AddAccount() {

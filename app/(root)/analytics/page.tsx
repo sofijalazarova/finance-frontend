@@ -1,10 +1,10 @@
 "use client";
 
-import BudgetComparisonChart from "@/app/_components/BudgetComparisonChart";
-import BudgetDonutChart from "@/app/_components/BudgetDonutChart";
-import CategorySpendingBarChart from "@/app/_components/CategorySpendingBarChart";
-import SpendingTrendChart from "@/app/_components/SpendingTrendChart";
-import TopSpendingCategoriesChart from "@/app/_components/TopSpendingCategoriesChart";
+import BudgetComparisonChart from "@/components/analytics/BudgetComparisonChart";
+import BudgetDonutChart from "@/components/analytics/BudgetDonutChart";
+import CategorySpendingBarChart from "@/components/analytics/CategorySpendingBarChart";
+import SpendingTrendChart from "@/components/analytics/SpendingTrendChart";
+import TopSpendingCategoriesChart from "@/components/analytics/TopSpendingCategoriesChart";
 
 const Analytics = () => {
   return (

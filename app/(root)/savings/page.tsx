@@ -7,10 +7,10 @@ import { useSavingsQuery } from "@/lib/queries/useSavingsQuery";
 import { updateSavingGoal } from "@/lib/api/data-service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-import AddSaving from "@/app/_components/AddSaving";
 import SavingGoal from "@/components/savings/SavingGoal";
 import Money from "@/components/savings/Money";
-import SavingsChart from "@/app/_components/SavingGoalChart";
+import SavingsChart from "@/components/savings/SavingGoalChart";
+import AddSaving from "@/components/savings/AddSaving";
 
 export interface SavingGoalType {
   id: number;
@@ -69,61 +69,3 @@ const Savings: React.FC = () => {
 };
 
 export default Savings;
-
-// const Savings: React.FC = () => {
-//   const { data: savings } = useSavingsQuery();
-//   const queryClient = useQueryClient();
-
-//   const { mutate, isLoading } = useMutation({
-//     mutationFn: ({ goalId, amount }: { goalId: number; amount: number }) =>
-//       updateSavingGoal(goalId, amount),
-//     onSuccess: () => {
-//       queryClient.invalidateQueries({ queryKey: ["savings"] });
-//     },
-//   });
-
-//   const handleDrop = (goalId: number, amount: number) => {
-//     mutate({ goalId, amount });
-//   };
-
-//   return (
-//     <DndProvider backend={HTML5Backend}>
-//       <div className="max-w-5xl mx-auto flex flex-col min-h-screen py-10 px-6">
-//         {/* HEADER */}
-//         <div className="flex items-center justify-between mb-6">
-//           <h2 className="text-3xl font-bold text-gray-800">💰 Savings Goals</h2>
-//           <AddSaving />
-//         </div>
-
-//         {/* GOALS */}
-//         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-//           {savings?.map((goal: SavingGoalType) => (
-//             <SavingGoal key={goal.id} goal={goal} onDrop={handleDrop} />
-//           ))}
-//         </div>
-
-//         {/* MONEY BUTTONS */}
-//         <div className="flex justify-center mt-10 space-x-4">
-//           {[5, 10, 20, 50].map((amount) => (
-//             <button
-//               key={amount}
-//               className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:scale-105 hover:shadow-lg transition-all"
-//               onClick={() => console.log(`Dropped $${amount}`)}
-//             >
-//               ${amount}
-//             </button>
-//           ))}
-//         </div>
-
-//         {/* LOADING SPINNER */}
-//         {isLoading && (
-//           <div className="flex justify-center mt-4">
-//             <div className="w-6 h-6 border-4 border-t-transparent border-green-500 rounded-full animate-spin"></div>
-//           </div>
-//         )}
-//       </div>
-//     </DndProvider>
-//   );
-// };
-
-// export default Savings;

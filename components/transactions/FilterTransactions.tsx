@@ -8,7 +8,7 @@ import {
 import { useCategoriesQuery } from "@/lib/queries/useCategoriesQuery";
 import { useRouter, useSearchParams } from "next/navigation";
 import { FC } from "react";
-import Loading from "./Loading";
+import Loading from "../../app/_components/Loading";
 
 const FilterTransactions: FC = () => {
   const router = useRouter();

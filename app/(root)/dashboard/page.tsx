@@ -1,6 +1,7 @@
 "use client";
 
-import CategorySpendingBarChart from "@/app/_components/CategorySpendingBarChart";
+import Loading from "@/app/_components/Loading";
+import CategorySpendingBarChart from "@/components/analytics/CategorySpendingBarChart";
 import Balance from "@/components/dashboard/Balance";
 import MontlyBudget from "@/components/dashboard/MontlyBudget";
 import TableDashboard from "@/components/dashboard/TableDashboard";
@@ -13,6 +14,7 @@ const Dashboard = () => {
   const { user } = useAuthGuard({ middleware: "auth" });
 
   if (!user) {
+    return <Loading />;
   }
 
   return (

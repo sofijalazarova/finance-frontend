@@ -20,6 +20,11 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 
 export default function AuthForm({ type }: { type: string }) {
+  const { login, isLoading: isUserLoading } = useAuthGuard({
+    middleware: "guest",
+    redirectIfAuthenticated: "/dashboard",
+  });
+
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState<HttpErrorResponse | undefined>(
     undefined
@@ -28,11 +33,6 @@ export default function AuthForm({ type }: { type: string }) {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const router = useRouter();
-
-  const { login } = useAuthGuard({
-    middleware: "guest",
-    redirectIfAuthenticated: "/dashboard",
-  });
 
   const formSchema = authFormSchema(type);
 
@@ -57,8 +57,6 @@ export default function AuthForm({ type }: { type: string }) {
       }
 
       if (type === "sign-in") {
-        console.log(data);
-
         login({
           onError: (errors) => {
             setErrors(errors);

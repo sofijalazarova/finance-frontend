@@ -1,6 +1,6 @@
-import Modal from "@/app/_components/Modal";
+import Modal from "@/components/ui/Modal";
 import { MdDeleteOutline } from "react-icons/md";
-import ConfirmDelete from "@/app/_components/ConfirmDelete";
+import ConfirmDelete from "@/components/ui/ConfirmDelete";
 import { useDeleteSaving } from "@/lib/queries/useDeleteSaving";
 import { useRef, useState } from "react";
 import { CheckCircle } from "lucide-react";

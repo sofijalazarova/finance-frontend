@@ -1,3 +1,4 @@
+import Loading from "@/app/_components/Loading";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import {
   BarChart,
@@ -8,7 +9,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import Loading from "./Loading";
 
 const TopSpendingCategoriesChart = () => {
   const { data: transactions } = useTransactionsQuery();

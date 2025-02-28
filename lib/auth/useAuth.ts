@@ -76,6 +76,7 @@ export const useAuthGuard = ({
     data: user,
     error,
     mutate,
+    isLoading,
   } = useSWR("/api/auth/me", fetchUser, {
     revalidateOnFocus: true,
     revalidateIfStale: true,
@@ -150,14 +151,28 @@ export const useAuthGuard = ({
   }, [mutate]);
 
   useEffect(() => {
-    if (middleware === "guest" && redirectIfAuthenticated && user) {
+    if (
+      !isLoading &&
+      middleware === "guest" &&
+      redirectIfAuthenticated &&
+      user !== undefined &&
+      user !== null
+    ) {
       router.push(redirectIfAuthenticated);
     }
 
     if (middleware === "auth" && error) {
       logout();
     }
-  }, [user, error]);
+  }, [
+    isLoading,
+    user,
+    error,
+    logout,
+    middleware,
+    redirectIfAuthenticated,
+    router,
+  ]);
 
-  return { user, login, mutate, logout };
+  return { user, login, mutate, logout, isLoading };
 };

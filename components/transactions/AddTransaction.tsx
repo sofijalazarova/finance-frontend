@@ -1,4 +1,4 @@
-import Modal from "@/app/_components/Modal";
+import Modal from "@/components/ui/Modal";
 import AddTransactionForm from "./AddTransactionForm";
 
 function AddTransaction() {

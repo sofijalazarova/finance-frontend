@@ -7,7 +7,7 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import Loading from "./Loading";
+import Loading from "../../app/_components/Loading";
 
 const getRandomColor = () => {
   return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
@@ -42,7 +42,7 @@ export default function CategorySpendingBarChart() {
         </h2>
 
         {!isLoading && (
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer className="mt-2" width="100%" height={300}>
             <PieChart>
               <Pie
                 data={chartData}
@@ -50,7 +50,7 @@ export default function CategorySpendingBarChart() {
                 nameKey="name"
                 cx="50%"
                 cy="50%"
-                outerRadius={100}
+                outerRadius={90}
                 fill="#8884d8"
                 label
               >

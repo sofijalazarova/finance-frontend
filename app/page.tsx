@@ -1,8 +1,8 @@
-import Hero from "./_components/Hero";
+import Hero from "../components/ui/Hero";
 
-import Highlights from "./_components/Highlights";
+import Highlights from "../components/ui/Highlights";
 import Header from "@/components/ layout/Header";
-import Contact from "./_components/Contact";
+import Contact from "../components/ui/Contact";
 
 export default function Home() {
   return (

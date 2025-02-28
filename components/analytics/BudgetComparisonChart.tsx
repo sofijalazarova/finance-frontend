@@ -1,3 +1,4 @@
+import Loading from "@/app/_components/Loading";
 import { getCategoryBudgets } from "@/lib/api/data-service";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import { useQuery } from "@tanstack/react-query";
@@ -10,7 +11,6 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
-import Loading from "./Loading";
 
 const BudgetComparisonChart = () => {
   const { data: transactions } = useTransactionsQuery();

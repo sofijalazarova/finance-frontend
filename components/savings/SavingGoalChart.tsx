@@ -1,3 +1,4 @@
+import Loading from "@/app/_components/Loading";
 import { useSavingsQuery } from "@/lib/queries/useSavingsQuery";
 import { format, parseISO } from "date-fns";
 import {
@@ -9,7 +10,6 @@ import {
   Scatter,
   LabelList,
 } from "recharts";
-import Loading from "./Loading";
 
 const SavingsChart: React.FC = () => {
   const { data: savings } = useSavingsQuery();
@@ -20,12 +20,12 @@ const SavingsChart: React.FC = () => {
 
   const chartData = savings
     .map((goal) => ({
-      date: goal.targetDate, // Оригинален датум за сортирање
-      formattedDate: format(parseISO(goal.targetDate), "yyyy-MM-dd"), // Форматиран за прикажување
+      date: goal.targetDate,
+      formattedDate: format(parseISO(goal.targetDate), "yyyy-MM-dd"),
       targetAmount: goal.targetAmount,
-      name: goal.name, // Додаваме име на saving goal
+      name: goal.name,
     }))
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()); // Сортирање хронолошки
+    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return (
     <div className="w-full h-[350px]">

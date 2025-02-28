@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/table";
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
-import Modal from "@/app/_components/Modal";
+import Modal from "@/components/ui/Modal";
 import { MdDeleteOutline } from "react-icons/md";
-import ConfirmDelete from "@/app/_components/ConfirmDelete";
+import ConfirmDelete from "@/components/ui/ConfirmDelete";
 import { useDeleteTransaction } from "@/lib/queries/useDeleteTransaction";
 import { useSearchParams } from "next/navigation";
-import Pagination from "@/app/_components/Pagination";
+import Pagination from "@/components/ui/Pagination";
 
 type TransactionTableProps = {
   transactions: TransactionModel[];
