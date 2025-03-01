@@ -70,6 +70,7 @@ export default function AddTransactionForm({
       category_id: Number(data.category_id),
       account_id: Number(data.account_id),
     };
+    console.log(formData);
     mutate(formData);
     onCloseModal?.();
   }
@@ -160,7 +161,7 @@ export default function AddTransactionForm({
           <TransactionInput
             control={form.control}
             name="description"
-            label="Description"
+            label="Description (Optional)"
             placeholder=""
           />
           <FormField

@@ -50,7 +50,7 @@ export const addAccount = async (data: AccountModel) => {
   }
 };
 
-export const addTransaction = async (data: TransactionModel) => {
+export const addTransaction = async (data: any) => {
   try {
     const response = await httpClient.post("/api/transaction/add", data);
     return response.data;
@@ -152,5 +152,14 @@ export const addSavingGoal = async (data: CreateSavingModel) => {
     await httpClient.post("/api/savings", data);
   } catch (error) {
     console.error("Error adding new saving goal", error);
+  }
+};
+
+export const getPercentage = async () => {
+  try {
+    const response = await httpClient.get("/api/budget/budgetPercentage");
+    return response.data;
+  } catch (error) {
+    console.error("Error getting budget percentage.", error);
   }
 };

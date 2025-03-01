@@ -78,7 +78,7 @@ const TableDashboard = () => {
           </p>
           <AddCategory />
         </div>
-        <div className="flex font-roboto text-slate-gray space-x-3 mr-8">
+        <div className="flex font-roboto text-slate-gray space-x-3 mr-6">
           <p>Assigned</p>
           <p>Available</p>
         </div>

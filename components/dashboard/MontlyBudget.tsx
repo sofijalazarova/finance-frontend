@@ -1,4 +1,4 @@
-import { fetchBudget } from "@/lib/api/data-service";
+import { fetchBudget, getPercentage } from "@/lib/api/data-service";
 import { useQuery } from "@tanstack/react-query";
 
 import { format, startOfMonth, endOfMonth } from "date-fns";
@@ -10,6 +10,13 @@ const MontlyBudget = () => {
     queryKey: ["budget"],
     queryFn: fetchBudget,
   });
+
+  const { data: percentage } = useQuery({
+    queryKey: ["budgetPercentage"],
+    queryFn: getPercentage,
+  });
+
+  console.log(percentage);
 
   const today = new Date();
   const startDate = format(startOfMonth(today), "MMM dd, yyyy");
@@ -43,7 +50,10 @@ const MontlyBudget = () => {
           )}
         </div>
         <p className="text-emerald-green text-sm">
-          <span className="font-bold">+9,5%</span> compared to last month
+          <span className="font-bold">
+            {percentage > 0 ? `+${percentage}%` : `${percentage}%`}
+          </span>{" "}
+          compared to last month
         </p>
       </div>
     </div>
