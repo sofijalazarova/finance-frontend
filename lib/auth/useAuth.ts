@@ -15,6 +15,63 @@ export const useAuthGuard = ({
 }: AuthProps) => {
   const router = useRouter();
 
+  // const fetchUser = useCallback(async () => {
+  //   try {
+  //     const accessToken = localStorage.getItem("accessToken");
+  //     const refreshToken = localStorage.getItem("refreshToken");
+
+  //     if (!accessToken) {
+  //       console.log("No access token found. User is not logged in.");
+
+  //       if (!refreshToken) {
+  //         console.error("No refresh token found");
+  //         router.replace("/sign-in");
+  //         return;
+  //       }
+  //     }
+
+  //     const response = await httpClient.get("/api/auth/me", {
+  //       headers: {
+  //         Authorization: `Bearer ${accessToken}`,
+  //       },
+  //     });
+
+  //     if (response.status === 200) {
+  //       return response.data;
+  //     }
+  //   } catch (error: any) {
+  //     console.error("Error fetching user:", error);
+  //     console.log("Access token expired. Trying to refresh...");
+
+  //     try {
+  //       const refreshResponse = await axios.post(
+  //         "http://localhost:8080/api/auth/refresh",
+  //         { refreshToken: localStorage.getItem("refreshToken") },
+  //         { withCredentials: true }
+  //       );
+
+  //       console.log("New access token received:", refreshResponse.data);
+
+  //       localStorage.setItem("accessToken", refreshResponse.data.accessToken);
+  //       localStorage.setItem("refreshToken", refreshResponse.data.refreshToken);
+
+  //       const retryResponse = await httpClient.get("/api/auth/me", {
+  //         headers: {
+  //           Authorization: `Bearer ${refreshResponse.data.accessToken}`,
+  //         },
+  //       });
+
+  //       return retryResponse.data;
+  //     } catch (refreshError) {
+  //       console.error("Refresh token is invalid. Logging out...");
+  //       localStorage.removeItem("accessToken");
+  //       localStorage.removeItem("refreshToken");
+  //       router.replace("/sign-in");
+  //       return null;
+  //     }
+  //   }
+  // }, [router]);
+
   const fetchUser = useCallback(async () => {
     try {
       const accessToken = localStorage.getItem("accessToken");
@@ -26,7 +83,7 @@ export const useAuthGuard = ({
         if (!refreshToken) {
           console.error("No refresh token found");
           router.replace("/sign-in");
-          return;
+          return null;
         }
       }
 
@@ -36,12 +93,14 @@ export const useAuthGuard = ({
         },
       });
 
-      if (response.status === 200) {
-        return response.data;
-      }
+      return response.data;
     } catch (error: any) {
       console.error("Error fetching user:", error);
-      console.log("Access token expired. Trying to refresh...");
+
+      if (!localStorage.getItem("refreshToken")) {
+        router.replace("/sign-in");
+        return null;
+      }
 
       try {
         const refreshResponse = await axios.post(
@@ -50,18 +109,10 @@ export const useAuthGuard = ({
           { withCredentials: true }
         );
 
-        console.log("New access token received:", refreshResponse.data);
-
         localStorage.setItem("accessToken", refreshResponse.data.accessToken);
         localStorage.setItem("refreshToken", refreshResponse.data.refreshToken);
 
-        const retryResponse = await httpClient.get("/api/auth/me", {
-          headers: {
-            Authorization: `Bearer ${refreshResponse.data.accessToken}`,
-          },
-        });
-
-        return retryResponse.data;
+        return refreshResponse.data.user;
       } catch (refreshError) {
         console.error("Refresh token is invalid. Logging out...");
         localStorage.removeItem("accessToken");
@@ -78,10 +129,11 @@ export const useAuthGuard = ({
     mutate,
     isLoading,
   } = useSWR("/api/auth/me", fetchUser, {
-    revalidateOnFocus: true,
-    revalidateIfStale: true,
-    revalidateOnReconnect: true,
+    revalidateOnFocus: false,
+    revalidateIfStale: false,
+    revalidateOnReconnect: false,
     shouldRetryOnError: true,
+    refreshInterval: 300000,
   });
 
   const login = async ({
@@ -141,14 +193,6 @@ export const useAuthGuard = ({
     mutate();
     router.replace("/sign-in");
   }, [mutate, router]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      mutate();
-    }, 60000);
-
-    return () => clearInterval(interval);
-  }, [mutate]);
 
   useEffect(() => {
     if (

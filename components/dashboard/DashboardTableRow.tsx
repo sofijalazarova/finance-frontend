@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
+import { archiveCategory } from "@/lib/api/data-service";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { FaArchive } from "react-icons/fa";
 
 interface TableRowProps {
   icon: React.ReactNode;
+  id: number;
   category: string;
   available: number;
   assigned: string;
@@ -12,6 +17,7 @@ interface TableRowProps {
 
 const DashboardTableRow: React.FC<TableRowProps> = ({
   icon,
+  id,
   category,
   available,
   assigned,
@@ -19,6 +25,16 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
   totalSpent,
 }) => {
   const [inputValue, setInputValue] = useState(assigned);
+
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: archiveCategory,
+    onSuccess: () => {
+      toast.success("Category successfully archived!");
+      queryClient.invalidateQueries(["categories"]);
+    },
+  });
 
   useEffect(() => {
     setInputValue(assigned);
@@ -29,8 +45,17 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
   };
 
   const handleBlur = () => {
-    onAllocate(category, inputValue);
+    if (Number(inputValue) < 0) {
+      alert("Assigned value cannot be negative!");
+      setInputValue("0");
+    } else {
+      onAllocate(category, inputValue);
+    }
   };
+
+  function archiveCategoryHandler(id: number) {
+    mutate(id);
+  }
 
   const progress =
     Number(assigned) > 0 ? (Number(totalSpent) / Number(assigned)) * 100 : 0;
@@ -38,11 +63,19 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
   return (
     <tr className="focus:outline-none  h-12 border border-gray-100 rounded">
       <td>
-        <div className="flex items-center pl-5 space-x-1">
-          <span>{icon}</span>
-          <p className="text-base font-medium leading-none text-gray-700 mr-2">
-            {category}
-          </p>
+        <div className="flex items-center pl-5 space-x-3">
+          <button
+            onClick={() => archiveCategoryHandler(id)}
+            title="Archive category"
+          >
+            <FaArchive className="text-gray-400" />
+          </button>
+          <div className="flex items-center space-x-1">
+            <span>{icon}</span>
+            <p className="text-base font-medium leading-none text-gray-700 mr-2">
+              {category}
+            </p>
+          </div>
         </div>
       </td>
 
@@ -96,6 +129,7 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
               onChange={handleChange}
               onBlur={handleBlur}
             />
+
             <input
               className="w-1/2 ml-2 border bg-green-400 border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600"
               type="text"

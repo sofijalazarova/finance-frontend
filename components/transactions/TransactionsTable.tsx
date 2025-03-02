@@ -2,7 +2,7 @@ import React from "react";
 import AddTransaction from "./AddTransaction";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import Link from "next/link";
-import TransactionTable from "@/components/transactions/TransactionTable"; // ✅ Додадена нова компонента
+import TransactionTable from "@/components/transactions/TransactionTable";
 
 const TransactionsTable = () => {
   const { data: transactions = [] } = useTransactionsQuery();

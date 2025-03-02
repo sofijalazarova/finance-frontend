@@ -17,6 +17,10 @@ const TableDashboard = () => {
     queryFn: fetchBudget,
   });
 
+  const activeCategories = categories?.filter(
+    (category) => !category.isArchived
+  );
+
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
@@ -56,7 +60,7 @@ const TableDashboard = () => {
   });
 
   const handleAllocate = async (categoryName: string, amount: string) => {
-    const category = categories.find((c: any) => c.name === categoryName);
+    const category = activeCategories.find((c: any) => c.name === categoryName);
 
     if (!category) return;
 
@@ -91,8 +95,8 @@ const TableDashboard = () => {
                 <tr>
                   <td className="text-center p-4">Loading categories...</td>
                 </tr>
-              ) : categories?.length > 0 ? (
-                categories.map((category: any) => {
+              ) : activeCategories?.length > 0 ? (
+                activeCategories.map((category: any) => {
                   const assigned =
                     categoryBudgets?.find(
                       (budget: any) => budget.category.id === category.id
@@ -108,6 +112,7 @@ const TableDashboard = () => {
                   return (
                     <DashboardTableRow
                       key={category.id}
+                      id={category.id}
                       icon={category.emoji}
                       category={category.name}
                       onAllocate={handleAllocate}

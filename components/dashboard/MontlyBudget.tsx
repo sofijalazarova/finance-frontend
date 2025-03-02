@@ -16,8 +16,6 @@ const MontlyBudget = () => {
     queryFn: getPercentage,
   });
 
-  console.log(percentage);
-
   const today = new Date();
   const startDate = format(startOfMonth(today), "MMM dd, yyyy");
   const endDate = format(endOfMonth(today), "MMM dd, yyyy");

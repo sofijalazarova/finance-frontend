@@ -163,3 +163,11 @@ export const getPercentage = async () => {
     console.error("Error getting budget percentage.", error);
   }
 };
+
+export const archiveCategory = async (id: number) => {
+  try {
+    await httpClient.put(`/api/category/${id}/archive`);
+  } catch (error) {
+    console.error("Error archiving category");
+  }
+};
