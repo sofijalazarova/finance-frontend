@@ -1,11 +1,11 @@
 "use client";
 
-import { useAuthGuard } from "@/lib/auth/useAuth";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Logo from "@/public/logo.png";
+import { useAuthGuard } from "@/lib/auth/useAuth";
 
 const navLinks = [
   {

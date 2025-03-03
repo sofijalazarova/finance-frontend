@@ -8,8 +8,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
 import { useAccountsQuery } from "@/lib/queries/useAccountsQuery";
+
 import { format } from "date-fns";
 import { enGB } from "date-fns/locale";
 

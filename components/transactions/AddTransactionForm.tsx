@@ -21,7 +21,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addTransaction } from "@/lib/api/data-service";
 import toast from "react-hot-toast";
 import { useCategoryBudgetsQuery } from "@/lib/queries/useCategoryBudgetsQuery";
-import ReceiptScanner from "@/app/_components/ReceiptScanner";
 
 interface CreateBudgetFormProps {
   onCloseModal?: () => void;

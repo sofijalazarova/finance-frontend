@@ -4,12 +4,13 @@ import React from "react";
 
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { MdAccountBalance } from "react-icons/md";
-import { useAuthGuard } from "@/lib/auth/useAuth";
 
 import Navbar from "./Navbar";
 import Link from "next/link";
-import { useAccountsQuery } from "@/lib/queries/useAccountsQuery";
+
 import AddAccount from "../accounts/AddAccount";
+import { useAccountsQuery } from "@/lib/queries/useAccountsQuery";
+import { useAuthGuard } from "@/lib/auth/useAuth";
 
 export default function Sidebar() {
   const { logout } = useAuthGuard({});

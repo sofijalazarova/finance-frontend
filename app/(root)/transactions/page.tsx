@@ -6,10 +6,11 @@ import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import TransactionTable from "@/components/transactions/TransactionTable";
 import FilterTransactions from "@/components/transactions/FilterTransactions";
 import SortTransactions from "@/components/transactions/SortTransactions";
-import { useAuthGuard } from "@/lib/auth/useAuth";
-import Loading from "@/app/_components/Loading";
+
 import { Button } from "@/components/ui/button";
 import * as XLSX from "xlsx";
+import { useAuthGuard } from "@/lib/auth/useAuth";
+import Loading from "@/app/_components/Loading";
 
 const Transactions = () => {
   const { data: transactions = [] } = useTransactionsQuery();

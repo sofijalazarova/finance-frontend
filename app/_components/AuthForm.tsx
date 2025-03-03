@@ -14,13 +14,13 @@ import Link from "next/link";
 import Image from "next/image";
 import googleImage from "@/public/google.svg";
 import Logo from "@/public/logo.png";
-import { useAuthGuard } from "@/lib/auth/useAuth";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useAuthGuard } from "@/lib/auth/useAuth";
 
 export default function AuthForm({ type }: { type: string }) {
-  const { login, isLoading: isUserLoading } = useAuthGuard({
+  const { login } = useAuthGuard({
     middleware: "guest",
     redirectIfAuthenticated: "/dashboard",
   });
@@ -60,7 +60,6 @@ export default function AuthForm({ type }: { type: string }) {
         login({
           onError: (errors) => {
             setErrors(errors);
-
             if (errors) {
               setIsLoading(false);
               setErrorMessage(errors.message || "Invalid email or password.");
