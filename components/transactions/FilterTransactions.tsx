@@ -7,8 +7,8 @@ import {
 } from "@/components/ui/select";
 import { useCategoriesQuery } from "@/lib/queries/useCategoriesQuery";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FC } from "react";
-import Loading from "../../app/_components/Loading";
+import { FC, useMemo } from "react";
+import Loading from "../ui/Loading";
 
 const FilterTransactions: FC = () => {
   const router = useRouter();
@@ -17,7 +17,9 @@ const FilterTransactions: FC = () => {
 
   const { data: categories } = useCategoriesQuery();
 
-  if (!categories) {
+  const memoizedCategories = useMemo(() => categories || [], [categories]);
+
+  if (!memoizedCategories) {
     return <Loading />;
   }
 
@@ -39,7 +41,7 @@ const FilterTransactions: FC = () => {
         </SelectTrigger>
         <SelectContent>
           <SelectItem value="all">All</SelectItem>
-          {categories.map((category: CategoryModel) => (
+          {memoizedCategories.map((category: CategoryModel) => (
             <SelectItem key={category.id} value={category.name}>
               {category.name}
             </SelectItem>

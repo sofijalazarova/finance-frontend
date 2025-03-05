@@ -58,7 +58,7 @@ const Header = () => {
           {navLinks.map((nav) => (
             <ScrollLink
               key={nav.id}
-              to={nav.id} // Scroll до секцијата со истиот ID
+              to={nav.id}
               smooth={true}
               duration={500}
               className={`${

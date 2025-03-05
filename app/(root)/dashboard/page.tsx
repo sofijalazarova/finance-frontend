@@ -1,14 +1,14 @@
 "use client";
 
-import Loading from "@/app/_components/Loading";
+import Loading from "@/components/ui/Loading";
 import CategorySpendingBarChart from "@/components/analytics/CategorySpendingBarChart";
 import Balance from "@/components/dashboard/Balance";
 import MontlyBudget from "@/components/dashboard/MontlyBudget";
-import TableDashboard from "@/components/dashboard/TableDashboard";
-import TransactionsTable from "@/components/transactions/TransactionsTable";
+import TransactionsTable from "@/components/transactions/RecentTransactions";
 import { useAuthGuard } from "@/lib/auth/useAuth";
 
 import React from "react";
+import CategoryTable from "@/components/dashboard/CategoryTable";
 
 const Dashboard = () => {
   const { user } = useAuthGuard({ middleware: "auth" });
@@ -23,7 +23,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-7 grid-rows-6 h-full gap-4 mt-20 mb-10">
           <Balance />
           <div className="border p-2 bg-white border-vibrant-mint-green col-span-5 row-span-4 rounded-3xl flex justify-center">
-            <TableDashboard />
+            <CategoryTable />
           </div>
           <MontlyBudget />
           <CategorySpendingBarChart />

@@ -1,4 +1,4 @@
-import Loading from "@/app/_components/Loading";
+import Loading from "@/components/ui/Loading";
 import { useSavingsQuery } from "@/lib/queries/useSavingsQuery";
 import { format, parseISO } from "date-fns";
 import {

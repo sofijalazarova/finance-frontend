@@ -3,14 +3,14 @@
 import React from "react";
 import AddTransactionForm from "@/components/transactions/AddTransactionForm";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
-import TransactionTable from "@/components/transactions/TransactionTable";
 import FilterTransactions from "@/components/transactions/FilterTransactions";
 import SortTransactions from "@/components/transactions/SortTransactions";
 
 import { Button } from "@/components/ui/button";
 import * as XLSX from "xlsx";
 import { useAuthGuard } from "@/lib/auth/useAuth";
-import Loading from "@/app/_components/Loading";
+import Loading from "@/components/ui/Loading";
+import TransactionsTable from "@/components/transactions/TransactionsTable";
 
 const Transactions = () => {
   const { data: transactions = [] } = useTransactionsQuery();
@@ -45,7 +45,7 @@ const Transactions = () => {
             </div>
             <div className="flex flex-col justify-between pb-14 h-full">
               <div className="overflow-y-auto font-roboto rounded-sm border border-gray-200">
-                <TransactionTable transactions={transactions} />{" "}
+                <TransactionsTable transactions={transactions} />{" "}
               </div>
               <Button
                 className="w-1/5 bg-dark-teal-green"

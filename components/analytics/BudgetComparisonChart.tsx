@@ -1,4 +1,4 @@
-import Loading from "@/app/_components/Loading";
+import Loading from "@/components/ui/Loading";
 import { getCategoryBudgets } from "@/lib/api/data-service";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import { useQuery } from "@tanstack/react-query";

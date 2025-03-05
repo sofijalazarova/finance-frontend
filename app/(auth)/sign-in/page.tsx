@@ -1,6 +1,6 @@
 "use client";
 
-import AuthForm from "@/app/_components/AuthForm";
+import AuthForm from "@/components/auth/AuthForm";
 
 export default function SignIn() {
   return <AuthForm type="sign-in"></AuthForm>;

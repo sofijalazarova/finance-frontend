@@ -2,7 +2,7 @@
 
 import { useAuthGuard } from "@/lib/auth/useAuth";
 import Sidebar from "../../components/ layout/Sidebar";
-import Loading from "../_components/Loading";
+import Loading from "../../components/ui/Loading";
 
 export default function RootLayout({
   children,

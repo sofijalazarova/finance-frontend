@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import Loading from "@/app/_components/Loading";
+import Loading from "@/components/ui/Loading";
 
 const SpendingTrendChart = () => {
   const { data: transactions } = useTransactionsQuery();

@@ -96,19 +96,19 @@ interface allocateItems {
   amount: string;
 }
 
-export const allocateToCategory = async ({
+export const assignToCategory = async ({
   budgetId,
   categoryId,
   amount,
 }: allocateItems) => {
   try {
-    await httpClient.post("/api/budget/allocate", {
+    await httpClient.post("/api/budget/assign", {
       budgetId,
       categoryId,
       amount,
     });
   } catch (error) {
-    console.error("Error allocating budget", error);
+    console.error("Error assigning budget", error);
   }
 };
 

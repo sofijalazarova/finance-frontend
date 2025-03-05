@@ -67,7 +67,7 @@ export default function CreateAccountForm({
             render={({ field }) => (
               <div>
                 <FormLabel className="mb-2 text-md font-light text-gray-600">
-                  Give it a name{" :)"}
+                  Give a name to your account!
                 </FormLabel>
                 <FormControl>
                   <input

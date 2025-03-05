@@ -1,47 +1,134 @@
 import React from "react";
-import AddTransaction from "./AddTransaction";
-import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
-import Link from "next/link";
-import TransactionTable from "@/components/transactions/TransactionTable";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { format } from "date-fns";
+import { enGB } from "date-fns/locale";
+import Modal from "@/components/ui/Modal";
+import { MdDeleteOutline } from "react-icons/md";
+import ConfirmDelete from "@/components/ui/ConfirmDelete";
+import { useDeleteTransaction } from "@/lib/queries/useDeleteTransaction";
+import { useSearchParams } from "next/navigation";
+import Pagination from "@/components/ui/Pagination";
+import { sortFunctions } from "@/utils/sortTransactions";
 
-const TransactionsTable = () => {
-  const { data: transactions = [] } = useTransactionsQuery();
+type TransactionTableProps = {
+  transactions: TransactionModel[];
+};
 
-  const recentTransactions = [...transactions]
-    .sort(
-      (a, b) =>
-        new Date(b.transactionDate).getTime() -
-        new Date(a.transactionDate).getTime()
-    )
-    .slice(0, 3);
+const PAGE_SIZE = 10;
+
+const TransactionsTable: React.FC<TransactionTableProps> = ({
+  transactions,
+}) => {
+  const { deleteTransaction, isDeleting } = useDeleteTransaction();
+
+  const searchParams = useSearchParams();
+  const categoryParams = searchParams.get("category");
+  const sortParams = searchParams.get("sort");
+
+  const currentPage = Number(searchParams.get("page")) || 1;
+
+  const newData = categoryParams
+    ? transactions.filter((i) => i.category?.name === categoryParams)
+    : transactions;
+
+  const sortedTransactions = [...newData].sort(
+    sortFunctions[sortParams ?? "default"] || (() => 0)
+  );
+
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const paginatedTransactions = sortedTransactions.slice(
+    startIndex,
+    startIndex + PAGE_SIZE
+  );
+
+  const totalCount = newData.length;
 
   return (
-    <div className="flex flex-col justify-center h-full w-full">
-      <div className="flex items-center justify-between mb-2 font-inter">
-        <h1 className="focus:outline-none font-roboto text-slate-gray text-base sm:text-lg md:text-lg lg:text-xl font-normal leading-normal">
-          Recent transactions
-        </h1>
-        <div className="flex space-x-2">
-          <div>
-            <AddTransaction />
-          </div>
-          <Link href="transactions">
-            <button className="p-2 border font-inter bg-almost-white rounded-xl border-silver-gray text-gray-700 hover:bg-gray-100 hover:border-gray-400 active:bg-gray-200 transition-all duration-300 ease-in-out">
-              See all
-            </button>
-          </Link>
-        </div>
-      </div>
+    <div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableHead className="w-[150px]">Account</TableHead>
+            <TableHead className="min-w-[100px]">Name</TableHead>
+            <TableHead className="w-[180px]">Category</TableHead>
+            <TableHead className="w-[120px] text-right">Amount</TableHead>
+            <TableHead className="w-[250px] text-right whitespace-nowrap">
+              Date
+            </TableHead>
+          </TableRow>
+        </TableHeader>
 
-      {transactions.length > 0 ? (
-        <div className="w-full max-w-5xl mx-auto bg-white shadow-lg rounded-sm border border-gray-200">
-          <div className="px-3 py-2 w-full font-roboto">
-            <TransactionTable transactions={recentTransactions} />
-          </div>
-        </div>
-      ) : (
-        <div>No transactions added yet!</div>
-      )}
+        <TableBody>
+          {paginatedTransactions.map((transaction) => (
+            <TableRow
+              key={transaction.id}
+              className={`${
+                transaction.type === "INCOME" ? "bg-pale-mint" : ""
+              }`}
+            >
+              <TableCell>{transaction.account?.name}</TableCell>
+              <TableCell>{transaction.name}</TableCell>
+
+              <TableCell>
+                {transaction.category?.emoji}
+                {transaction.category?.name}
+              </TableCell>
+              <TableCell
+                className={`text-right font-bold ${
+                  transaction.type === "EXPENSE"
+                    ? "text-red-500"
+                    : "text-green-500"
+                }`}
+              >
+                {transaction.type === "EXPENSE" ? "- " : "+ "}$
+                {transaction.amount}
+              </TableCell>
+              <TableCell className="text-right">
+                {format(
+                  new Date(transaction.transactionDate ?? new Date()),
+                  "dd MMMM yyyy, HH:mm:ss",
+                  {
+                    locale: enGB,
+                  }
+                )}
+              </TableCell>
+              <TableCell className="flex justify-end">
+                <Modal>
+                  <Modal.Open opens="delete">
+                    <MdDeleteOutline
+                      title="Delete transaction"
+                      className="cursor-pointer text-gray-600 hover:text-red-500 transition-colors"
+                    />
+                  </Modal.Open>
+
+                  <Modal.Window name="delete">
+                    <ConfirmDelete
+                      resourceName="transaction"
+                      disabled={isDeleting}
+                      onConfirm={() => deleteTransaction(transaction.id!)}
+                    />
+                  </Modal.Window>
+                </Modal>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+        <TableFooter className="w-full">
+          <tr>
+            <td colSpan={6} className="w-full">
+              <Pagination count={totalCount} />
+            </td>
+          </tr>
+        </TableFooter>
+      </Table>
     </div>
   );
 };

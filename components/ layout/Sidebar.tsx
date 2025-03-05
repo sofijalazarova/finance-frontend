@@ -1,21 +1,25 @@
 "use client";
 
 import React from "react";
-
 import { RiLogoutBoxFill } from "react-icons/ri";
 import { MdAccountBalance } from "react-icons/md";
-
 import Navbar from "./Navbar";
 import Link from "next/link";
-
-import AddAccount from "../accounts/AddAccount";
 import { useAccountsQuery } from "@/lib/queries/useAccountsQuery";
 import { useAuthGuard } from "@/lib/auth/useAuth";
+import { useQueryClient } from "@tanstack/react-query";
+import ReusableModal from "../ui/ReusableModal";
+import CreateAccountForm from "../accounts/CreateAccountForm";
 
 export default function Sidebar() {
   const { logout } = useAuthGuard({});
-
+  const queryClient = useQueryClient();
   const { data: accounts } = useAccountsQuery();
+
+  const handleLogout = async () => {
+    await logout();
+    queryClient.clear();
+  };
 
   return (
     <>
@@ -47,19 +51,25 @@ export default function Sidebar() {
                         className="flex justify-between items-center text-white hover:bg-emerald-700 p-4 transition duration-150 rounded-lg"
                       >
                         <p>{account.name}</p>
-                        <p>${account.balance}</p>
+                        <p>${Number(account.balance).toFixed(2)}</p>
                       </div>
                     );
                   })}
               </li>
 
               <li>
-                <AddAccount />
+                <ReusableModal
+                  title="Add account"
+                  triggerText="Add Account"
+                  buttonClass="p-2 border font-inter bg-almost-white rounded-xl border-silver-gray text-gray-700 w-full hover:bg-gray-200 hover:border-gray-400 active:bg-gray-200 transition-all duration-300 ease-in-out"
+                >
+                  <CreateAccountForm />
+                </ReusableModal>
               </li>
             </ul>
           </div>
           <div className="text-right">
-            <button onClick={logout}>
+            <button onClick={handleLogout} title="Logout">
               <RiLogoutBoxFill size={40} className="text-white" />
             </button>
           </div>

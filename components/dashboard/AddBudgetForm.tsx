@@ -50,9 +50,6 @@ export default function AddBudgetForm({ onCloseModal }: CreateBudgetFormProps) {
 
   return (
     <section className="p-10">
-      <header className=" mb-6">
-        <h1 className="font-inter text-lg">Update Budget</h1>
-      </header>
       <Form {...form}>
         <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField

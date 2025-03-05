@@ -11,12 +11,18 @@ export const transactionSchema = z.object({
   name: z.string(),
   category_id: z.string().optional(),
   description: z.string().optional(),
-  amount: z.string(),
+  amount: z
+    .string()
+    .min(1, "Amount is required")
+    .regex(/^\d+(\.\d{1,2})?$/, "Amount must be a valid number"),
   type: z.enum(["INCOME", "EXPENSE"]),
 });
 
 export const budgetSchema = z.object({
-  amount: z.string(),
+  amount: z
+    .string()
+    .min(1, "Amount is required")
+    .regex(/^\d+(\.\d{1,2})?$/, "Amount must be a valid number"),
 });
 
 export const authFormSchema = (type: string) =>
@@ -39,12 +45,20 @@ export const accountSchema = z.object({
   type: z.enum(["SAVINGS", "CASH", "CREDIT_CARD", "OTHER"], {
     required_error: "Account type is required",
   }),
-  balance: z.string(),
+  balance: z
+    .string()
+    .min(1, "Balance is required")
+    .regex(/^\d+(\.\d{1,2})?$/, "Balance must be a valid number"),
 });
 
 export const savingSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  targetAmount: z.string(),
-  savedAmount: z.string(),
+  targetAmount: z
+    .string()
+    .min(1, "Target Amount is required")
+    .regex(/^\d+(\.\d{1,2})?$/, "Amount must be a valid number"),
+  savedAmount: z
+    .string()
+    .regex(/^\d+(\.\d{1,2})?$/, "Saved amount must be a valid number"),
   targetDate: z.date(),
 });

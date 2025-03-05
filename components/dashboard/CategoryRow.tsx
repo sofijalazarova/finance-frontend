@@ -15,7 +15,7 @@ interface TableRowProps {
   onAllocate: (category: string, amount: string) => void;
 }
 
-const DashboardTableRow: React.FC<TableRowProps> = ({
+const CategoryRow: React.FC<TableRowProps> = ({
   icon,
   id,
   category,
@@ -64,12 +64,12 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
     <tr className="focus:outline-none  h-12 border border-gray-100 rounded">
       <td>
         <div className="flex items-center pl-5 space-x-3">
-          <button
+          {/* <button
             onClick={() => archiveCategoryHandler(id)}
             title="Archive category"
           >
             <FaArchive className="text-gray-400" />
-          </button>
+          </button> */}
           <div className="flex items-center space-x-1">
             <span>{icon}</span>
             <p className="text-base font-medium leading-none text-gray-700 mr-2">
@@ -125,7 +125,7 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
                 Number(assigned) < 0 ? "bg-red-500" : ""
               }  w-1/2 border border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600`}
               type="text"
-              value={inputValue}
+              value={`$${inputValue}`}
               onChange={handleChange}
               onBlur={handleBlur}
             />
@@ -133,7 +133,7 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
             <input
               className="w-1/2 ml-2 border bg-green-400 border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600"
               type="text"
-              value={available}
+              value={`$${available}`}
               readOnly
             />
           </div>
@@ -143,4 +143,4 @@ const DashboardTableRow: React.FC<TableRowProps> = ({
   );
 };
 
-export default DashboardTableRow;
+export default CategoryRow;

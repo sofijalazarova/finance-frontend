@@ -6,10 +6,9 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import CustomInput from "./CustomInput";
 import { authFormSchema } from "@/lib/utils";
 import { useState } from "react";
-import { Loader2 } from "lucide-react";
+import { LoaderCircle } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import googleImage from "@/public/google.svg";
@@ -18,6 +17,7 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useAuthGuard } from "@/lib/auth/useAuth";
+import AuthInput from "./AuthInput";
 
 export default function AuthForm({ type }: { type: string }) {
   const { login } = useAuthGuard({
@@ -61,8 +61,10 @@ export default function AuthForm({ type }: { type: string }) {
           onError: (errors) => {
             setErrors(errors);
             if (errors) {
-              setIsLoading(false);
+              setErrors(errors);
+
               setErrorMessage(errors.message || "Invalid email or password.");
+              setIsLoading(false);
             }
           },
           props: data,
@@ -93,13 +95,13 @@ export default function AuthForm({ type }: { type: string }) {
           {type === "sign-up" && (
             <>
               <div className="flex gap-4">
-                <CustomInput
+                <AuthInput
                   control={form.control}
                   name="firstName"
                   label="First Name"
                   placeholder="Enter your first name"
                 />
-                <CustomInput
+                <AuthInput
                   control={form.control}
                   name="lastName"
                   label="Last Name"
@@ -109,14 +111,14 @@ export default function AuthForm({ type }: { type: string }) {
             </>
           )}
 
-          <CustomInput
+          <AuthInput
             control={form.control}
             name="email"
             label="Email"
             placeholder="Enter your email"
           />
 
-          <CustomInput
+          <AuthInput
             control={form.control}
             name="password"
             label="Password"
@@ -135,8 +137,7 @@ export default function AuthForm({ type }: { type: string }) {
             >
               {isLoading ? (
                 <>
-                  <Loader2 size={20} />
-                  Loading...
+                  <LoaderCircle className="animate-spin" />
                 </>
               ) : type === "sign-in" ? (
                 "Sign In"

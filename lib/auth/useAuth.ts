@@ -3,6 +3,7 @@ import useSWR from "swr";
 import httpClient from "../api/httpClient";
 import { useCallback, useEffect } from "react";
 import axios from "axios";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface AuthProps {
   middleware?: "auth" | "guest";
@@ -214,7 +215,6 @@ export const useAuthGuard = ({
     }
 
     localStorage.removeItem("accessToken");
-    //localStorage.removeItem("refreshToken");
     mutate();
     router.replace("/sign-in");
   }, [mutate, router]);

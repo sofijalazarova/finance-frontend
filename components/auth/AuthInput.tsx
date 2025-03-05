@@ -5,12 +5,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { transactionSchema } from "@/lib/utils";
-import React from "react";
+import { authFormSchema } from "@/lib/utils";
+import React, { useId } from "react";
 import { Control, FieldPath } from "react-hook-form";
 import { z } from "zod";
 
-const formSchema = transactionSchema;
+const formSchema = authFormSchema("sign-up");
 
 interface CustomInputProps {
   control: Control<z.infer<typeof formSchema>>;
@@ -19,12 +19,9 @@ interface CustomInputProps {
   placeholder: string;
 }
 
-const TransactionInput = ({
-  name,
-  label,
-  placeholder,
-  control,
-}: CustomInputProps) => {
+const AuthInput = ({ control, name, label, placeholder }: CustomInputProps) => {
+  const uniqueId = useId();
+
   return (
     <FormField
       control={control}
@@ -37,10 +34,11 @@ const TransactionInput = ({
           <div>
             <FormControl>
               <Input
+                id={uniqueId}
                 className="w-full p-3 border bg-white border-gray-300 rounded-md placeholder:font-light placeholder:text-gray-500"
                 placeholder={placeholder}
                 {...field}
-                type="text"
+                type={name === "password" ? "password" : "text"}
               />
             </FormControl>
             <FormMessage />
@@ -51,4 +49,4 @@ const TransactionInput = ({
   );
 };
 
-export default TransactionInput;
+export default AuthInput;

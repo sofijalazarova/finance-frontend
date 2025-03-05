@@ -9,7 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@headlessui/react": "^2.2.0",
     "@hookform/resolvers": "^3.9.1",
+    "@nivo/calendar": "^0.88.0",
     "@radix-ui/react-label": "^2.1.1",
     "@radix-ui/react-select": "^2.1.6",
     "@radix-ui/react-slot": "^1.1.1",
@@ -24,6 +26,7 @@
     "lucide-react": "^0.469.0",
     "next": "14.2.18",
     "react": "^18",
+    "react-calendar": "^5.1.0",
     "react-confetti": "^6.2.2",
     "react-datepicker": "^8.1.0",
     "react-dnd": "^16.0.1",
@@ -39,6 +42,7 @@
     "swr": "^2.3.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
+    "tesseract.js": "^6.0.0",
     "xlsx": "^0.18.5",
     "zod": "^3.24.1"
   },

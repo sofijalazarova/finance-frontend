@@ -1,4 +1,4 @@
-import Loading from "@/app/_components/Loading";
+import Loading from "@/components/ui/Loading";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import {
   BarChart,

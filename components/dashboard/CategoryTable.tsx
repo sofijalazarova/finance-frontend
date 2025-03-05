@@ -1,15 +1,16 @@
 import React from "react";
-import DashboardTableRow from "./DashboardTableRow";
-import AddCategory from "../categories/AddCategory";
 import { useCategoriesQuery } from "@/lib/queries/useCategoriesQuery";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
-  allocateToCategory,
+  assignToCategory,
   fetchBudget,
   getCategoryBudgets,
 } from "@/lib/api/data-service";
+import ReusableModal from "../ui/ReusableModal";
+import CreateCategoryForm from "./CreateCategoryForm";
+import CategoryRow from "./CategoryRow";
 
-const TableDashboard = () => {
+const CategoryTable = () => {
   const { data: categories, isLoading } = useCategoriesQuery();
 
   const { data: budget } = useQuery({
@@ -24,7 +25,7 @@ const TableDashboard = () => {
   const queryClient = useQueryClient();
 
   const { mutate } = useMutation({
-    mutationFn: allocateToCategory,
+    mutationFn: assignToCategory,
     onMutate: async (newData) => {
       await queryClient.cancelQueries({ queryKey: ["categoryBudgets"] });
 
@@ -80,7 +81,13 @@ const TableDashboard = () => {
           <p className="focus:outline-none font-roboto text-slate-gray text-base sm:text-lg md:text-lg lg:text-xl font-normal leading-normal">
             CATEGORIES
           </p>
-          <AddCategory />
+          <ReusableModal
+            title="Add Category"
+            triggerText="+"
+            buttonClass="py-1 px-3 text-white bg-dark-teal-green hover:bg-emerald-green rounded-xl shadow-md transition-all"
+          >
+            <CreateCategoryForm />
+          </ReusableModal>
         </div>
         <div className="flex font-roboto text-slate-gray space-x-3 mr-6">
           <p>Assigned</p>
@@ -110,7 +117,7 @@ const TableDashboard = () => {
                   const available = Number(assigned) - Number(totalSpent);
 
                   return (
-                    <DashboardTableRow
+                    <CategoryRow
                       key={category.id}
                       id={category.id}
                       icon={category.emoji}
@@ -124,7 +131,7 @@ const TableDashboard = () => {
                 })
               ) : (
                 <tr>
-                  <td className="text-center p-4">No categories available</td>
+                  <td className="text-center p-4">No categories added yet!</td>
                 </tr>
               )}
             </tbody>
@@ -135,4 +142,4 @@ const TableDashboard = () => {
   );
 };
 
-export default TableDashboard;
+export default CategoryTable;

@@ -1,5 +1,7 @@
 "use client";
 
+import ExpenseCalendar from "@/app/_components/ExpenseCalendar";
+import ExpenseHeatmap from "@/app/_components/ExpenseHeatMap";
 import BudgetComparisonChart from "@/components/analytics/BudgetComparisonChart";
 import BudgetDonutChart from "@/components/analytics/BudgetDonutChart";
 import CategorySpendingBarChart from "@/components/analytics/CategorySpendingBarChart";
@@ -25,6 +27,9 @@ const Analytics = () => {
           </div>
           <CategorySpendingBarChart />
         </div>
+
+        <ExpenseCalendar />
+        <ExpenseHeatmap />
       </div>
     </>
   );
