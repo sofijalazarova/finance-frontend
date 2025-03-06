@@ -5,7 +5,6 @@ import AddTransactionForm from "@/components/transactions/AddTransactionForm";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import FilterTransactions from "@/components/transactions/FilterTransactions";
 import SortTransactions from "@/components/transactions/SortTransactions";
-
 import { Button } from "@/components/ui/button";
 import * as XLSX from "xlsx";
 import { useAuthGuard } from "@/lib/auth/useAuth";
@@ -13,11 +12,11 @@ import Loading from "@/components/ui/Loading";
 import TransactionsTable from "@/components/transactions/TransactionsTable";
 
 const Transactions = () => {
-  const { data: transactions = [] } = useTransactionsQuery();
+  const { data: transactions = [], isLoading } = useTransactionsQuery();
 
   const { user } = useAuthGuard({ middleware: "auth" });
 
-  if (!user) {
+  if (!user || isLoading) {
     return <Loading />;
   }
 

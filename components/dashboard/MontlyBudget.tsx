@@ -11,10 +11,10 @@ const MontlyBudget = () => {
     queryFn: fetchBudget,
   });
 
-  const { data: percentage } = useQuery({
-    queryKey: ["budgetPercentage"],
-    queryFn: getPercentage,
-  });
+  // const { data: percentage } = useQuery({
+  //   queryKey: ["budgetPercentage"],
+  //   queryFn: getPercentage,
+  // });
 
   const today = new Date();
   const startDate = format(startOfMonth(today), "MMM dd, yyyy");
@@ -32,14 +32,14 @@ const MontlyBudget = () => {
           {startDate} - {endDate}
         </h2>
 
-        <div>
+        {/* <div>
           <div className="flex gap-2">
             <p
               className={`text-5xl font-bold font-inter ${
                 budget?.totalBudget < 0 ? "text-red-600" : "text-green-900"
               }`}
             >
-              ${budget?.totalBudget.toFixed(2)}
+              {budget?.totalBudget.toFixed(2)}
             </p>
 
             {budget?.totalBudget < 0 && (
@@ -49,12 +49,47 @@ const MontlyBudget = () => {
               </p>
             )}
           </div>
-          <p className="text-emerald-green text-sm mt-4">
-            <span className="font-bold">
-              {percentage > 0 ? `+${percentage}%` : `${percentage}%`}
-            </span>{" "}
-            compared to last month
-          </p>
+
+          {percentage !== undefined ? (
+            <p className="text-emerald-green text-sm mt-4">
+              <span className="font-bold">
+                {percentage > 0 ? `+${percentage}%` : `${percentage}%`}
+              </span>{" "}
+              compared to last month
+            </p>
+          ) : (
+            <p></p>
+          )}
+        </div> */}
+
+        <div>
+          {budget && percentage !== undefined && (
+            <>
+              <div className="flex gap-2">
+                <p
+                  className={`text-5xl font-bold font-inter ${
+                    budget.totalBudget < 0 ? "text-red-600" : "text-green-900"
+                  }`}
+                >
+                  {budget.totalBudget.toFixed(2)}
+                </p>
+
+                {budget.totalBudget < 0 && (
+                  <p className="text-red-600 font-bold text-sm">
+                    You assigned more than you have! Please un-assign money from
+                    some of the categories!
+                  </p>
+                )}
+              </div>
+
+              <p className="text-emerald-green text-sm mt-4">
+                <span className="font-bold">
+                  {/* {percentage > 0 ? `+${percentage}%` : `${percentage}%`} */}
+                </span>{" "}
+                compared to last month
+              </p>
+            </>
+          )}
         </div>
       </div>
     </div>

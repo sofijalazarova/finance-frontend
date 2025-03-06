@@ -90,17 +90,11 @@ export const getCategoryBudgets = async () => {
   }
 };
 
-interface allocateItems {
-  budgetId: number;
-  categoryId: number;
-  amount: string;
-}
-
 export const assignToCategory = async ({
   budgetId,
   categoryId,
   amount,
-}: allocateItems) => {
+}: assignItems) => {
   try {
     await httpClient.post("/api/budget/assign", {
       budgetId,

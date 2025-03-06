@@ -59,3 +59,9 @@ declare interface CreateSavingModel {
   savedAmount: string;
   targetDate: string;
 }
+
+declare interface assignItems {
+  budgetId: number;
+  categoryId: number;
+  amount: string;
+}

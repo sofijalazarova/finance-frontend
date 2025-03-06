@@ -10,12 +10,14 @@ export default function ExpenseCalendar() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   return (
-    <div className="p-4 bg-white shadow-lg rounded-lg">
+    <div className="p-4 bg-white flex flex-col items-center">
+      <h2 className="text-xl font-bold mb-2">Interactive Calendar</h2>
       <Calendar
+        className="border-2 border-blue-500 rounded-lg font-roboto"
         onClickDay={(date: Date) => setSelectedDate(date)}
         tileContent={({ date }: { date: Date }) => {
           const dayExpenses = transactions.filter((tx: TransactionModel) => {
-            if (!tx.transactionDate) return false; // Проверка за undefined
+            if (!tx.transactionDate) return false;
             const txDate = new Date(tx.transactionDate);
             return txDate.toDateString() === date.toDateString();
           });

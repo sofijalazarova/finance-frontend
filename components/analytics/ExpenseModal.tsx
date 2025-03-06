@@ -9,9 +9,9 @@ declare interface ExpenseModalProps {
 export default function ExpenseModal({ date, onClose }: ExpenseModalProps) {
   const { data: transactions = [] } = useTransactionsQuery();
 
-  const dayExpenses = transactions.filter((tx) => {
-    if (!tx.transactionDate) return false; // Проверка за undefined
-    const txDate = new Date(tx.transactionDate);
+  const dayExpenses = transactions.filter((transaction) => {
+    if (!transaction.transactionDate) return false;
+    const txDate = new Date(transaction.transactionDate);
     return txDate.toDateString() === date.toDateString();
   });
 
@@ -23,25 +23,24 @@ export default function ExpenseModal({ date, onClose }: ExpenseModalProps) {
     >
       <div className="bg-white p-6 rounded-lg shadow-lg">
         <h2 className="text-xl font-bold mb-4">
-          Трошоци за {date.toDateString()}
+          Expenses for {date.toDateString()}
         </h2>
         <ul>
           {dayExpenses.length > 0 ? (
-            dayExpenses.map((tx, index) => (
+            dayExpenses.map((transaction, index) => (
               <li key={index} className="border-b py-2">
-                💰 {tx.amount} ден. –{" "}
-                {tx.category?.name || "Непозната категорија"}
+                $ {transaction.amount} – {transaction.category?.name || ""}
               </li>
             ))
           ) : (
-            <p>Нема трошоци за овој ден.</p>
+            <p>No expenses on this day!</p>
           )}
         </ul>
         <button
           onClick={onClose}
           className="mt-4 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
         >
-          Затвори
+          Close
         </button>
       </div>
     </Dialog>
