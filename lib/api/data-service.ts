@@ -50,6 +50,17 @@ export const addAccount = async (data: AccountModel) => {
   }
 };
 
+export const editAccount = async (id: number, data) => {
+  try {
+    console.log(id, data);
+    const response = await httpClient.put(`/api/account/edit/${id}`, data);
+    return response.data;
+  } catch (error) {
+    console.error("Error updating account");
+    return;
+  }
+};
+
 export const addTransaction = async (data: any) => {
   try {
     const response = await httpClient.post("/api/transaction/add", data);
@@ -86,6 +97,17 @@ export const getCategoryBudgets = async () => {
     return response.data;
   } catch (error) {
     console.error("Error fetching category budgets", error);
+    return [];
+  }
+};
+
+export const getCategoryBudgetsByUser = async () => {
+  try {
+    const response = await httpClient.get("/api/budget/byUser");
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching category budgets by user", error);
     return [];
   }
 };

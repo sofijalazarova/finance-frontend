@@ -21,7 +21,7 @@ export const useAuthGuard = ({
 
       if (!accessToken) {
         console.log("No access token found. User is not logged in.");
-        router.replace("/sign-in");
+        //router.replace("/sign-in");
         return null;
       }
 

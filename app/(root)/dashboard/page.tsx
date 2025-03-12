@@ -6,7 +6,6 @@ import Balance from "@/components/dashboard/Balance";
 import MontlyBudget from "@/components/dashboard/MontlyBudget";
 import TransactionsTable from "@/components/transactions/RecentTransactions";
 import { useAuthGuard } from "@/lib/auth/useAuth";
-
 import React from "react";
 import CategoryTable from "@/components/dashboard/CategoryTable";
 

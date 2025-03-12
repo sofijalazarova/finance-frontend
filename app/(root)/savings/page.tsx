@@ -42,7 +42,7 @@ const Savings: React.FC = () => {
         <div className="grid grid-cols-7 grid-rows-6 h-full gap-4 mt-20 mb-10">
           <div className="col-span-7 row-span-6 border rounded-xl border-bright-leaf-green p-10 font-roboto">
             <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">💰 Savings Goals</h2>
+              <h2 className="text-2xl font-bold">Savings Goals</h2>
 
               <AddSaving />
             </div>

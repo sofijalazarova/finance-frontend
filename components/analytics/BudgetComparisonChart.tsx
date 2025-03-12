@@ -1,5 +1,5 @@
 import Loading from "@/components/ui/Loading";
-import { getCategoryBudgets } from "@/lib/api/data-service";
+import { getCategoryBudgetsByUser } from "@/lib/api/data-service";
 import { useTransactionsQuery } from "@/lib/queries/useTransactionsQuery";
 import { useQuery } from "@tanstack/react-query";
 import {
@@ -15,9 +15,9 @@ import {
 const BudgetComparisonChart = () => {
   const { data: transactions } = useTransactionsQuery();
 
-  const { data: categoryBudgets, isLoading: isBudgetsLoading } = useQuery({
+  const { data: categoryBudgets } = useQuery({
     queryKey: ["categoryBudgets"],
-    queryFn: getCategoryBudgets,
+    queryFn: getCategoryBudgetsByUser,
   });
 
   if (!transactions || !categoryBudgets) {

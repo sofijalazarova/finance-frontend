@@ -125,7 +125,7 @@ const CategoryRow: React.FC<TableRowProps> = ({
                 Number(assigned) < 0 ? "bg-red-500" : ""
               }  w-1/2 border border-gray-300 rounded text-center focus:outline-none focus:border-indigo-600`}
               type="text"
-              value={`$${inputValue}`}
+              value={inputValue}
               onChange={handleChange}
               onBlur={handleBlur}
             />

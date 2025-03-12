@@ -10,14 +10,12 @@ import {
 } from "@/components/ui/form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Loader2 } from "lucide-react";
 import { accountSchema } from "@/lib/utils";
-import { addAccount } from "@/lib/api/data-service";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { useCreateAccount } from "@/lib/queries/useCreateAccount";
 
 interface CreateAccountFormProps {
   onCloseModal?: () => void;
@@ -26,22 +24,12 @@ interface CreateAccountFormProps {
 export default function CreateAccountForm({
   onCloseModal,
 }: CreateAccountFormProps) {
-  const [isLoading] = useState(false);
   const formSchema = accountSchema;
 
-  const queryClient = useQueryClient();
-
-  const { mutate } = useMutation({
-    mutationFn: addAccount,
-    onSuccess: () => {
-      toast.success("New account successfully added");
-      queryClient.invalidateQueries({ queryKey: ["accounts"] });
-    },
-  });
+  const { addAccount, isCreating } = useCreateAccount();
 
   function onSubmit(data: z.infer<typeof formSchema>) {
-    console.log(data);
-    mutate(data);
+    addAccount(data);
     onCloseModal?.();
   }
 
@@ -135,10 +123,10 @@ export default function CreateAccountForm({
 
             <Button
               type="submit"
-              disabled={isLoading}
+              disabled={isCreating}
               className="w-1/2 bg-dark-teal-green text-white md:p-6 rounded-md my-6 hover:bg-bright-leaf-green transition-all duration-300 ease-in-out cursor-pointer"
             >
-              {isLoading ? (
+              {isCreating ? (
                 <>
                   <Loader2 size={20} />
                   Loading...

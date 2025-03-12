@@ -5,6 +5,7 @@ import {
   assignToCategory,
   fetchBudget,
   getCategoryBudgets,
+  getCategoryBudgetsByUser,
 } from "@/lib/api/data-service";
 import ReusableModal from "../ui/ReusableModal";
 import CreateCategoryForm from "./CreateCategoryForm";
@@ -57,7 +58,7 @@ const CategoryTable = () => {
 
   const { data: categoryBudgets, isLoading: isBudgetsLoading } = useQuery({
     queryKey: ["categoryBudgets"],
-    queryFn: getCategoryBudgets,
+    queryFn: getCategoryBudgetsByUser,
   });
 
   const handleAllocate = async (categoryName: string, amount: string) => {
@@ -76,7 +77,7 @@ const CategoryTable = () => {
 
   return (
     <div className="sm:px-6 w-full">
-      <div className="px-4  py-4 flex items-center justify-between">
+      <div className="px-4 py-4 flex items-center justify-between">
         <div className="flex items-center justify-start space-x-3">
           <p className="focus:outline-none font-roboto text-slate-gray text-base sm:text-lg md:text-lg lg:text-xl font-normal leading-normal">
             CATEGORIES
@@ -114,7 +115,10 @@ const CategoryTable = () => {
                       (budget: any) => budget.category.id === category.id
                     )?.totalSpent || 0;
 
-                  const available = Number(assigned) - Number(totalSpent);
+                  const available =
+                    categoryBudgets?.find(
+                      (budget: any) => budget.category.id === category.id
+                    )?.availableAmount || 0;
 
                   return (
                     <CategoryRow

@@ -32,14 +32,14 @@ const MontlyBudget = () => {
           {startDate} - {endDate}
         </h2>
 
-        {/* <div>
+        <div>
           <div className="flex gap-2">
             <p
               className={`text-5xl font-bold font-inter ${
                 budget?.totalBudget < 0 ? "text-red-600" : "text-green-900"
               }`}
             >
-              {budget?.totalBudget.toFixed(2)}
+              ${budget?.totalBudget.toFixed(2)}
             </p>
 
             {budget?.totalBudget < 0 && (
@@ -50,19 +50,12 @@ const MontlyBudget = () => {
             )}
           </div>
 
-          {percentage !== undefined ? (
-            <p className="text-emerald-green text-sm mt-4">
-              <span className="font-bold">
-                {percentage > 0 ? `+${percentage}%` : `${percentage}%`}
-              </span>{" "}
-              compared to last month
-            </p>
-          ) : (
-            <p></p>
-          )}
-        </div> */}
+          <p className="text-emerald-green text-sm mt-4">
+            <span className="font-bold">5%</span> compared to last month
+          </p>
+        </div>
 
-        <div>
+        {/* <div>
           {budget && percentage !== undefined && (
             <>
               <div className="flex gap-2">
@@ -84,13 +77,13 @@ const MontlyBudget = () => {
 
               <p className="text-emerald-green text-sm mt-4">
                 <span className="font-bold">
-                  {/* {percentage > 0 ? `+${percentage}%` : `${percentage}%`} */}
+                  {percentage > 0 ? `+${percentage}%` : `${percentage}%`}
                 </span>{" "}
                 compared to last month
               </p>
             </>
           )}
-        </div>
+        </div> */}
       </div>
     </div>
   );

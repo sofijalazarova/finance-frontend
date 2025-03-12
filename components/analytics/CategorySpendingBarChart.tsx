@@ -36,7 +36,7 @@ export default function CategorySpendingBarChart() {
 
   if (!transactions) {
     return (
-      <div className="relative border bg-white border-vibrant-mint-green rounded-3xl row-span-3 col-span-2 flex justify-center">
+      <div className="relative border bg-white border-vibrant-mint-green rounded-3xl row-span-3 col-span-1 lg:col-span-2 flex justify-center">
         <div className="flex flex-col items-center py-4 w-full">
           <h2 className="text-xl font-semibold font-roboto text-dark-slate mb-2">
             Expenses by Category
